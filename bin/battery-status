@@ -36,4 +36,4 @@ then
   time_left='⚡️ '
 fi
 
-printf "\033[1;92m$emoji  $time_left \033[0m"
+printf "$emoji $time_left "

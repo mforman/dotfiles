@@ -1,0 +1,10 @@
+{
+    "editor.fontSize": 14,
+    "editor.fontFamily": "'FuraCode Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontLigatures": true,
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "window.zoomLevel": 0,
+    "cSpell.language": "en-GB",
+    "extensions.ignoreRecommendations": false
+}

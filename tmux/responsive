@@ -1,0 +1,29 @@
+#!/bin/sh
+
+CALENDAR=☼
+
+WIDTH=${1}
+
+SMALL=80
+MEDIUM=107
+LARGE=125
+X_LARGE=150
+
+if [ "$WIDTH" -gt "$X_LARGE" ]; then
+  BATTERY="#(~/bin/battery-status)"
+fi
+
+if [ "$WIDTH" -ge "$LARGE" ]; then
+  DATE="#[fg=colour250,bg=colour240,bold] $(date +'%a %x')"
+fi
+
+if [ "$WIDTH" -ge "$MEDIUM" ]; then
+  TIME="#[fg=colour250,bg=colour240,bold] $(date +'%R')"
+fi
+
+if [ "$WIDTH" -ge "$SMALL" ]; then
+  CLEAR=""
+fi
+
+echo "$BATTERY $DATE $TIME "
+# echo "$WIDTH"

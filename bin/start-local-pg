@@ -1,0 +1,24 @@
+#!/bin/bash
+
+export PGHOST=0.0.0.0
+export PGUSER=postgres
+export PGPASSWORD=root
+export PGPORT=5432
+
+container_status=$(docker ps -a -f "expose=$PGPORT/tcp" --format="{{.Status}}\t{{.Names}}")
+
+if [[ -z $container_status ]]; then
+	docker run --name dev-postgres \
+		--mount source=pgdata,target=/var/lib/postgresql/data \
+		-e POSTGRES_PASSWORD=$PGPASSWORD \
+		-d \
+		-p $PGPORT:$PGPORT \
+		postgres:10 >/dev/null
+
+	echo "Created local PostgreSQL 10 server in container dev-postgres"
+elif [[ $container_status == Exited* ]]; then
+	container_name=$(echo $container_status | cut -f2) 
+	docker start $container_name >/dev/null
+
+	echo "Container $container_name was not running. It was restarted"
+fi
