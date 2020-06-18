@@ -3,8 +3,11 @@ export LDFLAGS="-L/usr/local/opt/openssl/lib -L/usr/local/opt/zlib/lib"
 export CPPFLAGS="-I/usr/local/opt/openssl/include -I/usr/local/opt/zlib/include"
 export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
-source $HOME/.poetry/env
+if [[ -d $HOME/.poetry ]]
+then
+  source $HOME/.poetry/env
 
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
 
