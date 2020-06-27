@@ -6,5 +6,6 @@
     "editor.formatOnSave": true,
     "window.zoomLevel": 0,
     "cSpell.language": "en-GB",
-    "extensions.ignoreRecommendations": false
+    "extensions.ignoreRecommendations": false,
+    "terminal.integrated.fontFamily": "MesloLGS NF"
 }

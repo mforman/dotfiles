@@ -1,5 +1,7 @@
-export LSCOLORS="exfxcxdxbxegedabagacad"
 export CLICOLOR=true
+[ "$TERM_PROGRAM" = "iTerm.app" ] &&
+   export LSCOLORS="gxfxbEaEBxxEhEhBaDaCaD" ||
+   export LSCOLORS="exfxcxdxbxegedabagacad"
 
 fpath=($ZSH/functions $fpath)
 
