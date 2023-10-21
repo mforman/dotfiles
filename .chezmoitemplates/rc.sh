@@ -12,10 +12,10 @@ else
 fi
 {{ else if eq .os "darwin" -}}
 if ! command -v nvim &> /dev/null; then
-  export EDITOR=/opt/homebrew/bin/vim
+  export EDITOR=/usr/local/bin/vim
   export MANPAGER='less -s -M +Gg'
 else
-  export EDITOR=/opt/homebrew/bin/nvim
+  export EDITOR=/usr/local/bin/nvim
   export MANPAGER='nvim +Man!'
 fi
 {{ end -}}
