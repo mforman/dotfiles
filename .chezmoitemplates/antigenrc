@@ -15,6 +15,9 @@ antigen bundle colorize
 antigen bundle magic-enter
 antigen bundle safe-paste
 antigen bundle dirhistory
+{{ if eq .chezmoi.os "darwin" -}}
+antigen bundle macos
+{{ end -}}
 
 # Additional bundles
 antigen bundle zsh-users/zsh-syntax-highlighting
