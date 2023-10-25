@@ -1,0 +1,8 @@
+#!/bin/bash
+
+{{ if eq .chezmoi.os "darwin" }}
+# Brewfile hash: {{ include "Brewfile.tmpl" | sha256sum }}
+
+echo "Running brew update..."
+brew update
+{{ end }}

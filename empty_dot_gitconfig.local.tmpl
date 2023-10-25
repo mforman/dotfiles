@@ -1,5 +1,5 @@
 [user]
-        email = "{{ .email }}"
-        name = "{{ .name }}"
+        email = {{ .email | quote }}
+        name = {{ .name | quote }}
         signingkey = {{ onepasswordRead "op://Private/SSH Key/public key" }}
 
