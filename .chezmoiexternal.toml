@@ -1,0 +1,4 @@
+[".nvm"]
+    type = "git-repo"
+    url = "https://github.com/nvm-sh/nvm.git"
+    clone.args = ["--depth", "1", "--branch", "v0.39.5"]
