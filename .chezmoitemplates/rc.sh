@@ -28,6 +28,8 @@ alias g='git'
 alias glg='git log --all --graph --decorate'
 if command -v nvim &> /dev/null; then
   alias vi='nvim'
+  alias vim='nvim'
+  alias vimdiff='nvim -d'
 else
   alias vi='vim'
 fi

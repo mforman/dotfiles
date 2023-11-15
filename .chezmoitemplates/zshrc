@@ -10,6 +10,8 @@ fi
 source ~/antigen.zsh
 antigen init ~/.antigenrc
 
+# opam configuration
+[[ ! -r /Users/mforman/.opam/opam-init/init.zsh ]] || source /Users/mforman/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
