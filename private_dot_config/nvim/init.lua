@@ -106,6 +106,14 @@ require("lazy").setup {
       }
     end },
 
+  -- Markdown Preview in browser
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+
   -- LSP
   { 'williamboman/mason.nvim' },
   { 'williamboman/mason-lspconfig.nvim' },
