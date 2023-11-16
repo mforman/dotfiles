@@ -67,7 +67,7 @@ require("lazy").setup {
   -- Detect tabstop and shiftwidth automatically
   "tpope/vim-sleuth",
 
-  -- Format the status line 
+  -- Format the status line
   { "nvim-lualine/lualine.nvim",
     dependencies = "kyazdani42/nvim-web-devicons",
     opts = { theme = "tokyonight" } },
@@ -144,6 +144,8 @@ require("lazy").setup {
 -------------------------------------------------------------------------------
 local lsp_zero = require('lsp-zero')
 
+lsp_zero.preset("recommended")
+
 lsp_zero.on_attach(function(client, bufnr)
   -- see :help lsp-zero-keybindings
   -- to learn the available actions
@@ -155,17 +157,19 @@ lsp_zero.on_attach(function(client, bufnr)
   end, opts)
 end)
 
+lsp_zero.setup()
+
+
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  handlers = {
-    lsp_zero.default_setup,
-    lua_ls = function()
-      -- (Optional) configure lua language server
-      local lua_opts = lsp_zero.nvim_lua_ls()
-      require('lspconfig').lua_ls.setup(lua_opts)
-    end,
-  }
-})
+    handlers = {
+      lsp_zero.default_setup,
+      lua_ls = function()
+        local lua_opts = lsp_zero.nvim_lua_ls()
+        require('lspconfig').lua_ls.setup(lua_opts)
+      end,
+    },
+  })
 
 -------------------------------------------------------------------------------
 -- Autocompletion config
@@ -206,14 +210,14 @@ wk.register({
 wk.register({
   f = {
     name = "file",
-      f = { "<CMD>Telescope find_files<CR>", "Find File"},
-      g = { "<CMD>Telescope git_files<CR>", "Find Files (in git)"},
-      s = { "<CMD>Telescope live_grep<CR>", "Search in Files"},
-    },
+    f = { "<CMD>Telescope find_files<CR>", "Find File" },
+    g = { "<CMD>Telescope git_files<CR>", "Find Files (in git)" },
+    s = { "<CMD>Telescope live_grep<CR>", "Search in Files" },
+  },
 }, { prefix = "<leader>" })
 
 -------------------------------------------------------------------------------
--- Other keymaps 
+-- Other keymaps
 -------------------------------------------------------------------------------
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
