@@ -1,4 +1,4 @@
-{{ template "rc.sh" dict "os" .os -}}
+source ~/.commonprofile
 
 unset PROMPT_COMMAND
 # Below is a bad example of PS1:

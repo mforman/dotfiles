@@ -1,5 +1,4 @@
-# Start of rc.sh
-{{ if eq .os "linux" -}}
+{{ if eq .chezmoi.os "linux" -}}
 if ! command -v nvim &> /dev/null; then
   export EDITOR=/usr/bin/vim
   export MANPAGER='less -s -M +Gg'
@@ -10,7 +9,7 @@ else
   #export EDITOR=/usr/local/bin/nvim
   export MANPAGER='nvim +Man!'
 fi
-{{ else if eq .os "darwin" -}}
+{{ else if eq .chezmoi.os "darwin" -}}
 if ! command -v nvim &> /dev/null; then
   export EDITOR=/usr/local/bin/vim
   export MANPAGER='less -s -M +Gg'
@@ -26,13 +25,9 @@ alias la='ls -A'
 alias ll='ls -ltAh'
 alias g='git'
 alias glg='git log --all --graph --decorate'
-if command -v nvim &> /dev/null; then
-  alias vi='nvim'
-  alias vim='nvim'
-  alias vimdiff='nvim -d'
-else
-  alias vi='vim'
-fi
+alias vi='nvim'
+alias vim='nvim'
+alias vimdiff='nvim -d'
 alias ta='tmux attach-session'
 alias tn='tmux new-session -s'
 alias tl='tmux list-sessions'
@@ -51,7 +46,7 @@ cls () {
 export CLICOLOR=1
 export COLORTERM=truecolor
 #export LSCOLORS=GxFxCxDxBxegedabagaced
-{{ if eq .os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" -}}
 # If using native BSD utils
 #alias ls='ls -G'
 # If installed "coreutils" with homebrew,
@@ -60,7 +55,7 @@ export COLORTERM=truecolor
 # to ~/.bashrc_local per advice after installation
 alias ls='ls --color=auto'
 
-{{ else if eq .os "linux" -}}
+{{ else if eq .chezmoi.os "linux" -}}
 alias ls='ls --color=auto'
 
 {{ end -}}
@@ -78,9 +73,12 @@ export LESS_TERMCAP_us=$(tput sitm; tput setaf 2)  # turn on underline mode
 export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)     # turn off underline mode
 # and so on
 
-{{ if eq .os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" -}}
 alias bup="brew update && brew upgrade"
 alias cm="chezmoi"
+{{ else if eq .chezmoi.os "linux" -}}
+alias cm="$HOME/bin/chezmoi"
+{{ end -}}
 
 # Add N/Vim spellfiles and snippets to .chezmoitemplates
 cm_add_vim () {
@@ -105,9 +103,3 @@ eval "$(pyenv virtualenv-init -)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-{{ else if eq .os "linux" -}}
-alias cm="$HOME/bin/chezmoi"
-{{ end -}}
-# End of rc.sh
