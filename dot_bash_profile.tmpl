@@ -6,7 +6,7 @@ bind -f $INPUTRC
 {{ else }}
 {{ end -}}
 
-{{ if eq chezmoi.os "darwin" -}}
+{{ if eq .chezmoi.os "darwin" -}}
 eval "$(/usr/local/bin/brew shellenv)"
 eval "$(pyenv init --path)"
 {{ end -}}

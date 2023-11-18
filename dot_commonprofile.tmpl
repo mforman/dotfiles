@@ -92,7 +92,10 @@ cm_add_nvim () {
   cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
 }
 
-export PATH="/usr/local/sbin:$PATH"
+export PATH=$PATH:/usr/local/sbin
+export PATH=$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/dotnet
+export DOTNET_ROOT=$HOME/dotnet
 
 eval "$(pyenv init - --no-rehash)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
