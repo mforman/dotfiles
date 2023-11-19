@@ -1,4 +1,7 @@
 {{ if ne .chezmoi.os "darwin" }}
 .config/karabiner
 Brewfile
+{{ else if ne .chezmoi.os "linux" }}
+run_onchange_install-packages.sh
 {{ end }}
+

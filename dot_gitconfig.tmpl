@@ -24,6 +24,13 @@
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
+{{- if eq .chezmoi.os "linux" }}
+{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+  sshCommand = ssh.exe
+{{   end -}}
+{{ end -}}
+
+
 [apply]
   whitespace = nowarn
 [mergetool]

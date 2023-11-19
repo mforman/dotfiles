@@ -1,5 +1,6 @@
 [user]
         email = {{ .email | quote }}
         name = {{ .name | quote }}
+{{ if eq .chezmoi.os "darwin" -}}
         signingkey = {{ onepasswordRead "op://Private/SSH Key/public key" }}
-
+{{ end -}}

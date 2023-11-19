@@ -20,17 +20,27 @@ fi
 {{ end -}}
 export VISUAL="$EDITOR"
 
-
+# Aliases
 alias la='ls -A'
 alias ll='ls -ltAh'
+
 alias g='git'
 alias glg='git log --all --graph --decorate'
+
 alias vi='nvim'
 alias vim='nvim'
 alias vimdiff='nvim -d'
+
 alias ta='tmux attach-session'
 alias tn='tmux new-session -s'
 alias tl='tmux list-sessions'
+
+{{- if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+alias ssh='ssh.exe'
+alias ssh-add='ssh-add.exe'
+{{   end }}
+{{ end -}}
 
 # Clear screen
 cls () {
