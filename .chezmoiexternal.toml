@@ -2,3 +2,7 @@
     type = "git-repo"
     url = "https://github.com/nvm-sh/nvm.git"
     clone.args = ["--depth", "1", "--branch", "v0.39.5"]
+[".powerlevel10k"]
+    type = "git-repo"
+    url = "https://github.com/romkatv/powerlevel10k"
+    clonne.args = ["--depth", "1"]
