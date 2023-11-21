@@ -13,6 +13,9 @@ setopt autocd
 
 source ~/.commonprofile
 
+# Enbale direnv
+eval "$(direnv hook zsh)"
+
 # Where should I put you?
 bindkey -s ^f "tmux-sessionizer\n"
 
