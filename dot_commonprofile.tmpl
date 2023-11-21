@@ -107,6 +107,8 @@ export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/dotnet
 export DOTNET_ROOT=$HOME/dotnet
 
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - --no-rehash)"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 export PYENV_HOOK_PATH="$HOME/.config/pyenv.d"
