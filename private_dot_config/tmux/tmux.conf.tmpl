@@ -35,6 +35,13 @@ bind-key -r f run-shell "tmux neww ~/.local/bin/tmux-sessionizer"
 set -s escape-time 10
 set-option -g focus-events on
 
+# copy and past helpers
+setw -g mode-keys vi
+bind -T copy-mode-vi v send -X begin-selection
+bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel {{ if eq .chezmoi.os "darwin" }} "pbcopy" {{ end }}
+bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel {{ if eq .chezmoi.os "darwin" }} "pbcopy" {{ end }}
+bind P paste-buffer
+
 ###############################################################################
 # TokyoNight colors for Tmux
 ###############################################################################
