@@ -25,7 +25,7 @@ bindkey -s ^f "tmux-sessionizer\n"
 #  Fuzzy finder
 {{ if eq .chezmoi.os "darwin" -}}
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-{{ else if eq .chezmoi.os "linux" -}}
+{{- else if eq .chezmoi.os "linux" -}}
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
 {{- end }}
