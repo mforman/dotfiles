@@ -6,3 +6,15 @@
     type = "git-repo"
     url = "https://github.com/romkatv/powerlevel10k"
     clonne.args = ["--depth", "1"]
+[".zsh-vi-mode"]
+    type = "git-repo"
+    url = "https://github.com/jeffreytse/zsh-vi-mode.git"
+    clonne.args = ["--depth", "1"]
+[".tmux/plugins/tpm"]
+    type = "git-repo"
+    url = "https://github.com/tmux-plugins/tpm" 
+    clonne.args = ["--depth", "1"]
+["src/neovim"]
+    type = "git-repo"
+    url = "https://github.com/neovim/neovim.git" 
+    clonne.args = ["--depth", "1", "--branch", "stable"]

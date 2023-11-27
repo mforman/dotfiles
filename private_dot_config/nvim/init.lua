@@ -115,10 +115,10 @@ require('lazy').setup({
 
   {
     -- colorscheme 
-    'folke/tokyonight.nvim',
+    'joshdick/onedark.vim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'tokyonight'
+      vim.cmd.colorscheme 'onedark'
     end,
   },
 
@@ -130,7 +130,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'tokyonight',
+        theme = 'onedark',
       },
     },
   },
@@ -184,6 +184,8 @@ require('lazy').setup({
     ft = { "markdown" },
     build = function() vim.fn["mkdp#util#install"]() end,
   },
+
+  "preservim/vimux",
 }, {})
 
 -- [[ Setting options ]]
@@ -254,6 +256,10 @@ vim.keymap.set("n", "<leader>y", "\"+y")
 vim.keymap.set("v", "<leader>y", "\"+y")
 vim.keymap.set("n", "<leader>Y", "\"+Y")
 
+-- Cycle through buffers
+vim.keymap.set("n", "<leader><Tab>", ":bnext<CR>")
+vim.keymap.set("n", "<leader><S-Tab>", ":bprevious<CR>")
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
@@ -270,6 +276,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
