@@ -1,7 +1,5 @@
-{{ if eq .chezmoi.os "linux" }}
 set -ga terminal-overrides ",screen-256color*:Tc"
 set-option -g default-terminal "screen-256color"
-{{ end }}
 
 # remap prefix from 'C-b' to 'C-a'
 unbind C-b
@@ -42,13 +40,12 @@ bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel {{ if eq .chezmoi.os "d
 bind -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel {{ if eq .chezmoi.os "darwin" }} "pbcopy" {{ end }}
 bind P paste-buffer
 
-set-option -g status-position top
-
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'odedlaz/tmux-onedark-theme'
+set -g @plugin 'sainnhe/tmux-fzf'
 
 set -g @resurrect-strategy-nvim 'session'
 set -g @continuum-restore 'on'

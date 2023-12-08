@@ -10,6 +10,22 @@ vim.o.incsearch = true
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+local group = vim.api.nvim_create_augroup("numbertoggle", { clear = true })
+vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "CmdlineLeave" }, {
+  pattern = "*",
+  callback = function()
+    vim.wo.relativenumber = true
+  end,
+  group = group
+})
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost", "InsertEnter", "CmdlineEnter" }, {
+  pattern = "*",
+  callback = function()
+    vim.wo.relativenumber = false
+  end,
+  group = group
+})
+
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
@@ -38,5 +54,7 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
+
+vim.api.nvim_set_hl(0, 'Comment', { italic = true })
 
 -- vim: ts=2 sts=2 sw=2 et
