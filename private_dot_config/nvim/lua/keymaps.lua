@@ -8,6 +8,10 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- HL as amplified versions of hjkl
+vim.keymap.set({ 'n', 'v' }, 'H', '0^') -- "beginning of line"
+vim.keymap.set({ 'n', 'v' }, 'L', '$') --"end of line" ,
+
 -- Jump around
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
