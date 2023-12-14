@@ -3,22 +3,12 @@
 --
 -- See the kickstart.nvim README for more information
 return {
-	{
-		'windwp/nvim-autopairs',
-		event = "InsertEnter",
-		opts = {} -- this is equalent to setup({}) function
-	},
-	{
-		'tpope/vim-surround'
-	},
-	{
-		"dpayne/CodeGPT.nvim",
-		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'MunifTanjim/nui.nvim',
-		},
-		config = function()
-			require("codegpt.config")
-		end
-	}
+    {
+        'windwp/nvim-autopairs',
+        event = "InsertEnter",
+        opts = {} -- this is equalent to setup({}) function
+    },
+    {
+        'nvim-treesitter/nvim-treesitter-context'
+    }
 }
