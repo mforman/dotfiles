@@ -30,13 +30,20 @@ set -g mouse on
 # don't rename windows automatically
 set-option -g allow-rename off
 
-# forget the find window.  That is for chumps
+# Start windows and panes index at 1, not 0.
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Ensure window index numbers get reordered on delete.
+set-option -g renumber-windows on
+
+# forget the find window. That is for chumps
 bind-key -r f run-shell "tmux neww ~/.local/bin/tmux-sessionizer"
 
 set -s escape-time 10
 set-option -g focus-events on
 
-# copy and past helpers
+# copy and paste helpers
 setw -g mode-keys vi
 bind -T copy-mode-vi v send -X begin-selection
 bind -T copy-mode-vi y send-keys -X copy-pipe-and-cancel {{ if eq .chezmoi.os "darwin" }} "pbcopy" {{ end }}
@@ -47,8 +54,12 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'odedlaz/tmux-onedark-theme'
 set -g @plugin 'sainnhe/tmux-fzf'
+set -g @plugin 'catppuccin/tmux'
+
+set -g @catppuccin_window_status_enable "yes"
+set -g @catppuccin_window_status_icon_enable "yes"
+set -g @catppuccin_status_modules_right "application session date_time"
 
 set -g @resurrect-strategy-nvim 'session'
 set -g @continuum-restore 'on'

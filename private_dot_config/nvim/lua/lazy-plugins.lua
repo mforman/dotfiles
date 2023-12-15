@@ -10,8 +10,28 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
 
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
+  -- Useful plugin to show you pending keybinds.
+  'folke/which-key.nvim',
+
+  -- Show the class and/or function name at the top of long sections
+  'nvim-treesitter/nvim-treesitter-context',
+
+  {
+    "windwp/nvim-autopairs",
+    -- Optional dependency
+    dependencies = { 'hrsh7th/nvim-cmp' },
+    config = function()
+      require("nvim-autopairs").setup {}
+      -- If you want to automatically add `(` after selecting a function or method
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
+    end,
+  },
+
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -45,8 +65,6 @@ require('lazy').setup({
     },
   },
 
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -87,12 +105,106 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
+    "ray-x/go.nvim",
+    dependencies = { -- optional packages
+      "ray-x/guihua.lua",
+      "neovim/nvim-lspconfig",
+      "nvim-treesitter/nvim-treesitter",
+    },
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      require("go").setup()
+
+      -- Run gofmt + goimport on save
+      local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*.go",
+        callback = function()
+          require('go.format').goimport()
+        end,
+        group = format_sync_grp,
+      })
     end,
+    event = { "CmdlineEnter" },
+    ft = { "go", 'gomod' },
+    build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
+
+  {
+    'nvim-tree/nvim-tree.lua',
+    dependencies = {
+      'nvim-tree/nvim-web-devicons'
+    },
+    -- cmd = { 'NvimTreeOpen', 'NvimTreeFindFileToggle' },
+    event = 'VeryLazy',
+    config = function()
+      local status_ok, tree = pcall(require, 'nvim-tree')
+
+      if not status_ok then
+        return
+      end
+
+      local opts = { noremap = true, silent = true }
+
+      local function my_on_attach(bufnr)
+        local api = require('nvim-tree.api')
+
+        local function options(desc)
+          return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+        end
+
+        api.config.mappings.default_on_attach(bufnr)
+
+        vim.keymap.del('n', '<C-k>', { buffer = bufnr })
+        vim.keymap.set('n', '<S-k>', api.node.show_info_popup, options('Info'))
+      end
+
+      vim.keymap.set('n', '<C-n>', '<cmd> NvimTreeToggle <CR>', { desc = 'Toggle NVimTree' })
+      vim.keymap.set('n', '<leader>e', '<cmd> NvimTreeFocus <CR>', { desc = 'Focus NVimTree' })
+
+      tree.setup({
+        on_attach = my_on_attach,
+        view = {
+          adaptive_size = true,
+        },
+        git = {
+          enable = true,
+          ignore = false,
+          timeout = 500,
+        },
+      })
+    end
+  },
+
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("oil").setup()
+      vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+    end,
+  },
+
+  {
+    'jpalardy/vim-slime',
+    config = function()
+      vim.cmd([[
+		let g:slime_target = "tmux"
+			]])
+    end
+  },
+
+  {
+    "catppuccin/nvim",
+    name = "catppuccin",
+    priority = 1000
   },
 
   {
@@ -101,11 +213,10 @@ require('lazy').setup({
     -- See `:help lualine.txt`
     opts = {
       options = {
-        theme = 'onedark',
+        theme = 'catppuccin',
       },
     },
   },
-
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
@@ -148,8 +259,7 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-  -- For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  { import = 'plugins' },
+  require 'plugins.autoformat'
 }, {})
 
 -- vim: ts=2 sts=2 sw=2 et

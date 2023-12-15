@@ -13,6 +13,7 @@ vim.o.incsearch = true
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+-- Tab Settings
 vim.o.tabstop = 4
 vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
@@ -20,7 +21,10 @@ vim.o.expandtab = true
 
 vim.o.smartindent = true
 
+-- Hide the mode since it's in lualine
+vim.o.showmode = false
 
+-- Turn off relative line numbers in INSERT mode
 local group = vim.api.nvim_create_augroup("numbertoggle", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained", "InsertLeave", "CmdlineLeave" }, {
   pattern = "*",
