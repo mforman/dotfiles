@@ -1,9 +1,10 @@
-{{ if eq .chezmoi.os "darwin" }}
+# proper colors
 set -g default-terminal "tmux-256color"
-{{ else }}
-set -ga terminal-overrides ",screen-256color*:Tc"
-set-option -g default-terminal "screen-256color"
-{{ end }}
+set -ga terminal-overrides ",*256col*:Tc"
+set -ga terminal-overrides '*:Ss=\E[%p1%d q:Se=\E[ q'
+set-environment -g COLORTERM "truecolor"
+
+
 # remap prefix from 'C-b' to 'C-a'
 unbind C-b
 set-option -g prefix C-a

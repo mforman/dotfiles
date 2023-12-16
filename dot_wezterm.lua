@@ -14,8 +14,10 @@ end
 
 -- For example, changing the color scheme:
 config.color_scheme = 'Catppuccin Mocha'
-config.font_size = 16.0
 config.hide_tab_bar_if_only_one_tab = true
+
+config.font = wezterm.font("DMMono Nerd Font")
+config.font_size = 16.5
 
 -- and finally, return the configuration to wezterm
 return config
