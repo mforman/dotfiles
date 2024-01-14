@@ -18,7 +18,7 @@
                 },
                 "rules": [
                     {
-                        "description": "Swap Left CMD and CTRL keys in the terminal",
+                        "description": "Swap CMD and CTRL keys in the terminal",
                         "manipulators": [
                             {
                                 "conditions": [
@@ -1348,16 +1348,6 @@
                             "to": [
                                 {
                                     "key_code": "backslash"
-                                }
-                            ]
-                        },
-                        {
-                            "from": {
-                                "key_code": "right_option"
-                            },
-                            "to": [
-                                {
-                                    "key_code": "right_command"
                                 }
                             ]
                         }
