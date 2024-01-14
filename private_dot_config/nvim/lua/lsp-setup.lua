@@ -43,6 +43,8 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
+require('lspconfig.ui.windows').default_options.border = "double"
+
 -- document existing key chains
 require('which-key').register {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
@@ -73,7 +75,25 @@ local servers = {
   pyright = {},
   -- rust_analyzer = {},
   tsserver = {},
-  html = { filetypes = { 'html', 'twig', 'hbs' } },
+  html = {
+    filetypes = { 'html', 'twig' },
+    opts = {
+      settings = {
+        html = {
+          format = {
+            contentUnformatted = "div",
+            templating = true,
+            wrapLineLength = 120,
+            wrapAttributes = 'auto',
+          },
+          hover = {
+            documentation = true,
+            references = true,
+          },
+        },
+      },
+    }
+  },
 
   lua_ls = {
     Lua = {
@@ -109,5 +129,7 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
+require 'lspconfig'.volar.setup {}
 
 -- vim: ts=2 sts=2 sw=2 et

@@ -25,14 +25,8 @@ require('lualine').setup {
         lualine_c = {
             {
                 'filename',
-                fmt = function(str)
-                    if str:sub(1, 7) == 'oil:///' then
-                        return str:sub(8, string.len(str) - 8)
-                    else
-                        return str
-                    end
-                end,
-                path = 1,
+                path = 3,
+                shorting_target = 20,
             }
         },
         lualine_x = { 'encoding', 'fileformat', 'filetype' },

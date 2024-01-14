@@ -16,6 +16,11 @@ require('lazy').setup({
   -- Show the class and/or function name at the top of long sections
   'nvim-treesitter/nvim-treesitter-context',
 
+  -- Auto-detect tabs and spaces
+  'tpope/vim-sleuth',
+
+  'mbbill/undotree',
+
   {
     "windwp/nvim-autopairs",
     -- Optional dependency
@@ -31,7 +36,11 @@ require('lazy').setup({
       )
     end,
   },
-
+  {
+    "pmizio/typescript-tools.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+    opts = {},
+  },
   {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -103,7 +112,6 @@ require('lazy').setup({
       end,
     },
   },
-
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
@@ -136,52 +144,6 @@ require('lazy').setup({
   },
 
   {
-    'nvim-tree/nvim-tree.lua',
-    dependencies = {
-      'nvim-tree/nvim-web-devicons'
-    },
-    -- cmd = { 'NvimTreeOpen', 'NvimTreeFindFileToggle' },
-    event = 'VeryLazy',
-    config = function()
-      local status_ok, tree = pcall(require, 'nvim-tree')
-
-      if not status_ok then
-        return
-      end
-
-      local opts = { noremap = true, silent = true }
-
-      local function my_on_attach(bufnr)
-        local api = require('nvim-tree.api')
-
-        local function options(desc)
-          return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-        end
-
-        api.config.mappings.default_on_attach(bufnr)
-
-        vim.keymap.del('n', '<C-k>', { buffer = bufnr })
-        vim.keymap.set('n', '<S-k>', api.node.show_info_popup, options('Info'))
-      end
-
-      vim.keymap.set('n', '<C-n>', '<cmd> NvimTreeToggle <CR>', { desc = 'Toggle NVimTree' })
-      vim.keymap.set('n', '<leader>e', '<cmd> NvimTreeFocus <CR>', { desc = 'Focus NVimTree' })
-
-      tree.setup({
-        on_attach = my_on_attach,
-        view = {
-          adaptive_size = true,
-        },
-        git = {
-          enable = true,
-          ignore = false,
-          timeout = 500,
-        },
-      })
-    end
-  },
-
-  {
     'stevearc/oil.nvim',
     opts = {},
     -- Optional dependencies
@@ -203,20 +165,14 @@ require('lazy').setup({
 
   {
     "catppuccin/nvim",
-    name = "catppuccin",
-    priority = 1000
+    name = "catppuccin"
   },
 
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        theme = 'catppuccin',
-      },
-    },
   },
+
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
@@ -235,6 +191,7 @@ require('lazy').setup({
     branch = '0.1.x',
     dependencies = {
       'nvim-lua/plenary.nvim',
+      'debugloop/telescope-undo.nvim',
       -- Fuzzy Finder Algorithm which requires local dependencies to be built.
       -- Only load if `make` is available. Make sure you have the system
       -- requirements installed.
@@ -248,6 +205,14 @@ require('lazy').setup({
         end,
       },
     },
+  },
+
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    }
   },
 
   {

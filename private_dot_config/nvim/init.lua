@@ -16,9 +16,8 @@ require('options')
 -- [[ Basic Keymaps ]]
 require('keymaps')
 
--- [[ Configure Telescope ]]
--- (fuzzy finder)
-require('telescope-setup')
+-- [[ Configure Editor Plugins ]]
+require('editor-setup')
 
 -- [[ Configure Treesitter ]]
 -- (syntax parser for highlighting)
