@@ -58,7 +58,16 @@ require('which-key').register {
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
-require('mason').setup()
+require('mason').setup({
+  ui = {
+    icons = {
+      package_installed = ' ',
+      package_pending = ' ',
+      package_uninstalled = ' ',
+    },
+    border = 'rounded',
+  },
+})
 require('mason-lspconfig').setup()
 
 -- Enable the following language servers
@@ -76,20 +85,18 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   html = {
-    filetypes = { 'html', 'twig' },
-    opts = {
-      settings = {
-        html = {
-          format = {
-            contentUnformatted = "div",
-            templating = true,
-            wrapLineLength = 120,
-            wrapAttributes = 'auto',
-          },
-          hover = {
-            documentation = true,
-            references = true,
-          },
+    filetypes = { 'html', 'twig', 'hbs' },
+    settings = {
+      html = {
+        format = {
+          contentUnformatted = "pre, code, textarea, div, td",
+          templating = true,
+          wrapLineLength = 120,
+          wrapAttributes = 'auto',
+        },
+        hover = {
+          documentation = true,
+          references = true,
         },
       },
     }
@@ -124,7 +131,7 @@ mason_lspconfig.setup_handlers {
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = on_attach,
-      settings = servers[server_name],
+      settings = (servers[server_name] or {}).settings,
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
