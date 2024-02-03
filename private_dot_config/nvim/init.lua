@@ -48,6 +48,8 @@ require('lazy').setup({
   -- Visualise the undo history
   'mbbill/undotree',
 
+  'HiPhish/rainbow-delimiters.nvim',
+
   -- Autopairs - trying a new plugin
   {
     'altermo/ultimate-autopair.nvim',
@@ -200,6 +202,85 @@ require('lazy').setup({
     end
   },
 
+  -- formatting
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local conform = require("conform")
+
+      conform.setup({
+        formatters_by_ft = {
+          javascript = { "prettier" },
+          typescript = { "prettier" },
+          javascriptreact = { "prettier" },
+          typescriptreact = { "prettier" },
+          svelte = { "prettier" },
+          css = { "prettier" },
+          -- html = { "prettier" },
+          json = { "prettier" },
+          yaml = { "prettier" },
+          markdown = { "prettier" },
+          graphql = { "prettier" },
+          lua = { "stylua" },
+          python = { "black" },
+        },
+        format_on_save = {
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 500,
+        },
+      })
+
+      vim.keymap.set({ "n", "v" }, "<leader>df", function()
+        conform.format({
+          lsp_fallback = true,
+          async = false,
+          timeout_ms = 500,
+        })
+      end, { desc = "Format file or range (in visual mode)" })
+    end,
+  },
+
+  -- linting
+  {
+    "mfussenegger/nvim-lint",
+    event = {
+      "BufReadPre",
+      "BufNewFile",
+    },
+    config = function()
+      local lint = require("lint")
+
+      lint.linters_by_ft = {
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+        svelte = { "eslint_d" },
+        python = { "pylint" },
+      }
+
+      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = lint_augroup,
+        callback = function()
+          -- Get the full path of the current file
+          local filepath = vim.fn.expand('%:p')
+          -- Check if the file exists and is readable
+          if vim.fn.filereadable(filepath) == 1 then
+            lint.try_lint()
+          end
+        end,
+      })
+
+      vim.keymap.set("n", "<leader>dl", function()
+        lint.try_lint()
+      end, { desc = "Trigger linting for current file" })
+    end,
+  },
+
   -- Color Schemes
   { "catppuccin/nvim",           name = "catppuccin" },
   { 'rose-pine/neovim',          name = 'rose-pine' },
@@ -321,6 +402,7 @@ require('lazy').setup({
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
+vim.g.nvim_tree_disable_netrw = 0
 
 -- Stop losing the cursor
 vim.o.guicursor = ""
@@ -428,6 +510,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- Browse command for git-fugitive
+vim.api.nvim_create_user_command(
+  'Browse',
+  function(opts)
+    vim.fn.system { 'open', opts.fargs[1] }
+  end,
+  { nargs = 1 }
+)
 
 
 -- [[ Configure Telescope ]]
@@ -711,7 +802,7 @@ local servers = {
     settings = {
       html = {
         format = {
-          contentUnformatted = "pre, code, textarea, div, td",
+          contentUnformatted = "pre, code, textarea, div",
           templating = true,
           wrapLineLength = 120,
           wrapAttributes = 'auto',
@@ -760,6 +851,18 @@ mason_lspconfig.setup_handlers {
 }
 
 require 'lspconfig'.volar.setup {}
+
+require 'lspconfig'.eslint.setup({
+  settings = {
+    packageManager = 'npm'
+  },
+  on_attach = function(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "EslintFixAll",
+    })
+  end,
+})
 
 
 -- [[ Configure nvim-cmp ]]
@@ -833,7 +936,6 @@ require('lualine').setup {
     },
   },
 }
-
 
 -- [[ Configure Colors ]]
 require("catppuccin").setup({
