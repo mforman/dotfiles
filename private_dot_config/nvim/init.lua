@@ -96,13 +96,6 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     opts = {
       -- See `:help gitsigns.txt`
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
       on_attach = function(bufnr)
         vim.keymap.set('n', '<leader>hp', require('gitsigns').preview_hunk, { buffer = bufnr, desc = 'Preview git hunk' })
 
@@ -140,7 +133,7 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',     opts = {} },
+  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Fuzzy Finder (files, lsp, etc)
   {
@@ -181,16 +174,35 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
-
   {
-    'stevearc/oil.nvim',
-    opts = {},
-    -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+      -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
+    },
     config = function()
-      require("oil").setup()
-      vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
+      require("neo-tree").setup({
+        close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+        filesystem = {
+          hijack_netrw_behavior = "open_current",
+        },
+        event_handlers = {
+          {
+            event = "file_opened",
+            handler = function(file_path)
+              -- auto close
+              -- vimc.cmd("Neotree close")
+              -- OR
+              require("neo-tree.command").execute({ action = "close" })
+            end
+          },
+        },
+      })
     end,
+    vim.keymap.set('n', '<leader>st', '<Cmd>Neotree toggle<CR>')
   },
 
   {
@@ -282,11 +294,7 @@ require('lazy').setup({
   },
 
   -- Color Schemes
-  { "catppuccin/nvim",           name = "catppuccin" },
-  { 'rose-pine/neovim',          name = 'rose-pine' },
-  { 'shaunsingh/nord.nvim',      name = 'nord' },
-  { "shaunsingh/solarized.nvim", name = "solarized" },
-  { "shaunsingh/moonlight.nvim", name = "moonlight" },
+  { "catppuccin/nvim",       name = "catppuccin" },
 
   {
     -- Set lualine as statusline
@@ -400,9 +408,11 @@ require('lazy').setup({
 
 
 -- [[ Setting options ]]
+
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+
 -- See `:help vim.o`
--- NOTE: You can change these options as you wish!
-vim.g.nvim_tree_disable_netrw = 0
 
 -- Stop losing the cursor
 vim.o.guicursor = ""
@@ -457,8 +467,6 @@ vim.o.completeopt = 'menuone,noselect'
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
-
-vim.api.nvim_set_hl(0, 'Comment', { italic = true })
 
 
 -- [[ Basic Keymaps ]]
@@ -936,6 +944,7 @@ require('lualine').setup {
     },
   },
 }
+
 
 -- [[ Configure Colors ]]
 require("catppuccin").setup({
