@@ -4,6 +4,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrw = 1
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -408,9 +411,6 @@ require('lazy').setup({
 
 
 -- [[ Setting options ]]
-
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrw = 1
 
 -- See `:help vim.o`
 
