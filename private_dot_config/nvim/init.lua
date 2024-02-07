@@ -196,16 +196,15 @@ require('lazy').setup({
           {
             event = "file_opened",
             handler = function(file_path)
-              -- auto close
-              -- vimc.cmd("Neotree close")
-              -- OR
               require("neo-tree.command").execute({ action = "close" })
             end
           },
-        },
+
+        }
       })
     end,
-    vim.keymap.set('n', '<leader>st', '<Cmd>Neotree toggle<CR>')
+    vim.keymap.set('n', '<leader>st', '<Cmd>Neotree toggle<CR>'),
+    vim.keymap.set('n', '<leader>sT', '<Cmd>Neotree reveal<CR>')
   },
 
   {
@@ -283,6 +282,7 @@ require('lazy').setup({
         callback = function()
           -- Get the full path of the current file
           local filepath = vim.fn.expand('%:p')
+
           -- Check if the file exists and is readable
           if vim.fn.filereadable(filepath) == 1 then
             lint.try_lint()
@@ -305,6 +305,13 @@ require('lazy').setup({
   },
 
   -- Language-specific plugins
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function() vim.fn["mkdp#util#install"]() end,
+  },
+
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
@@ -411,7 +418,6 @@ require('lazy').setup({
 
 
 -- [[ Setting options ]]
-
 -- See `:help vim.o`
 
 -- Stop losing the cursor
@@ -655,7 +661,7 @@ vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'markdown', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -802,9 +808,23 @@ require('mason-lspconfig').setup()
 local servers = {
   clangd = {},
   gopls = {},
+  marksman = {},
   pyright = {},
-  -- rust_analyzer = {},
   tsserver = {},
+  volar = {},
+
+  eslint = {
+    settings = {
+      packageManager = 'npm'
+    },
+    on_attach = function(_, bufnr)
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = bufnr,
+        command = "EslintFixAll",
+      })
+    end,
+  },
+
   html = {
     filetypes = { 'html', 'twig', 'hbs' },
     settings = {
@@ -851,27 +871,12 @@ mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = servers[server_name] and servers[server_name].on_attach or on_attach,
       settings = (servers[server_name] or {}).settings,
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
 }
-
-require 'lspconfig'.volar.setup {}
-
-require 'lspconfig'.eslint.setup({
-  settings = {
-    packageManager = 'npm'
-  },
-  on_attach = function(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      command = "EslintFixAll",
-    })
-  end,
-})
-
 
 -- [[ Configure nvim-cmp ]]
 -- See `:help cmp`

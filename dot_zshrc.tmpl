@@ -21,9 +21,6 @@ eval "$(direnv hook zsh)"
 # Where should I put you?
 bindkey -s ^f "tmux-sessionizer\n"
 
-# opam configuration
-[ -r ~/.opam/opam-init/init.zsh ] && source ~/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
 function zvm_after_init() {
   #  Fuzzy finder
   {{ if eq .chezmoi.os "darwin" -}}
@@ -35,6 +32,8 @@ function zvm_after_init() {
 }
 
 source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+eval "$(zoxide init zsh)"
 
 # NeoVim Switcher for different configs
 function nvims() {
