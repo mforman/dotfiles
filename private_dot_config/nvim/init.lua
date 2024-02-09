@@ -45,13 +45,14 @@ require('lazy').setup({
   -- Useful plugin to show you pending keybinds.
   'folke/which-key.nvim',
 
-  -- Show the class and/or function name at the top of long sections
-  'nvim-treesitter/nvim-treesitter-context',
+  'HiPhish/rainbow-delimiters.nvim',
 
   -- Visualise the undo history
-  'mbbill/undotree',
+  {
+    'mbbill/undotree',
+    vim.keymap.set('n', '<leader>su', '<Cmd>UndotreeToggle<CR>'),
+  },
 
-  'HiPhish/rainbow-delimiters.nvim',
 
   -- Autopairs - trying a new plugin
   {
@@ -173,6 +174,7 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/nvim-treesitter-context',
     },
     build = ':TSUpdate',
   },
@@ -204,7 +206,7 @@ require('lazy').setup({
       })
     end,
     vim.keymap.set('n', '<leader>st', '<Cmd>Neotree toggle<CR>'),
-    vim.keymap.set('n', '<leader>sT', '<Cmd>Neotree reveal<CR>')
+    vim.keymap.set('n', '<leader>sT', '<Cmd>Neotree reveal<CR>'),
   },
 
   {
@@ -214,86 +216,6 @@ require('lazy').setup({
 		let g:slime_target = "tmux"
 			]])
     end
-  },
-
-  -- formatting
-  {
-    "stevearc/conform.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local conform = require("conform")
-
-      conform.setup({
-        formatters_by_ft = {
-          javascript = { "prettier" },
-          typescript = { "prettier" },
-          javascriptreact = { "prettier" },
-          typescriptreact = { "prettier" },
-          svelte = { "prettier" },
-          css = { "prettier" },
-          -- html = { "prettier" },
-          json = { "prettier" },
-          yaml = { "prettier" },
-          markdown = { "prettier" },
-          graphql = { "prettier" },
-          lua = { "stylua" },
-          python = { "black" },
-        },
-        format_on_save = {
-          lsp_fallback = true,
-          async = false,
-          timeout_ms = 500,
-        },
-      })
-
-      vim.keymap.set({ "n", "v" }, "<leader>df", function()
-        conform.format({
-          lsp_fallback = true,
-          async = false,
-          timeout_ms = 500,
-        })
-      end, { desc = "Format file or range (in visual mode)" })
-    end,
-  },
-
-  -- linting
-  {
-    "mfussenegger/nvim-lint",
-    event = {
-      "BufReadPre",
-      "BufNewFile",
-    },
-    config = function()
-      local lint = require("lint")
-
-      lint.linters_by_ft = {
-        javascript = { "eslint_d" },
-        typescript = { "eslint_d" },
-        javascriptreact = { "eslint_d" },
-        typescriptreact = { "eslint_d" },
-        svelte = { "eslint_d" },
-        python = { "pylint" },
-      }
-
-      local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-        group = lint_augroup,
-        callback = function()
-          -- Get the full path of the current file
-          local filepath = vim.fn.expand('%:p')
-
-          -- Check if the file exists and is readable
-          if vim.fn.filereadable(filepath) == 1 then
-            lint.try_lint()
-          end
-        end,
-      })
-
-      vim.keymap.set("n", "<leader>dl", function()
-        lint.try_lint()
-      end, { desc = "Trigger linting for current file" })
-    end,
   },
 
   -- Color Schemes
@@ -386,9 +308,10 @@ require('lazy').setup({
 
           -- Tsserver usually works poorly. Sorry you work with bad languages
           -- You can remove this line if you know what you're doing :)
-          if client.name == 'tsserver' then
-            return
-          end
+          -- nb: I did remove it because I'm using pmizio/typescript-tools
+          -- if client.name == 'tsserver' then
+          --   return
+          -- end
 
           -- Create an autocmd that will run *before* we save the buffer.
           --  Run the formatting command for the LSP that has just attached.
@@ -552,8 +475,8 @@ require('telescope').setup {
     },
     find_files = {
       -- `hidden = true` will still show the inside of `.git/` as it's not `.gitignore`d.
-      -- `-L` follows symlinks
-      find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-L" },
+      -- `-l` follows symlinks
+      find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*", "-l" },
     },
   },
   extensions = {
@@ -661,7 +584,7 @@ vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'markdown', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'markdown', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -812,17 +735,7 @@ local servers = {
   pyright = {},
   tsserver = {},
   volar = {},
-
-  eslint = {
-    packageManager = 'npm',
-    on_attach = function(_, bufnr)
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        buffer = bufnr,
-        command = "EslintFixAll",
-      })
-    end,
-  },
-
+  eslint = { packageManager = 'npm', },
   html = {
     filetypes = { 'html', 'twig', 'hbs' },
     html = {
@@ -838,7 +751,6 @@ local servers = {
       },
     },
   },
-
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -867,7 +779,7 @@ mason_lspconfig.setup_handlers {
   function(server_name)
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
-      on_attach = servers[server_name] and servers[server_name].on_attach or on_attach,
+      on_attach = on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     }
