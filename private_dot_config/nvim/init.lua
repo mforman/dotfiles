@@ -814,9 +814,7 @@ local servers = {
   volar = {},
 
   eslint = {
-    settings = {
-      packageManager = 'npm'
-    },
+    packageManager = 'npm',
     on_attach = function(_, bufnr)
       vim.api.nvim_create_autocmd("BufWritePre", {
         buffer = bufnr,
@@ -827,20 +825,18 @@ local servers = {
 
   html = {
     filetypes = { 'html', 'twig', 'hbs' },
-    settings = {
-      html = {
-        format = {
-          contentUnformatted = "pre, code, textarea, div",
-          templating = true,
-          wrapLineLength = 120,
-          wrapAttributes = 'auto',
-        },
-        hover = {
-          documentation = true,
-          references = true,
-        },
+    html = {
+      format = {
+        contentUnformatted = "pre, code, textarea, div",
+        templating = true,
+        wrapLineLength = 120,
+        wrapAttributes = 'auto',
       },
-    }
+      hover = {
+        documentation = true,
+        references = true,
+      },
+    },
   },
 
   lua_ls = {
@@ -872,7 +868,7 @@ mason_lspconfig.setup_handlers {
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
       on_attach = servers[server_name] and servers[server_name].on_attach or on_attach,
-      settings = (servers[server_name] or {}).settings,
+      settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     }
   end,
