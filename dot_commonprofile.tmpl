@@ -102,6 +102,8 @@ cm_add_nvim () {
   cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
 }
 
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/src/go
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/dotnet
