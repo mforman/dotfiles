@@ -40,7 +40,7 @@ alias tl='tmux list-sessions'
 alias ssh='ssh.exe'
 alias ssh-add='ssh-add.exe'
 {{   end }}
-{{ end -}}
+{{ end }}
 
 # Clear screen
 cls () {
@@ -104,10 +104,13 @@ cm_add_nvim () {
 
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/src/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/dotnet
 export DOTNET_ROOT=$HOME/dotnet
+
 
 [ -s "$HOME/.env" ] && \. "$HOME/.env"
 
@@ -122,3 +125,5 @@ eval "$(pyenv virtualenv-init -)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+source "$HOME/.config/op/plugins.sh"
