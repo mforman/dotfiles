@@ -39,6 +39,7 @@ alias tl='tmux list-sessions'
 {{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 alias ssh='ssh.exe'
 alias ssh-add='ssh-add.exe'
+alias op='op.exe'
 {{   end }}
 {{ end }}
 
@@ -126,4 +127,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+{{ if eq .chezmoi.os "darwin" -}}
 source "$HOME/.config/op/plugins.sh"
+{{ end -}}
