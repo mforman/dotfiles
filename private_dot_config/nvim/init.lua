@@ -575,7 +575,17 @@ require('lazy').setup({
         nowait = true,
       })
     end,
-  }
+  },
+  {
+    'xvzc/chezmoi.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require("chezmoi").setup {
+        -- your configurations
+      }
+    end
+  },
+
 }, {})
 
 
@@ -818,7 +828,7 @@ vim.keymap.set("n", "<C-S-N>", function() harpoon:list():next() end)
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'markdown', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'c_sharp', 'cpp', 'go', 'lua', 'markdown', 'python', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -929,6 +939,30 @@ local on_attach = function(_, bufnr)
   end, { desc = 'Format current buffer with LSP' })
 end
 
+-- Configure border on floating windows.
+vim.diagnostic.config({
+  virtual_text = false,
+  update_in_insert = true,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = true,
+    style = "minimal",
+    border = "rounded",
+    source = "always",
+    header = "",
+    prefix = "",
+  },
+})
+
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "rounded",
+})
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = "rounded",
+})
+
 require('lspconfig.ui.windows').default_options.border = "double"
 
 -- document existing keychains
@@ -973,12 +1007,8 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {},
-  gopls = {},
-  marksman = {},
-  pyright = {},
-  tsserver = {},
-  volar = {},
   eslint = { packageManager = 'npm', },
+  gopls = {},
   html = {
     filetypes = { 'html', 'twig', 'hbs' },
     html = {
@@ -994,6 +1024,11 @@ local servers = {
       },
     },
   },
+  marksman = {},
+  omnisharp = {},
+  pyright = {},
+  tsserver = {},
+  volar = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -1043,7 +1078,9 @@ cmp.setup {
     end,
   },
   completion = {
-    completeopt = 'menu,menuone,noinsert'
+    completeopt = 'menu,menuone,noinsert',
+    border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+    winhighlight = "Normal:CmpPmenu,CursorLine:PmenuSel,Search:None",
   },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),

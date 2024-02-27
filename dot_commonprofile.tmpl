@@ -110,8 +110,8 @@ export PATH=$PATH:$GOBIN
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
 export PATH=$PATH:$HOME/dotnet
-export DOTNET_ROOT=$HOME/dotnet
-
+export DOTNET_ROOT=/usr/local/share/dotnet
+[[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
 
 [ -s "$HOME/.env" ] && \. "$HOME/.env"
 
