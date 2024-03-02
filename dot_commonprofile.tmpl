@@ -1,23 +1,10 @@
-{{ if eq .chezmoi.os "linux" -}}
 if ! command -v nvim &> /dev/null; then
-  export EDITOR=/usr/bin/vim
+  export EDITOR=$(which vim)
   export MANPAGER='less -s -M +Gg'
 else
-  # If Neovim is installed with package manager:
-  export EDITOR=/usr/bin/nvim
-  # If Neovim is installed from source:
-  #export EDITOR=/usr/local/bin/nvim
+  export EDITOR=$(which nvim)
   export MANPAGER='nvim +Man!'
 fi
-{{ else if eq .chezmoi.os "darwin" -}}
-if ! command -v nvim &> /dev/null; then
-  export EDITOR=/usr/local/bin/vim
-  export MANPAGER='less -s -M +Gg'
-else
-  export EDITOR=/usr/local/bin/nvim
-  export MANPAGER='nvim +Man!'
-fi
-{{ end -}}
 export VISUAL="$EDITOR"
 
 # Aliases
@@ -103,12 +90,15 @@ cm_add_nvim () {
   cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
 }
 
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/src/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
+
+if command -v go &> /dev/null; then
+  export PATH=$PATH:/usr/local/go/bin
+  export GOPATH=$HOME/src/go
+  export GOBIN=$GOPATH/bin
+  export PATH=$PATH:$GOBIN
+fi
 export PATH=$PATH:$HOME/dotnet
 export DOTNET_ROOT=/usr/local/share/dotnet
 [[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"

@@ -33,8 +33,6 @@ function zvm_after_init() {
 
 source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
-eval "$(zoxide init zsh)"
-
 # NeoVim Switcher for different configs
 function nvims() {
   items=$(find $HOME/.config -maxdepth 2 -name "init.lua" -type f -execdir sh -c 'pwd | xargs basename' \;)
@@ -47,6 +45,25 @@ function nvims() {
   NVIM_APPNAME=$selected nvim "$@"
 }
 alias nvs=nvims
+
+# zsh parameter completion for the dotnet CLI
+
+_dotnet_zsh_complete()
+{
+  local completions=("$(dotnet complete "$words")")
+
+  # If the completion list is empty, just continue with filename selection
+  if [ -z "$completions" ]
+  then
+    _arguments '*::arguments: _normal'
+    return
+  fi
+
+  # This is not a variable assignment, don't remove spaces!
+  _values = "${(ps:\n:)completions}"
+}
+
+compdef _dotnet_zsh_complete dotnet
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ -f ~/.p10k.zsh ] && source ~/.p10k.zsh
