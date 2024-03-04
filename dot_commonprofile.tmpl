@@ -102,6 +102,8 @@ fi
 export PATH=$PATH:$HOME/dotnet
 export DOTNET_ROOT=/usr/local/share/dotnet
 [[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
+[[ -d /opt/mssql-tools18/bin/ ]] && export PATH="/opt/mssql-tools18/bin/:$PATH"
+
 
 [ -s "$HOME/.env" ] && \. "$HOME/.env"
 
