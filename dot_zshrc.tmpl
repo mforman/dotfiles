@@ -12,6 +12,12 @@ alias reload!='source ~/.zshrc'
 
 # Just do this instead of installing oh-my-zsh
 setopt autocd
+setopt inc_append_history
+setopt share_history 
+
+HISTSIZE=5000
+SAVEHIST=5000
+HISTFILE=~/.zsh_history
 
 source ~/.commonprofile
 
