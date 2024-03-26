@@ -3,5 +3,12 @@
 Brewfile
 {{ else if ne .chezmoi.os "linux" }}
 run_onchange_install-packages.sh
+{{ else if ne .chezmoi.os "windows" }}
+winget.json
 {{ end }}
 
+{{ if eq .chezmoi.os "windows" }}
+*
+!winget.json
+!.wezterm.lua
+{{ end }}
