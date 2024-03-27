@@ -9,6 +9,7 @@ winget.json
 
 {{ if eq .chezmoi.os "windows" }}
 *
+!.git*
 !winget.json
 !.wezterm.lua
 {{ end }}
