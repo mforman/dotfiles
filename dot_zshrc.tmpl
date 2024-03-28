@@ -1,3 +1,7 @@
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zmodload zsh/zprof
+fi
+
 # Need to load Powerlevel10k before the instant prompt
 source $HOME/.powerlevel10k/powerlevel10k.zsh-theme
 
@@ -71,5 +75,12 @@ _dotnet_zsh_complete()
 
 compdef _dotnet_zsh_complete dotnet
 
+# Debug zsh startup time
+alias zsh_debug="time ZSH_DEBUGRC=1 zsh -i -c exit"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [ -f ~/.p10k.zsh ] && source ~/.p10k.zsh
+
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi
