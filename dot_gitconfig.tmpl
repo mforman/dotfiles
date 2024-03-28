@@ -59,11 +59,14 @@
 	required = true
 [pull]
 	rebase = true
-{{- if eq .chezmoi.os "darwin" }}  
 [gpg]
 	format = ssh
+{{- if eq .chezmoi.os "darwin" }}  
 [gpg "ssh"]
 	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{ else if eq .chezmoi.os "linux" }}
+[gpg "ssh"]
+	program = "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
+{{- end }}
 [commit]
 	gpgsign = true
-{{- end }}
