@@ -1,3 +1,6 @@
+{{ if eq .chezmoi.os "darwin" }}
+.wezterm.lua
+{{ end }}
 {{ if ne .chezmoi.os "darwin" }}
 .config/karabiner
 Brewfile
