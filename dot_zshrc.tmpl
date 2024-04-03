@@ -17,7 +17,8 @@ alias reload!='source ~/.zshrc'
 # Just do this instead of installing oh-my-zsh
 setopt autocd
 setopt inc_append_history
-setopt share_history 
+setopt share_history
+set -o vi
 
 HISTSIZE=5000
 SAVEHIST=5000
@@ -41,7 +42,8 @@ function zvm_after_init() {
   {{- end }}
 }
 
-source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
+# ZVM_INIT_MODE=sourcing
+# source $HOME/.zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 # NeoVim Switcher for different configs
 function nvims() {

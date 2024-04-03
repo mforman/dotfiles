@@ -714,7 +714,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 vim.api.nvim_create_user_command(
   'Browse',
   function(opts)
-    vim.fn.system { 'open', opts.fargs[1] }
+    vim.fn.system { 'wsl-open', opts.fargs[1] }
   end,
   { nargs = 1 }
 )
