@@ -22,6 +22,12 @@ abbr --add dotdot --regex '^\.\.+$' --function multicd
 
 abbr -a -- g git
 abbr -a -- vim nvim
+abbr -a -- vimdiff 'nvim -d'
 abbr -a -- cm chezmoi
+abbr -a -- ssh ssh.exe
+abbr -a -- ssh-add ssh-add.exe
+abbr -a -- op op.exe
+
+complete -f -c dotnet -a "(dotnet complete (commandline -cp))"
 
 direnv hook fish | source
