@@ -30,4 +30,10 @@ abbr -a -- op op.exe
 
 complete -f -c dotnet -a "(dotnet complete (commandline -cp))"
 
+# Python config
+set -g -x PIP_REQUIRE_VIRTUALENV true
+
+pyenv init - | source
 direnv hook fish | source
+
+nvm use latest --silent
