@@ -9,6 +9,7 @@
   ca      = !git add -A && git commit -m
   co      = checkout
   cob     = checkout -b
+  dft     = difftool
   up      = !git pull --rebase --prune $@ && git submodule update --init --recursive
   undo    = reset HEAD~1 --mixed
   fu      = !git reset --hard HEAD && git clean -df
@@ -16,11 +17,15 @@
   lg1     = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
   lg2     = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
   lg      = !"git lg1"
- [color]
+[apply]
+  whitespace = nowarn
+[color]
   diff = auto
   status = auto
   branch = auto
   ui = true
+[commit]
+  gpgsign = true
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -28,19 +33,40 @@
 {{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
   sshCommand = ssh.exe
 [credential]
-	helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
+  helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
 {{   end -}}
 {{ end }}
-
-
-[apply]
-  whitespace = nowarn
-[mergetool]
-  keepBackup = false
+[diff]
+  tool = difftastic
 [difftool]
   prompt = false
+[difftool "difftastic"]
+        cmd = difft "$LOCAL" "$REMOTE"
+[fetch]
+  prune = true
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[gpg]
+  format = ssh  
+[gpg "ssh"]
+{{- if eq .chezmoi.os "darwin" }} 
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{ else if eq .chezmoi.os "linux" }}
+  program = "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
+{{- end }}
 [help]
   autocorrect = 1
+[init]
+  defaultBranch = main
+[mergetool]
+  keepBackup = false
+[pager]
+  difftool = true
+[pull]
+  rebase = true
 [push]
   # See `git help config` (search for push.default)
   # for more information on different options of the below setting.
@@ -48,25 +74,4 @@
   # Setting to git 2.0 default to suppress warning message
   default = simple
   autoSetupRemote = true
-[fetch]
-	prune = true
-[init]
-        defaultBranch = main
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
-[pull]
-	rebase = true
-[gpg]
-	format = ssh
-{{- if eq .chezmoi.os "darwin" }}  
-[gpg "ssh"]
-	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-{{ else if eq .chezmoi.os "linux" }}
-[gpg "ssh"]
-	program = "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
-{{- end }}
-[commit]
-	gpgsign = true
+
