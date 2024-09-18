@@ -41,5 +41,6 @@ set -g -x PIP_REQUIRE_VIRTUALENV true
 
 pyenv init - | source
 direnv hook fish | source
+fzf --fish | source
 
 nvm use latest --silent

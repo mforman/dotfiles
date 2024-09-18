@@ -35,6 +35,11 @@ require("lazy").setup({
   -- Git related plugins
   "tpope/vim-fugitive",
   "tpope/vim-rhubarb",
+
+  "tpope/vim-dadbod",
+  "kristijanhusak/vim-dadbod-completion",
+  "kristijanhusak/vim-dadbod-ui",
+
   "cedarbaum/fugitive-azure-devops.vim",
 
   -- Detect tabstop and shiftwidth automatically
@@ -967,6 +972,14 @@ cmp.setup({
     { name = "luasnip" },
   },
 })
+
+cmp.setup.filetype({ "sql" }, {
+  sources = {
+    { name = "vim-dadbod-completion" },
+    { name = "buffer" },
+  },
+})
+
 
 -- [[ Configure status bar ]]
 require("lualine").setup({

@@ -20,7 +20,7 @@ config.default_domain = 'WSL:Ubuntu'
 
 
 -- Fonts and Colors
-config.font = wezterm.font_with_fallback { "DMMono Nerd Font" }
+config.font = wezterm.font_with_fallback { "Hack Nerd Font" }
 config.font_size = 12
 config.color_scheme = 'Catppuccin Mocha'
 config.default_cursor_style = 'SteadyBlock'
