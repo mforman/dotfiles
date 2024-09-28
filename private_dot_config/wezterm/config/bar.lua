@@ -243,7 +243,7 @@ local process_icons = {
 }
 local function get_process(tab)
     -- Match either `appname` (without .exe) or `appname.exe` followed by optional path
-    local process_name = tab.active_pane.title:match('^([^%s/\\]+)%.exe') or -- Matches `appname.exe`
+    local process_name = tab.active_pane.title:lower():match('([^%s/\\]+)%.exe') or -- Matches `appname.exe`
                         tab.active_pane.title:match('^([^%s/\\]+)')           -- Matches `appname`
 
     local user_name = tab.tab_title:match('^([^%s/\\]+)%.exe') or -- Matches `appname.exe`
