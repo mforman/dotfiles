@@ -219,6 +219,7 @@ local process_icons = {
     ['make'] = wezterm.nerdfonts.seti_makefile,
     ['vim'] = wezterm.nerdfonts.dev_vim,
     ['go'] = wezterm.nerdfonts.seti_go,
+    ['~'] = wezterm.nerdfonts.dev_terminal,
     ['fish'] = wezterm.nerdfonts.dev_terminal,
     ['zsh'] = wezterm.nerdfonts.dev_terminal,
     ['bash'] = wezterm.nerdfonts.cod_terminal_bash,
@@ -244,10 +245,10 @@ local process_icons = {
 local function get_process(tab)
     -- Match either `appname` (without .exe) or `appname.exe` followed by optional path
     local process_name = tab.active_pane.title:lower():match('([^%s/\\]+)%.exe') or -- Matches `appname.exe`
-                        tab.active_pane.title:match('^([^%s/\\]+)')           -- Matches `appname`
+        tab.active_pane.title:match('^([^%s/\\]+)')                                 -- Matches `appname`
 
-    local user_name = tab.tab_title:match('^([^%s/\\]+)%.exe') or -- Matches `appname.exe`
-                        tab.tab_title:match('^([^%s/\\]+)')           -- Matches `appname`
+    local user_name = tab.tab_title:match('^([^%s/\\]+)%.exe') or                   -- Matches `appname.exe`
+        tab.tab_title:match('^([^%s/\\]+)')                                         -- Matches `appname`
 
     -- Strip trailing .exe if needed (it won't match the second condition if .exe is not there)
     process_name = process_name:gsub("%.exe$", "")
@@ -326,20 +327,20 @@ wezterm.on(
 
         local pane_count = ""
         if C.tabs.pane_count_style then
-          local tabi = wezterm.mux.get_tab(tab.tab_id)
-          local muxpanes = tabi:panes()
-          local count = #muxpanes == 1 and "" or tostring(#muxpanes)
-          if C.tabs.pane_count_style == "icon" then
-            if #muxpanes > 1 then
-              if tab.active_pane.is_zoomed then
-                pane_count = string.format(' %s ', wezterm.nerdfonts.md_arrow_expand_all)
-              else
-                pane_count = string.format(' %s ', wezterm.nerdfonts.cod_terminal_tmux)
-              end
+            local tabi = wezterm.mux.get_tab(tab.tab_id)
+            local muxpanes = tabi:panes()
+            local count = #muxpanes == 1 and "" or tostring(#muxpanes)
+            if C.tabs.pane_count_style == "icon" then
+                if #muxpanes > 1 then
+                    if tab.active_pane.is_zoomed then
+                        pane_count = string.format(' %s ', wezterm.nerdfonts.md_arrow_expand_all)
+                    else
+                        pane_count = string.format(' %s ', wezterm.nerdfonts.cod_terminal_tmux)
+                    end
+                end
+            else
+                pane_count = numberStyle(count, C.tabs.pane_count_style)
             end
-          else
-            pane_count = numberStyle(count, C.tabs.pane_count_style)
-          end
         end
 
         local index_i
@@ -375,7 +376,7 @@ wezterm.on(
         end
         local icon = get_process(tab)
         if icon and #icon > 0 then
-          tabtitle = string.format('%s %s', icon, tabtitle)
+            tabtitle = string.format('%s %s', icon, tabtitle)
         end
         local width = conf.tab_max_width - fillerwidth - 1
         if (#tabtitle + fillerwidth) > conf.tab_max_width then

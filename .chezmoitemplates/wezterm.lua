@@ -8,6 +8,7 @@ local config = {}
 config.launch_menu = {}
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
+	config.default_domain = 'WSL:Ubuntu'
 	table.insert(config.launch_menu, {
 		label = 'New Tab (domain `PowerShell`)',
 		domain = { DomainName = 'local' },
@@ -16,12 +17,15 @@ if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
 end
 
 config.automatically_reload_config = true
-config.default_domain = 'WSL:Ubuntu'
 
 
 -- Fonts and Colors
 config.font = wezterm.font_with_fallback { "Hack Nerd Font" }
-config.font_size = 12
+{{ if eq .chezmoi.os "darwin" }}
+config.font_size = 16.5
+{{ else }}
+config.font.size = 12
+{{ end }}
 config.color_scheme = 'Catppuccin Mocha'
 config.default_cursor_style = 'SteadyBlock'
 
@@ -37,9 +41,9 @@ if use_native_mux then
 	-- Replicate the status line in the tab bar
 	require("config.bar").apply_to_config(config, {
 		dividers = "rounded", -- "slant_right", "slant_left", "arrows", "rounded", false
-    tabs = {
-      pane_count = "icon"
-    },
+		tabs = {
+			pane_count = "icon"
+		},
 		clock = {
 			enabled = true,
 			format = " %Y-%m-%d %H:%M "
