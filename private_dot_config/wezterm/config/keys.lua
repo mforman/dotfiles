@@ -1,28 +1,28 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
--- Functions
-local get_last_folder_segment = function(cwd)
-    if cwd == nil then
-        return "N/A" -- or some default value you prefer
-    end
-
-    -- Strip off 'file:///' if present
-    local pathStripped = cwd:match("^file:///(.+)") or cwd
-    -- Normalize backslashes to slashes for Windows paths
-    pathStripped = pathStripped:gsub("\\", "/")
-    -- Split the path by '/'
-    local path = {}
-    for segment in string.gmatch(pathStripped, "[^/]+") do
-        table.insert(path, segment)
-    end
-    return path[#path] -- returns the last segment
-end
-
-local function get_current_working_dir(tab)
-    local current_dir = tab.active_pane.current_working_dir or ''
-    return get_last_folder_segment(current_dir)
-end
+-- -- Functions
+-- local get_last_folder_segment = function(cwd)
+--     if cwd == nil then
+--         return "N/A" -- or some default value you prefer
+--     end
+--
+--     -- Strip off 'file:///' if present
+--     local pathStripped = cwd:match("^file:///(.+)") or cwd
+--     -- Normalize backslashes to slashes for Windows paths
+--     pathStripped = pathStripped:gsub("\\", "/")
+--     -- Split the path by '/'
+--     local path = {}
+--     for segment in string.gmatch(pathStripped, "[^/]+") do
+--         table.insert(path, segment)
+--     end
+--     return path[#path] -- returns the last segment
+-- end
+--
+-- local function get_current_working_dir(tab)
+--     local current_dir = tab.active_pane.current_working_dir or ''
+--     return get_last_folder_segment(current_dir)
+-- end
 
 local shortcuts = {}
 

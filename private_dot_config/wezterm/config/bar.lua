@@ -215,10 +215,11 @@ local process_icons = {
     ['kuberlr'] = wezterm.nerdfonts.linux_docker,
     ['kubectl'] = wezterm.nerdfonts.linux_docker,
     ['stern'] = wezterm.nerdfonts.linux_docker,
-    ['nvim'] = wezterm.nerdfonts.custom_vim,
+    ['nvim'] = wezterm.nerdfonts.custom_neovim,
     ['make'] = wezterm.nerdfonts.seti_makefile,
     ['vim'] = wezterm.nerdfonts.dev_vim,
     ['go'] = wezterm.nerdfonts.seti_go,
+    ['fish'] = wezterm.nerdfonts.dev_terminal,
     ['zsh'] = wezterm.nerdfonts.dev_terminal,
     ['bash'] = wezterm.nerdfonts.cod_terminal_bash,
     ['btm'] = wezterm.nerdfonts.mdi_chart_donut_variant,
@@ -226,6 +227,7 @@ local process_icons = {
     ['cargo'] = wezterm.nerdfonts.dev_rust,
     ['sudo'] = wezterm.nerdfonts.fa_hashtag,
     ['lazydocker'] = wezterm.nerdfonts.linux_docker,
+    ['lazygit'] = wezterm.nerdfonts.dev_git,
     ['git'] = wezterm.nerdfonts.dev_git,
     ['lua'] = wezterm.nerdfonts.seti_lua,
     ['wget'] = wezterm.nerdfonts.mdi_arrow_down_box,
@@ -233,18 +235,28 @@ local process_icons = {
     ['gh'] = wezterm.nerdfonts.dev_github_badge,
     ['ruby'] = wezterm.nerdfonts.cod_ruby,
     ['pwsh'] = wezterm.nerdfonts.seti_powershell,
+    ['cmd'] = wezterm.nerdfonts.seti_powershell,
     ['node'] = wezterm.nerdfonts.dev_nodejs_small,
+    ['npm'] = wezterm.nerdfonts.dev_nodejs_small,
     ['dotnet'] = wezterm.nerdfonts.md_language_csharp,
     ['wslhost'] = wezterm.nerdfonts.cod_terminal_ubuntu,
 }
 local function get_process(tab)
-    local process_name = tab.active_pane.foreground_process_name:match("([^/\\]+)%.exe$") or
-        tab.active_pane.foreground_process_name:match("([^/\\]+)$")
+    -- Match either `appname` (without .exe) or `appname.exe` followed by optional path
+    local process_name = tab.active_pane.title:match('^([^%s/\\]+)%.exe') or -- Matches `appname.exe`
+                        tab.active_pane.title:match('^([^%s/\\]+)')           -- Matches `appname`
 
-    -- local icon = process_icons[process_name] or string.format('[%s]', process_name)
-    local icon = process_icons[process_name] or wezterm.nerdfonts.seti_checkbox_unchecked
+    local user_name = tab.tab_title:match('^([^%s/\\]+)%.exe') or -- Matches `appname.exe`
+                        tab.tab_title:match('^([^%s/\\]+)')           -- Matches `appname`
 
-    return string.format('%s %s ', icon, process_name)
+    -- Strip trailing .exe if needed (it won't match the second condition if .exe is not there)
+    process_name = process_name:gsub("%.exe$", "")
+
+    local icon = process_icons[user_name] or process_icons[process_name] or string.format('[%s]', process_name)
+    -- local icon = process_icons[process_name] or wezterm.nerdfonts.seti_checkbox_unchecked
+
+    return icon
+    -- return string.format('%s %s ', icon, process_name)
 end
 
 local function basename(s)
@@ -314,10 +326,20 @@ wezterm.on(
 
         local pane_count = ""
         if C.tabs.pane_count_style then
-            local tabi = wezterm.mux.get_tab(tab.tab_id)
-            local muxpanes = tabi:panes()
-            local count = #muxpanes == 1 and "" or tostring(#muxpanes)
+          local tabi = wezterm.mux.get_tab(tab.tab_id)
+          local muxpanes = tabi:panes()
+          local count = #muxpanes == 1 and "" or tostring(#muxpanes)
+          if C.tabs.pane_count_style == "icon" then
+            if #muxpanes > 1 then
+              if tab.active_pane.is_zoomed then
+                pane_count = string.format(' %s ', wezterm.nerdfonts.md_arrow_expand_all)
+              else
+                pane_count = string.format(' %s ', wezterm.nerdfonts.cod_terminal_tmux)
+              end
+            end
+          else
             pane_count = numberStyle(count, C.tabs.pane_count_style)
+          end
         end
 
         local index_i
@@ -347,10 +369,13 @@ wezterm.on(
         -- start and end hardcoded numbers are the Powerline + " " padding
         local fillerwidth = 2 + string.len(index) + string.len(pane_count) + 2
         local tabtitle = tab.active_pane.title
-        -- local tabtitle = get_process(tab)
         local user_title = tab.tab_title
         if user_title and #user_title > 0 then
             tabtitle = user_title
+        end
+        local icon = get_process(tab)
+        if icon and #icon > 0 then
+          tabtitle = string.format('%s %s', icon, tabtitle)
         end
         local width = conf.tab_max_width - fillerwidth - 1
         if (#tabtitle + fillerwidth) > conf.tab_max_width then

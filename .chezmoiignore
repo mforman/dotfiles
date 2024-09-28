@@ -15,4 +15,5 @@ winget.json
 !.git*
 !winget.json
 !.wezterm.lua
+!.config/wezterm
 {{ end }}
