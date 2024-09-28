@@ -4,16 +4,25 @@
 {{ if ne .chezmoi.os "darwin" }}
 .config/karabiner
 Brewfile
+brewfile-install.sh
 {{ else if ne .chezmoi.os "linux" }}
+install-packages.sh
 run_onchange_install-packages.sh
 {{ else if ne .chezmoi.os "windows" }}
+AppData*
 winget.json
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
-*
-!.git*
-!winget.json
-!.wezterm.lua
-!.config
+.bash*
+.commonprofile
+.config/fish
+.config/nvim
+.config/tmux
+.inputrc
+.nvm
+.p10*
+.powerlevel*
+.tmux*
+.zsh*
 {{ end }}
