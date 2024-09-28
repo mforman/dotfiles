@@ -30,13 +30,16 @@ config.send_composed_key_when_left_alt_is_pressed = true
 config.send_composed_key_when_right_alt_is_pressed = true
 config.warn_about_missing_glyphs = false
 
-local use_native_mux = false
+local use_native_mux = true
 if use_native_mux then
 	require("config.keys").apply(config)
 
 	-- Replicate the status line in the tab bar
 	require("config.bar").apply_to_config(config, {
 		dividers = "rounded", -- "slant_right", "slant_left", "arrows", "rounded", false
+    tabs = {
+      pane_count = "icon"
+    },
 		clock = {
 			enabled = true,
 			format = " %Y-%m-%d %H:%M "
