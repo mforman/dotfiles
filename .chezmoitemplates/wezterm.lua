@@ -24,7 +24,7 @@ config.font = wezterm.font_with_fallback { "Hack Nerd Font" }
 {{ if eq .chezmoi.os "darwin" }}
 config.font_size = 16.5
 {{ else }}
-config.font.size = 12
+config.font_size = 12
 {{ end }}
 config.color_scheme = 'Catppuccin Mocha'
 config.default_cursor_style = 'SteadyBlock'
