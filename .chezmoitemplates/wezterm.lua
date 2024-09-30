@@ -9,8 +9,12 @@ config.launch_menu = {}
 
 if wezterm.target_triple == 'x86_64-pc-windows-msvc' then
 	config.default_domain = 'WSL:Ubuntu'
+  table.insert(config.launch_menu, {
+    label = 'New tab - WSL',
+    domain = { DomainName = 'WSL:Ubuntu' },
+  })
 	table.insert(config.launch_menu, {
-		label = 'New Tab (domain `PowerShell`)',
+		label = 'New tab - PowerShell',
 		domain = { DomainName = 'local' },
 		args = { 'pwsh' },
 	})

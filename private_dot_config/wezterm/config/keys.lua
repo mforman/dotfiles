@@ -61,7 +61,7 @@ end
 
 
 -- Other Config
-map("s", "LEADER", act.ShowLauncherArgs { flags = "DOMAINS|WORKSPACES" })
+map("s", "LEADER", act.ShowLauncherArgs { flags = "LAUNCH_MENU_ITEMS|TABS" })
 map("$", "LEADER", act.PromptInputLine {
     description = wezterm.format {
         { Attribute = { Intensity = 'Bold' } },
