@@ -37,4 +37,7 @@ pyenv init - | source
 direnv hook fish | source
 fzf --fish | source
 
-nvm use latest --silent
+function __nvm_auto --on-variable PWD
+  nvm use --silent 2>/dev/null
+end
+__nvm_auto
