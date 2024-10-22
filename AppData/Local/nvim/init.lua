@@ -100,7 +100,18 @@ require("lazy").setup({
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-require("telescope").setup({})
+require("telescope").setup({
+  defaults = {
+    mappings = {
+      n = {
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
+      },
+      i = {
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
+      },
+    },
+  },
+})
 
 vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
 vim.keymap.set("n", "<leader>sS", require("telescope.builtin").builtin, { desc = "[S]earch [S]elect Telescope" })

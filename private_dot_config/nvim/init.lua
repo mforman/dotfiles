@@ -213,14 +213,6 @@ require("lazy").setup({
   },
 
   {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-  },
-
-  {
     -- Highlight, edit, and navigate code
     "nvim-treesitter/nvim-treesitter",
     dependencies = {
@@ -566,9 +558,11 @@ end, { nargs = 1 })
 require("telescope").setup({
   defaults = {
     mappings = {
+      n = {
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
+      },
       i = {
-        ["<C-u>"] = false,
-        ["<C-d>"] = false,
+        ["<c-d>"] = require("telescope.actions").delete_buffer,
       },
     },
   },
@@ -647,36 +641,6 @@ vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc
 vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
-
--- [[ Configure Harpoon ]]
-local harpoon = require("harpoon")
-
-harpoon:setup()
-vim.keymap.set("n", "<leader>z", function()
-  harpoon:list():append()
-end, { desc = "Append to Harpoon" })
-vim.keymap.set("n", "<leader>ss", function()
-  harpoon.ui:toggle_quick_menu(harpoon:list())
-end, { desc = "Toggle Harpoon Menu" })
-
-vim.keymap.set("n", "<C-1>", function()
-  harpoon:list():select(1)
-end, { desc = "Harpoon 1" })
-vim.keymap.set("n", "<C-2>", function()
-  harpoon:list():select(2)
-end, { desc = "Harpoon 2" })
-vim.keymap.set("n", "<C-3>", function()
-  harpoon:list():select(3)
-end, { desc = "Harpoon 3" })
-vim.keymap.set("n", "<C-4>", function()
-  harpoon:list():select(4)
-end, { desc = "Harpoon 4" })
-vim.keymap.set("n", "<C-5>", function()
-  harpoon:list():select(5)
-end, { desc = "Harpoon 5" })
-vim.keymap.set("n", "<C-6>", function()
-  harpoon:list():select(6)
-end, { desc = "Harpoon 6" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
