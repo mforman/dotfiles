@@ -20,6 +20,22 @@ function multicd
 end
 abbr --add dotdot --regex '^\.\.+$' --function multicd
 
+
+# NeoVim Switcher for different configs
+function nvims
+    set items (find $HOME/.config -maxdepth 2 -name "init.lua" -type f -execdir sh -c 'pwd | xargs basename' \;)
+    set selected (printf "%s\n" $items | env FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --preview-window 'right:border-left:50%:<40(right:border-left:50%:hidden)' --preview 'lsd -l -A --tree --depth=1 --color=always --blocks=size,name ~/.config/{} | head -200'" fzf)
+    
+    if test -z "$selected"
+        return 0
+    else if test "$selected" = "nvim"
+        set selected ""
+    end
+    
+    env NVIM_APPNAME=$selected nvim $argv
+end
+alias nvs 'nvims'
+
 abbr -a -- g git
 abbr -a -- vim nvim
 abbr -a -- vimdiff 'nvim -d'
