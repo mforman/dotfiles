@@ -33,6 +33,11 @@ config.font_size = 12
 config.color_scheme = 'Catppuccin Mocha'
 config.default_cursor_style = 'SteadyBlock'
 
+config.inactive_pane_hsb = {
+  saturation = 0.9,
+  brightness = 0.4,
+}
+
 -- General
 config.send_composed_key_when_left_alt_is_pressed = true
 config.send_composed_key_when_right_alt_is_pressed = true
