@@ -9,12 +9,7 @@ bind -m vi-insert 'Control-l: clear-screen'
 
 alias reload!="source ~/.bashrc"
 
-# if [[ '' = "$TMUX" ]]
-# then
-  export INPUTRC=~/.inputrc
-# else
-#   export INPUTRC=~/.config/tmux/tmux.inputrc
-# fi
+export INPUTRC=~/.inputrc
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 

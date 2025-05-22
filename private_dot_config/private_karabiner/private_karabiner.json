@@ -5,6 +5,7 @@
                 "rules": [
                     {
                         "description": "Change left_command + delete_or_backspace → left_option + delete_or_backspace (external keyboards only)",
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
@@ -1046,7 +1047,10 @@
             "simple_modifications": [
                 {
                     "from": { "key_code": "f13" },
-                    "to": [{ "apple_vendor_top_case_key_code": "keyboard_fn" }]
+                    "to": [
+                        { "sticky_modifier": { "fn": "toggle" } },
+                        { "key_code": "fn" }
+                    ]
                 }
             ],
             "virtual_hid_keyboard": {

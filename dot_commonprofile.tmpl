@@ -18,10 +18,6 @@ alias vi='nvim'
 alias vim='nvim'
 alias vimdiff='nvim -d'
 
-alias ta='tmux attach-session'
-alias tn='tmux new-session -s'
-alias tl='tmux list-sessions'
-
 {{- if eq .chezmoi.os "linux" }}
 {{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
 alias ssh='ssh.exe'

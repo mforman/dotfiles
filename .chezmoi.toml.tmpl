@@ -1,7 +1,12 @@
-{{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $name := promptStringOnce . "name" "Name" -}}
+{{- $email := promptStringOnce . "email" "Email address" -}}
+{{- $workEmail := promptStringOnce . "workEmail" "Work email address" -}}
+{{- $workDir := promptStringOnce . "workDir" "Work code directory" -}}
 
 
 [data]
-    email = {{ $email | quote }}
     name = {{ $name | quote }}
+    email = {{ $email | quote }}
+    workEmail = {{ $workEmail | quote }}
+    workDir = {{ $workDir | quote }}
+

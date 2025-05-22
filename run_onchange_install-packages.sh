@@ -1,5 +1,11 @@
+{{ if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
+# Azure VPN
+mas install 1553936137
+
+{{ else if eq .chezmoi.os "linux" -}}
+#!/bin/bash
 sudo apt update
 
 function install {
@@ -15,7 +21,6 @@ function install {
 
 # Basics
 install fzf
-install tmux
 
 curl -sS https://starship.rs/install.sh | sh
 curl https://pyenv.run | bash
@@ -27,4 +32,4 @@ tar xf lazygit.tar.gz lazygit
 sudo install lazygit /usr/local/bin
 
 curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
-
+{{ end -}}

@@ -1,6 +1,8 @@
 # Local/private config goes in the include
 [include]
   path = ~/.gitconfig.local
+[includeIf "gitdir:~/{{ .workDir }}"]
+  path = ~/{{ .workDir }}/.gitconfig
 [hub]
   protocol = https
 [alias]
@@ -29,13 +31,7 @@
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
-{{ if eq .chezmoi.os "linux" }}
-{{-   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-  sshCommand = ssh.exe
-[credential]
-  helper = /mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe
-{{   end -}}
-{{ end }}
+
 [diff]
   tool = difftastic
   external = difft
@@ -50,14 +46,6 @@
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
   required = true
-[gpg]
-  format = ssh  
-[gpg "ssh"]
-{{- if eq .chezmoi.os "darwin" }} 
-  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
-{{ else if eq .chezmoi.os "linux" }}
-  program = "/mnt/c/Program Files/1Password/app/8/op-ssh-sign-wsl"
-{{- end }}
 [help]
   autocorrect = 1
 [init]
@@ -76,3 +64,5 @@
   default = simple
   autoSetupRemote = true
 
+[gpg]
+	format = ssh
