@@ -64,6 +64,7 @@ test -x (which aws_completer); and complete --command aws --no-files --arguments
 set -g -x PIP_REQUIRE_VIRTUALENV true
 
 pyenv init - | source
+status --is-interactive; and pyenv virtualenv-init - | source
 direnv hook fish | source
 fzf --fish | source
 
