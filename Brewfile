@@ -49,5 +49,6 @@ cask "postman"
 cask "powershell"
 cask "raycast"
 cask "slack"
+cask "wezterm"
 cask "zoom"
 
