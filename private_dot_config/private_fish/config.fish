@@ -77,11 +77,11 @@ end
 __nvm_auto
 
 # pnpm
-set -gx PNPM_HOME "/Users/mforman/Library/pnpm"
+set -gx PNPM_HOME "$HOME/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
 
 # Created by `pipx` on 2025-05-07 14:13:28
-set PATH $PATH /Users/mforman/.local/bin
+set PATH $PATH $HOME/.local/bin
