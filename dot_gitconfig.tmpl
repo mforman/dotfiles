@@ -1,7 +1,7 @@
 # Local/private config goes in the include
 [include]
   path = ~/.gitconfig.local
-[includeIf "gitdir:~/{{ .workDir }}"]
+[includeIf "gitdir:~/{{ .workDir }}"/]
   path = ~/{{ .workDir }}/.gitconfig
 [hub]
   protocol = https
