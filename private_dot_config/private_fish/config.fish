@@ -63,9 +63,6 @@ complete -f -c dotnet -a "(dotnet complete (commandline -cp))"
 test -x (which aws_completer); and complete --command aws --no-files --arguments '(begin; set --local --export COMP_SHELL fish; set --local --export COMP_LINE (commandline); aws_completer | sed \'s/ $//\'; end)'
 
 
-# Python config
-set -g -x PIP_REQUIRE_VIRTUALENV true
-
 pyenv init - | source
 status --is-interactive; and pyenv virtualenv-init - | source
 direnv hook fish | source
