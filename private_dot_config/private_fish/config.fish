@@ -73,6 +73,10 @@ function __nvm_auto --on-variable PWD
 end
 __nvm_auto
 
+function shx --description "Run POSIX shell commands from Fish"
+    bash -c "$argv"
+end
+
 # pnpm
 set -gx PNPM_HOME "$HOME/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
