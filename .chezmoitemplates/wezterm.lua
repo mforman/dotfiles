@@ -39,8 +39,6 @@ config.inactive_pane_hsb = {
 }
 
 -- General
-config.send_composed_key_when_left_alt_is_pressed = true
-config.send_composed_key_when_right_alt_is_pressed = true
 config.warn_about_missing_glyphs = false
 
 local use_native_mux = true
