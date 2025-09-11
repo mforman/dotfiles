@@ -56,6 +56,7 @@ abbr -a -- vimdiff 'nvim -d'
 abbr -a -- cm chezmoi
 abbr -a -- dcd 'docker compose down'
 abbr -a -- dcu 'docker compose up -d'
+abbr -a -- tf terraform
 
 
 complete -f -c dotnet -a "(dotnet complete (commandline -cp))"

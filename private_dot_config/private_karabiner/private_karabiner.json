@@ -206,27 +206,6 @@
                         ]
                     },
                     {
-                        "description": "F11 to ctrl+a (tmux)",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "f11",
-                                    "modifiers": {
-                                        "mandatory": [],
-                                        "optional": ["any"]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "a",
-                                        "modifiers": ["left_control"]
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "Implements the Extend layer created by DreymaR as documented in https://dreymar.colemak.org/layers-extend.html, with some modifications.",
                         "manipulators": [
                             {
