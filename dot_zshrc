@@ -1,0 +1,85 @@
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+  zmodload zsh/zprof
+fi
+
+# History
+HISTSIZE=5000
+SAVEHIST=$HISTSIZE
+HISTFILE=~/.zsh_history
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
+
+# Completions
+autoload -Uz compinit
+compinit
+
+# Autosuggest
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+ZSH_AUTOSUGGEST_USE_ASYNC=1
+
+# Alias expansion function
+globalias() {
+   if [[ $LBUFFER =~ '[a-zA-Z0-9]+$' ]]; then
+       zle _expand_alias
+       zle expand-word
+   fi
+   zle self-insert
+}
+zle -N globalias
+
+bindkey " " globalias
+bindkey "^ " magic-space
+bindkey -M isearch " " magic-space
+
+# vi mode
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+
+# Lazy load SSH agent
+function _load_ssh_agent() {
+    if [ -z "$SSH_AUTH_SOCK" ]; then
+        eval "$(ssh-agent -s)" > /dev/null
+        ssh-add ~/.ssh/id_github_sign_and_auth 2>/dev/null
+    fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook precmd _load_ssh_agent
+
+
+source ~/.commonprofile
+
+# Enbale direnv
+eval "$(direnv hook zsh)"
+
+# zsh parameter completion for the dotnet CLI
+
+# Don't pollute PATH with duplicates
+add_to_path() {
+    if [[ ":$PATH:" != *":$1:"* ]]; then
+        export PATH="$1:$PATH"
+    fi
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# pipx adds this
+add_to_path "$HOME/.local/bin"
+
+# Source aliases last
+[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+
+function zvm_after_init() {
+  #  Fuzzy finder
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+}
+
+if [ -n "${ZSH_DEBUGRC+1}" ]; then
+    zprof
+fi
