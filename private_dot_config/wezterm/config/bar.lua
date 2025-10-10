@@ -34,6 +34,10 @@ local config = {
     enabled = true,
     format = "%H:%M",
   },
+  session = {
+    enabled = true,
+    icon = wezterm.nerdfonts.md_cube_outline,
+  },
 }
 
 -- parsed config
@@ -116,6 +120,11 @@ M.apply_to_config = function(c, opts)
   C.clock = {
     enabled = config.clock.enabled,
     format = config.clock.format,
+  }
+
+  C.session = {
+    enabled = config.session.enabled,
+    icon = config.session.icon,
   }
 
   -- set the right-hand padding to 0 spaces, if the rounded style is active
@@ -446,7 +455,17 @@ wezterm.on("update-status", function(window, _pane)
   local R = {}
   table.insert(R, { Background = { Color = palette.tab_bar.background } })
   table.insert(R, { Foreground = { Color = colours.inactive_tab.fg_color } })
-  -- table.insert(R, { Text = window.active_workspace() })
+  if C.session.enabled then
+    table.insert(R, { Background = { Color = palette.tab_bar.background } })
+    table.insert(R, { Foreground = { Color = palette.ansi[3] } })
+    table.insert(R, { Text = C.div.l })
+    table.insert(R, { Background = { Color = palette.ansi[3] } })
+    table.insert(R, { Foreground = { Color = palette.tab_bar.background } })
+    table.insert(R, { Text = C.session.icon .. " " })
+    table.insert(R, { Background = { Color = palette.tab_bar.background } })
+    table.insert(R, { Foreground = { Color = colours.inactive_tab.fg_color } })
+    table.insert(R, { Text = " " .. wezterm.mux.get_active_workspace() .. " " })
+  end
   if C.clock.enabled then
     local time = wezterm.time.now():format(C.clock.format)
     table.insert(R, { Background = { Color = palette.tab_bar.background } })
