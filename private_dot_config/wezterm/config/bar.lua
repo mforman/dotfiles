@@ -255,6 +255,7 @@ local process_icons = {
   ["npm"] = wezterm.nerdfonts.dev_nodejs_small,
   ["dotnet"] = wezterm.nerdfonts.md_language_csharp,
   ["wslhost"] = wezterm.nerdfonts.cod_terminal_ubuntu,
+  ["Launcher"] = wezterm.nerdfonts.cod_layers,
 }
 local function get_process(tab)
   -- Match either `appname` (without .exe) or `appname.exe` followed by optional path
