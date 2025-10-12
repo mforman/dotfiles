@@ -17,6 +17,18 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     domain = { DomainName = "local" },
     args = { "pwsh" },
   })
+else
+  config.unix_domains = {
+    {
+      name = 'unix',
+    },
+  }
+
+  -- This causes `wezterm` to act as though it was started as
+  -- `wezterm connect unix` by default, connecting to the unix
+  -- domain on startup.
+  -- If you prefer to connect manually, leave out this line.
+  config.default_gui_startup_args = { 'connect', 'unix' }  
 end
 
 config.automatically_reload_config = true
