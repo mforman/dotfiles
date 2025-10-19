@@ -7,8 +7,6 @@ italic_font      auto
 bold_italic_font auto
 font_size        15.0
 
+# theme
+include ~/.config/kitty/themes/macchiato.conf
 
-# BEGIN_KITTY_THEME
-# Catppuccin-Macchiato
-include current-theme.conf
-# END_KITTY_THEME
