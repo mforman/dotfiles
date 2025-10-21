@@ -165,6 +165,7 @@
                                             "^com\\.apple\\.Terminal$",
                                             "^com\\.github\\.wez\\.wezterm$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "^io\\.alacritty$",
@@ -186,7 +187,9 @@
                                     {
                                         "bundle_identifiers": [
                                             "^com\\.apple\\.Terminal$",
+                                            "^com\\.github\\.wez\\.wezterm$",
                                             "^com\\.googlecode\\.iterm2$",
+                                            "^com\\.mitchellh\\.ghostty$",
                                             "^co\\.zeit\\.hyperterm$",
                                             "^co\\.zeit\\.hyper$",
                                             "^io\\.alacritty$",
