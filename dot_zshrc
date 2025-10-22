@@ -34,6 +34,11 @@ bindkey " " globalias
 bindkey "^ " magic-space
 bindkey -M isearch " " magic-space
 
+zvm_after_init() {
+  # Set up fzf key bindings and fuzzy completion: $(brew --prefix)/opt/fzf/install
+  source <(fzf --zsh)
+}
+
 # vi mode
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
@@ -73,12 +78,12 @@ add_to_path "$HOME/.local/bin"
 [ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
 
 eval "$(zoxide init zsh)"
-eval "$(starship init zsh)"
-
-function zvm_after_init() {
-  #  Fuzzy finder
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-}
+# Check that the function `starship_zle-keymap-select()` is defined.
+# xref: https://github.com/starship/starship/issues/3418
+type starship_zle-keymap-select >/dev/null || \
+  {
+    eval "$(starship init zsh)"
+  }
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
