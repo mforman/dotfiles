@@ -1,3 +1,4 @@
 .envrc
 .aider*
 **/lazy-lock.json
+.claude/
