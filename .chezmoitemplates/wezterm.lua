@@ -1,43 +1,19 @@
--- Pull in the wezterm API
 local wezterm = require("wezterm")
-local act = wezterm.action
 
--- This table will hold the configuration
 local config = {}
-config.launch_menu = {}
 
 if wezterm.target_triple == "x86_64-pc-windows-msvc" then
   config.default_domain = "WSL:Ubuntu"
-  table.insert(config.launch_menu, {
-    label = "New tab - WSL",
-    domain = { DomainName = "WSL:Ubuntu" },
-  })
-  table.insert(config.launch_menu, {
-    label = "New tab - PowerShell",
-    domain = { DomainName = "local" },
-    args = { "pwsh" },
-  })
-else
-  config.unix_domains = {
-    {
-      name = "unix",
-    },
+  config.launch_menu = {
+    { label = "New tab - WSL", domain = { DomainName = "WSL:Ubuntu" } },
+    { label = "New tab - PowerShell", domain = { DomainName = "local" }, args = { "pwsh" } },
   }
-
-  -- This causes `wezterm` to act as though it was started as
-  -- `wezterm connect unix` by default, connecting to the unix
-  -- domain on startup.
-  -- If you prefer to connect manually, leave out this line.
-  config.default_gui_startup_args = { "connect", "unix" }
 end
 
 config.automatically_reload_config = true
 
--- Fonts and Colors
 config.font = wezterm.font_with_fallback({ "Hack Nerd Font" })
-
 config.font_size = 15
-
 config.color_scheme = "Catppuccin Macchiato"
 config.default_cursor_style = "SteadyBlock"
 
@@ -46,37 +22,8 @@ config.inactive_pane_hsb = {
   brightness = 0.4,
 }
 
-config.window_background_opacity = 1.0
 config.window_decorations = "TITLE|RESIZE"
-
--- General
 config.warn_about_missing_glyphs = false
+config.hide_tab_bar_if_only_one_tab = true
 
-local use_native_mux = false
-if use_native_mux then
-  require("config.keys").apply(config)
-
-  -- Replicate the status line in the tab bar
-  require("config.bar").apply_to_config(config, {
-    dividers = "rounded", -- "slant_right", "slant_left", "arrows", "rounded", false
-    tabs = {
-      pane_count = "icon",
-    },
-    clock = {
-      enabled = true,
-      format = " %Y-%m-%d %H:%M ",
-    },
-  })
-  config.hide_tab_bar_if_only_one_tab = false
-
-  wezterm.on("format-window-title", function(tab, pane, tabs, panes, config)
-    local workspace = wezterm.mux.get_active_workspace()
-    local title = tab.active_pane.title
-    return string.format("%s — %s", workspace or "WezTerm", title)
-  end)
-else
-  config.hide_tab_bar_if_only_one_tab = true
-end
-
--- and finally, return the configuration to wezterm
 return config
