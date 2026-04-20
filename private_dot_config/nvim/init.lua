@@ -32,6 +32,11 @@ vim.opt.inccommand = 'split'
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+
 -- Built-in completion options (replaces nvim-cmp)
 vim.opt.completeopt = 'menu,menuone,noselect,popup'
 
@@ -162,6 +167,9 @@ vim.pack.add {
   { src = gh 'tpope/vim-dadbod' },
   { src = gh 'kristijanhusak/vim-dadbod-ui' },
   { src = gh 'kristijanhusak/vim-dadbod-completion' },
+
+  -- Claude Code integration
+  { src = gh 'coder/claudecode.nvim' },
 }
 
 -- NOTE: telescope-fzf-native requires a build step. After first install, run:
@@ -268,6 +276,7 @@ require('which-key').setup {
     },
   },
   spec = {
+    { '<leader>a', group = '[A]I / Claude' },
     { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
     { '<leader>d', group = '[D]ocument' },
     { '<leader>r', group = '[R]ename' },
@@ -437,6 +446,9 @@ require('mason').setup()
 require('mason-tool-installer').setup {
   ensure_installed = vim.list_extend(vim.tbl_keys(servers), {
     'stylua',
+    'prettierd',
+    'shfmt',
+    'ruff',
   }),
 }
 require('mason-lspconfig').setup {
@@ -551,6 +563,13 @@ require('conform').setup {
     javascript = { 'prettierd', 'prettier', stop_after_first = true },
     typescript = { 'prettierd', 'prettier', stop_after_first = true },
     typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+    json = { 'prettierd', 'prettier', stop_after_first = true },
+    jsonc = { 'prettierd', 'prettier', stop_after_first = true },
+    yaml = { 'prettierd', 'prettier', stop_after_first = true },
+    terraform = { 'terraform_fmt' },
+    sh = { 'shfmt' },
+    bash = { 'shfmt' },
+    python = { 'ruff_format' },
   },
 }
 
@@ -846,5 +865,10 @@ vim.g.db_ui_use_nerd_fonts = 1
 -- Optional: Enable the new UI2 (redesigned message and command-line interface)
 -- Uncomment the line below to try it out:
 require('vim._core.ui2').enable {}
+
+-- Claude Code
+require('claudecode').setup()
+vim.keymap.set('n', '<leader>ac', '<cmd>ClaudeCode<CR>', { desc = '[A]I: Toggle [C]laude Code' })
+vim.keymap.set('v', '<leader>as', '<cmd>ClaudeCodeSend<CR>', { desc = '[A]I: [S]end selection to Claude' })
 
 -- vim: ts=2 sts=2 sw=2 et
