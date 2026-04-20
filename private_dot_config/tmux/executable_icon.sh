@@ -17,9 +17,11 @@ case "$1" in
   lua) echo "󰢱" ;;
   wget|curl) echo "󰇚" ;;
   ruby) echo "" ;;
-  python|poetry|pip) echo "" ;;
+  python*|poetry|pip) echo "" ;;
+  jupyter) echo "";;
   pwsh|cmd) echo "" ;;
   node|npm) echo "󰎙" ;;
   dotnet) echo "󰌛" ;;
+  codex*) echo " " ;;
   *) echo "" 
 esac

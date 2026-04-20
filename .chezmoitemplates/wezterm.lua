@@ -20,7 +20,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
 else
   config.unix_domains = {
     {
-      name = 'unix',
+      name = "unix",
     },
   }
 
@@ -28,31 +28,31 @@ else
   -- `wezterm connect unix` by default, connecting to the unix
   -- domain on startup.
   -- If you prefer to connect manually, leave out this line.
-  config.default_gui_startup_args = { 'connect', 'unix' }  
+  config.default_gui_startup_args = { "connect", "unix" }
 end
 
 config.automatically_reload_config = true
 
-
 -- Fonts and Colors
-config.font = wezterm.font_with_fallback { "Hack Nerd Font" }
-{{ if eq .chezmoi.os "darwin" }}
-config.font_size = 16.5
-{{ else }}
-config.font_size = 12
-{{ end }}
-config.color_scheme = 'Catppuccin Macchiato'
-config.default_cursor_style = 'SteadyBlock'
+config.font = wezterm.font_with_fallback({ "Hack Nerd Font" })
+
+config.font_size = 15
+
+config.color_scheme = "Catppuccin Macchiato"
+config.default_cursor_style = "SteadyBlock"
 
 config.inactive_pane_hsb = {
   saturation = 0.9,
   brightness = 0.4,
 }
 
+config.window_background_opacity = 1.0
+config.window_decorations = "TITLE|RESIZE"
+
 -- General
 config.warn_about_missing_glyphs = false
 
-local use_native_mux = true
+local use_native_mux = false
 if use_native_mux then
   require("config.keys").apply(config)
 
