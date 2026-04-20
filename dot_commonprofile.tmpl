@@ -72,6 +72,23 @@ alias bup="brew update && brew upgrade"
 {{ end -}}
 alias cm="chezmoi"
 
+dotcheck() {
+  local drift
+  drift=$(chezmoi diff)
+  if [[ -n "$drift" ]]; then
+    echo "🔀 Drift:"
+    echo "$drift"
+  else
+    echo "✅ No drift"
+  fi
+
+  echo ""
+  echo "📁 Unmanaged ~/.config dirs:"
+  comm -23 \
+    <(ls -1d ~/.config/*/ 2>/dev/null | xargs -I{} basename {} | sort) \
+    <(chezmoi managed --include=dirs 2>/dev/null | grep '^\.config/' | cut -d/ -f2 | sort -u)
+}
+
 # Add N/Vim spellfiles and snippets to .chezmoitemplates
 cm_add_vim () {
   cp ~/.vim/spell/en.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
