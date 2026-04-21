@@ -2,6 +2,7 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $workEmail := promptStringOnce . "workEmail" "Work email address" -}}
 {{- $workDir := promptStringOnce . "workDir" "Work code directory" -}}
+{{- $isPersonal := promptBoolOnce . "isPersonal" "Personal machine (non-work)?" -}}
 
 
 [data]
@@ -9,4 +10,5 @@
     email = {{ $email | quote }}
     workEmail = {{ $workEmail | quote }}
     workDir = {{ $workDir | quote }}
+    isPersonal = {{ $isPersonal }}
 
