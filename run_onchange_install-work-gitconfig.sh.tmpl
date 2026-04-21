@@ -1,0 +1,22 @@
+#!/bin/sh
+# Managed by chezmoi. Installs ~/{{ .workDir }}/.gitconfig so git commits
+# made inside the work directory use the work email. Re-runs whenever
+# workDir or workEmail change (script content changes with them).
+
+{{ if and .workDir .workEmail -}}
+set -eu
+
+WORK_DIR="$HOME/{{ .workDir }}"
+WORK_GITCONFIG="$WORK_DIR/.gitconfig"
+
+mkdir -p "$WORK_DIR"
+
+cat > "$WORK_GITCONFIG" <<'EOF'
+# Managed by chezmoi — edits will be overwritten on the next apply.
+# Source: run_onchange_install-work-gitconfig.sh.tmpl
+[user]
+	email = {{ .workEmail }}
+EOF
+{{- else -}}
+: # No work email/dir configured (personal machine); nothing to do.
+{{- end }}
