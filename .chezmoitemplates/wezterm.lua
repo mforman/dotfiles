@@ -26,6 +26,10 @@ config.window_decorations = "TITLE|RESIZE"
 config.warn_about_missing_glyphs = false
 config.hide_tab_bar_if_only_one_tab = true
 
+-- Left Option = Meta/Alt for terminal apps; Right Option stays as compose
+-- so accented characters (Option+E, Option+U, etc.) still work.
+config.send_composed_key_when_left_alt_is_pressed = false
+
 config.keys = {
   { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\x1b\r") },
 }
