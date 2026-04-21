@@ -117,6 +117,7 @@ vim.pack.add {
 
   -- Detect tabstop and shiftwidth automatically
   { src = gh 'tpope/vim-sleuth' },
+  { src = gh 'tpope/vim-obsession' },
 
   -- Git signs
   { src = gh 'lewis6991/gitsigns.nvim' },
