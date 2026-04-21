@@ -5,10 +5,13 @@ README.md
 .config/karabiner
 Brewfile
 brewfile-install.sh
-{{ else if ne .chezmoi.os "linux" }}
+{{ end }}
+
+{{ if ne .chezmoi.os "linux" }}
 install-packages.sh
 run_onchange_install-packages.sh
 {{ end }}
+
 {{ if ne .chezmoi.os "windows" }}
 AppData
 winget.json
