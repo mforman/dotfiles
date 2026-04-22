@@ -1,0 +1,18 @@
+alias -g la='ls -A'
+alias -g ll='ls -ltAh'
+
+alias -g g=git
+
+alias -g vi=nvim
+alias -g vim=nvim
+
+alias -g cm=chezmoi
+
+alias -g dcd='docker compose down'
+alias -g dcu='docker compose up -d'
+alias -g tf=terraform
+
+alias -g reload!='source ~/.zshrc'
+
+# Debug zsh startup time
+alias zsh_debug="time ZSH_DEBUGRC=1 zsh -i -c exit"
