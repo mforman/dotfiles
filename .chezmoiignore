@@ -15,7 +15,6 @@ run_onchange_install-packages.sh
 {{ if ne .chezmoi.os "windows" }}
 AppData
 winget.json
-.wezterm.lua
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
@@ -25,7 +24,6 @@ winget.json
 .config/nvim
 .config/tmux
 .config/wezterm/wezterm.lua
-.inputrc
 .nvm
 .p10*
 .powerlevel*

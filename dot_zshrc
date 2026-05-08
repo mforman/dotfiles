@@ -5,7 +5,8 @@ fi
 # History
 HISTSIZE=5000
 SAVEHIST=$HISTSIZE
-HISTFILE=~/.zsh_history
+mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_ALL_DUPS

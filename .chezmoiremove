@@ -2,3 +2,6 @@
 .gitconfig.local
 .gitignore
 .gitignore_global
+.psqlrc
+.inputrc
+.docker/config.json
