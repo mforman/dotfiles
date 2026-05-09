@@ -26,6 +26,7 @@ winget.json
 .config/nvim
 .config/tmux
 .config/wezterm/wezterm.lua
+.config/zsh
 .nvm
 .p10*
 .powerlevel*

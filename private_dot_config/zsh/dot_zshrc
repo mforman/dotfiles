@@ -5,8 +5,8 @@ fi
 # History
 HISTSIZE=5000
 SAVEHIST=$HISTSIZE
-mkdir -p "${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
-HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+mkdir -p "$XDG_STATE_HOME/zsh"
+HISTFILE="$XDG_STATE_HOME/zsh/history"
 setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
@@ -82,7 +82,7 @@ add_to_path() {
 add_to_path "$HOME/.local/bin"
 
 # Source aliases last
-[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+[ -f "$ZDOTDIR/.zsh_aliases" ] && source "$ZDOTDIR/.zsh_aliases"
 
 command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 # Check that the function `starship_zle-keymap-select()` is defined.

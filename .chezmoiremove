@@ -5,3 +5,5 @@
 .psqlrc
 .inputrc
 .docker/config.json
+.zshrc
+.zsh_aliases

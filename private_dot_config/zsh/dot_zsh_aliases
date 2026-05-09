@@ -12,7 +12,7 @@ alias -g dcd='docker compose down'
 alias -g dcu='docker compose up -d'
 alias -g tf=terraform
 
-alias -g reload!='source ~/.zshrc'
+alias -g reload!='source $ZDOTDIR/.zshrc'
 
 # Debug zsh startup time
 alias zsh_debug="time ZSH_DEBUGRC=1 zsh -i -c exit"
