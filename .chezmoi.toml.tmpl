@@ -1,6 +1,7 @@
 {{- $name := promptStringOnce . "name" "Name" -}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $isPersonal := promptBoolOnce . "isPersonal" "Personal machine (non-work)?" -}}
+{{- $sshSignKey := promptStringOnce . "sshSignKey" "SSH signing/auth key filename (in ~/.ssh/)" -}}
 {{- $workEmail := "" -}}
 {{- $workDir := "" -}}
 {{- if not $isPersonal }}
@@ -15,4 +16,5 @@
     workEmail = {{ $workEmail | quote }}
     workDir = {{ $workDir | quote }}
     isPersonal = {{ $isPersonal }}
+    sshSignKey = {{ $sshSignKey | quote }}
 

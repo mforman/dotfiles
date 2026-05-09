@@ -55,7 +55,7 @@ fi
 function _load_ssh_agent() {
     if [ -z "$SSH_AUTH_SOCK" ]; then
         eval "$(ssh-agent -s)" > /dev/null
-        ssh-add ~/.ssh/id_github_sign_and_auth 2>/dev/null
+        ssh-add ~/.ssh/{{ .sshSignKey }} 2>/dev/null
     fi
 }
 autoload -U add-zsh-hook
