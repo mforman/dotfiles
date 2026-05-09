@@ -76,7 +76,7 @@ add_to_path() {
     fi
 }
 
-# nvm is lazy-loaded via wrappers in ~/.commonprofile
+command -v mise &> /dev/null && eval "$(mise activate zsh)"
 
 # pipx adds this
 add_to_path "$HOME/.local/bin"
