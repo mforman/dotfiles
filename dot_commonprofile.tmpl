@@ -128,5 +128,23 @@ fi
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export PSQLRC="$XDG_CONFIG_HOME/psql/psqlrc"
 
+# XDG redirects for tools that default to $HOME
+export LESSHISTFILE="$XDG_STATE_HOME/less/history"
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
+export TS_NODE_HISTORY="$XDG_STATE_HOME/ts_node_repl_history"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+[[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export MPLCONFIGDIR="$XDG_CACHE_HOME/matplotlib"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
+export AZURE_CONFIG_DIR="$XDG_DATA_HOME/azure"
+export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
+export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
+
 
 
