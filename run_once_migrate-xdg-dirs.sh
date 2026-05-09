@@ -23,3 +23,7 @@ rm -f "$HOME/.lesshst" "$HOME/.node_repl_history" "$HOME/.python_history" \
       "$HOME/.ts_node_repl_history" "$HOME/.zsh_history" "$HOME/.psql_history" \
       "$HOME/.zcompdump" "$HOME/.wget-hsts"
 rm -rf "$HOME/.npm" "$HOME/.matplotlib"
+
+# Stale dirs and files
+rm -rf "$HOME/dotfiles" "$HOME/dotnet"
+rm -f "$HOME/wezterm.sh" "$HOME/.bash_history"
