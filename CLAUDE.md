@@ -53,7 +53,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | `private_dot_config/mise/config.toml` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |
 | `private_dot_config/nvim/` | `~/.config/nvim/` | Single-file `init.lua`, native `vim.pack` (Neovim 0.12+), built-in LSP/completion. Has its own `CLAUDE.md`. |
 | `private_dot_config/tmux/` | `~/.config/tmux/` | Prefix=Ctrl-A, vi-mode, Catppuccin, tpm plugins |
-| `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm with custom bar and keybinds |
+| `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm terminal emulator; minimal config, one keybind (Shift+Enter); status bar is tmux |
 | `private_dot_config/docker/` | `~/.config/docker/` | Docker config; `DOCKER_CONFIG` points here |
 | `private_dot_config/psql/psqlrc` | `~/.config/psql/psqlrc` | PostgreSQL prompt; `PSQLRC` points here |
 | `private_dot_config/readline/inputrc` | `~/.config/readline/inputrc` | Readline vi-mode; `INPUTRC` points here |

@@ -10,7 +10,7 @@ Primary target is macOS. Linux and WSL work for the shells, git, tmux, and Neovi
 | --------------- | --------------------------------------------------------------------------------------------------- |
 | Shell           | zsh (vi-mode, autosuggestions, fzf, zoxide); bash on Linux only                                    |
 | Prompt          | [starship](https://starship.rs/)                                                                    |
-| Terminal        | [wezterm](https://wezfurlong.org/wezterm/) with a custom bar                                        |
+| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux                                     |
 | Multiplexer     | tmux — prefix `C-a`, vi mode, tpm, session persistence                                              |
 | Editor          | Neovim — single-file `init.lua`, native `vim.pack`, built-in LSP/completion (needs Neovim 0.12+)    |
 | VCS             | git with SSH signing and a work/personal email split via `includeIf`                                |
