@@ -22,6 +22,15 @@ config.inactive_pane_hsb = {
   brightness = 0.4,
 }
 
+config.window_background_opacity = 1.0
+config.macos_window_background_blur = 20
+
+wezterm.on("window-focus-changed", function(window)
+  local overrides = window:get_config_overrides() or {}
+  overrides.window_background_opacity = window:is_focused() and 1.0 or 0.85
+  window:set_config_overrides(overrides)
+end)
+
 config.window_decorations = "TITLE|RESIZE"
 config.warn_about_missing_glyphs = false
 config.hide_tab_bar_if_only_one_tab = true
