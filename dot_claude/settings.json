@@ -1,8 +1,13 @@
 {
+  "permissions": {
+    "defaultMode": "plan"
+  },
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh",
     "padding": 2
   },
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true
 }
