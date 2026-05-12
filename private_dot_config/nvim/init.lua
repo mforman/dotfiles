@@ -431,7 +431,26 @@ local servers = {
     root_markers = { '.git' },
   },
   powershell_es = {
-    cmd = { 'pwsh', '-NoLogo', '-NoProfile', '-Command', 'EditorServices\\Start-EditorServices.ps1' },
+    cmd = (function()
+      local pkg = vim.fn.stdpath('data') .. '/mason/packages/powershell-editor-services'
+      local state = vim.fn.stdpath('state')
+      return {
+        'pwsh',
+        '-NoLogo',
+        '-NoProfile',
+        '-Command',
+        pkg .. '/PowerShellEditorServices/Start-EditorServices.ps1',
+        '-BundledModulesPath',
+        pkg,
+        '-SessionDetailsPath',
+        state .. '/powershell_es.session.json',
+        '-LogPath',
+        state .. '/powershell_es.log',
+        '-LogLevel',
+        'Normal',
+        '-Stdio',
+      }
+    end)(),
     filetypes = { 'ps1', 'psm1', 'psd1' },
     root_markers = { '.git' },
   },
