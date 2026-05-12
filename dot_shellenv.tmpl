@@ -1,8 +1,16 @@
+# Sourced by every shell (interactive or not) via ~/.zshenv (zsh) and
+# ~/.bashrc/~/.bash_profile (bash on Linux). Exports only — no aliases or
+# functions, so it is safe in non-interactive contexts (VS Code tasks,
+# `zsh -c '...'`, launchd jobs, IDE process spawners, etc.).
+
+# XDG base dirs — already set by ~/.zshenv for zsh; this fallback is for
+# bash on Linux which has no equivalent of .zshenv.
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
+# Editor / pager
 if ! command -v nvim &> /dev/null; then
   export EDITOR=$(which vim)
   export MANPAGER='less -s -M +Gg'
@@ -12,52 +20,9 @@ else
 fi
 export VISUAL="$EDITOR"
 
-# Aliases
-alias la='ls -A'
-alias ll='ls -ltAh'
-
-alias g='git'
-alias glg='git log --all --graph --decorate'
-
-alias vi='nvim'
-alias vim='nvim'
-alias vimdiff='nvim -d'
-
-{{- if eq .chezmoi.os "linux" }}
-{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
-alias ssh='ssh.exe'
-alias ssh-add='ssh-add.exe'
-alias op='op.exe'
-{{   end }}
-{{ end }}
-
-# Clear screen
-cls () {
-  if [[ "$TERM" == "tmux-256color" && -n "TMUX" ]]; then
-    clear && tmux clear-history 
-  else
-    # This is equivalent to clear && printf '\e[3J'
-    printf '\33c\e[3J'
-  fi
-}
-
 # Terminal colour
 export CLICOLOR=1
 export COLORTERM=truecolor
-#export LSCOLORS=GxFxCxDxBxegedabagaced
-{{ if eq .chezmoi.os "darwin" -}}
-# If using native BSD utils
-#alias ls='ls -G'
-# If installed "coreutils" with homebrew,
-# and added
-# export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-# to ~/.bashrc_local per advice after installation
-alias ls='ls --color=auto'
-
-{{ else if eq .chezmoi.os "linux" -}}
-alias ls='ls --color=auto'
-
-{{ end -}}
 
 # If $LESS is unset, Git sets it to FRX. I don't want F or X.
 export LESS='R'
@@ -70,42 +35,8 @@ export LESS_TERMCAP_md=$(tput bold; tput setaf 3)  # enter double-bright mode
 export LESS_TERMCAP_me=$(tput sgr0)                # turn off all appearance modes
 export LESS_TERMCAP_us=$(tput sitm; tput setaf 2)  # turn on underline mode
 export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)     # turn off underline mode
-# and so on
 
-{{ if eq .chezmoi.os "darwin" -}}
-alias bup="brew update && brew upgrade"
-{{ end -}}
-alias cm="chezmoi"
-
-dotcheck() {
-  local drift
-  drift=$(chezmoi diff)
-  if [[ -n "$drift" ]]; then
-    echo "🔀 Drift:"
-    echo "$drift"
-  else
-    echo "✅ No drift"
-  fi
-
-  echo ""
-  echo "📁 Unmanaged ~/.config dirs:"
-  comm -23 \
-    <(ls -1d ~/.config/*/ 2>/dev/null | xargs -I{} basename {} | sort) \
-    <(chezmoi managed --include=dirs 2>/dev/null | grep '^\.config/' | cut -d/ -f2 | sort -u)
-}
-
-# Add N/Vim spellfiles and snippets to .chezmoitemplates
-cm_add_vim () {
-  cp ~/.vim/spell/en.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
-  cp ~/.vim/spell/tex.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
-  cp ~/.vim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
-}
-cm_add_nvim () {
-  cp ~/.config/nvim/spell/en.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
-  cp ~/.config/nvim/spell/tex.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
-  cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
-}
-
+# PATH
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
 
@@ -123,12 +54,9 @@ fi
 [[ -d /opt/mssql-tools18/bin/ ]] && export PATH="/opt/mssql-tools18/bin/:$PATH"
 [[ -d /opt/homebrew/opt/libpq/bin/ ]] && export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
-
-
+# XDG redirects for tools that default to $HOME
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export PSQLRC="$XDG_CONFIG_HOME/psql/psqlrc"
-
-# XDG redirects for tools that default to $HOME
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
 export TS_NODE_HISTORY="$XDG_STATE_HOME/ts_node_repl_history"
@@ -144,7 +72,3 @@ export AZURE_CONFIG_DIR="$XDG_DATA_HOME/azure"
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
 export TERMINFO="$XDG_DATA_HOME/terminfo"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
-alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
-
-
-

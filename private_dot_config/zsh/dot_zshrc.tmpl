@@ -63,7 +63,42 @@ autoload -U add-zsh-hook
 add-zsh-hook precmd _load_ssh_agent
 
 
-source ~/.commonprofile
+cls() {
+  if [[ "$TERM" == "tmux-256color" && -n "TMUX" ]]; then
+    clear && tmux clear-history
+  else
+    printf '\33c\e[3J'
+  fi
+}
+
+dotcheck() {
+  local drift
+  drift=$(chezmoi diff)
+  if [[ -n "$drift" ]]; then
+    echo "🔀 Drift:"
+    echo "$drift"
+  else
+    echo "✅ No drift"
+  fi
+
+  echo ""
+  echo "📁 Unmanaged ~/.config dirs:"
+  comm -23 \
+    <(ls -1d ~/.config/*/ 2>/dev/null | xargs -I{} basename {} | sort) \
+    <(chezmoi managed --include=dirs 2>/dev/null | grep '^\.config/' | cut -d/ -f2 | sort -u)
+}
+
+cm_add_vim() {
+  cp ~/.vim/spell/en.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
+  cp ~/.vim/spell/tex.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
+  cp ~/.vim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
+}
+
+cm_add_nvim() {
+  cp ~/.config/nvim/spell/en.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
+  cp ~/.config/nvim/spell/tex.utf-8.add ~/.local/share/chezmoi/.chezmoitemplates/vim/spell
+  cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
+}
 
 # Enable direnv
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"

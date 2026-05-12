@@ -7,7 +7,14 @@ alias -g vi=nvim
 alias -g vim=nvim
 
 alias -g cm=chezmoi
+alias -g bup='brew update && brew upgrade'
 
+alias -g glg='git log --all --graph --decorate'
+alias vimdiff='nvim -d'
+alias ls='ls --color=auto'
+alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
+
+alias -g da='direnv allow'
 alias -g dcd='docker compose down'
 alias -g dcu='docker compose up -d'
 alias -g tf=terraform

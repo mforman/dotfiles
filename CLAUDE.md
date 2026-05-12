@@ -32,7 +32,7 @@ chezmoi execute-template   # Test a template file
 `.chezmoi.toml.tmpl` prompts for data variables on first run: `name`, `email`, `isPersonal`, `workEmail`, `workDir`, `sshSignKey`. These are available as `{{ .name }}`, `{{ .sshSignKey }}` etc. in all `.tmpl` files. Shared templates live in `.chezmoitemplates/`.
 
 ### XDG Base Directory
-All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`, `XDG_CACHE_HOME`) and `ZDOTDIR` for every zsh invocation. `dot_commonprofile.tmpl` sets the same vars with fallbacks so bash on Linux also has them. Use bare `$XDG_CONFIG_HOME` etc. — never the `${XDG_CONFIG_HOME:-$HOME/.config}` fallback pattern inline.
+All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`, `XDG_CACHE_HOME`) and `ZDOTDIR` for every zsh invocation, then sources `~/.shellenv` for everything else (PATH + XDG redirects like `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, etc.). `~/.shellenv` is exports-only and safe in non-interactive contexts; bash on Linux sources it from `~/.bashrc` and `~/.bash_profile`. Use bare `$XDG_CONFIG_HOME` etc. — never the `${XDG_CONFIG_HOME:-$HOME/.config}` fallback pattern inline.
 
 ### OS-Specific Handling
 `.chezmoiignore` gates by OS:
@@ -44,10 +44,10 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 
 | Source path | Destination | Notes |
 |---|---|---|
-| `dot_zshenv` | `~/.zshenv` | Sets XDG vars and `ZDOTDIR`; read by every zsh invocation |
-| `private_dot_config/zsh/dot_zshrc.tmpl` | `~/.config/zsh/.zshrc` | Primary shell; vi-mode, fzf, zoxide, mise activation |
+| `dot_zshenv` | `~/.zshenv` | Sets XDG vars and `ZDOTDIR`, then sources `~/.shellenv`; read by every zsh invocation |
+| `dot_shellenv.tmpl` | `~/.shellenv` | Exports-only env file (PATH + XDG redirects: `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, `NPM_CONFIG_CACHE`, etc.). Safe in non-interactive shells. Sourced by `~/.zshenv` (zsh) and `~/.bashrc`/`~/.bash_profile` (bash on Linux) |
+| `private_dot_config/zsh/dot_zshrc.tmpl` | `~/.config/zsh/.zshrc` | Primary shell; vi-mode, fzf, zoxide, mise activation; inline functions (`cls`, `dotcheck`, `cm_add_vim`, `cm_add_nvim`) |
 | `private_dot_config/zsh/dot_zsh_aliases` | `~/.config/zsh/.zsh_aliases` | Global aliases (`alias -g`) — intentional; keeps history portable |
-| `dot_commonprofile.tmpl` | `~/.commonprofile` | Shared aliases/env sourced by zsh and bash; PATH setup for Go, .NET, pipx, libpq |
 | `private_dot_config/git/config.tmpl` | `~/.config/git/config` | SSH signing, conditional include for work dir, difftastic difftool |
 | `private_dot_config/git/ignore` | `~/.config/git/ignore` | Global gitignore |
 | `private_dot_config/mise/config.toml` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |

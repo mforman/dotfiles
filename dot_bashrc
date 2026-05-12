@@ -1,4 +1,4 @@
-source ~/.commonprofile
+[ -r "$HOME/.shellenv" ] && . "$HOME/.shellenv"
 
 export BASH_SILENCE_DEPRECATION_WARNING=1
 

@@ -21,7 +21,7 @@ winget.json
 
 {{ if eq .chezmoi.os "windows" }}
 .bash*
-.commonprofile
+.shellenv
 .config/fish
 .config/nvim
 .config/tmux
