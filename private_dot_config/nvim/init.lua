@@ -133,7 +133,6 @@ vim.pack.add {
   -- LSP support
   { src = gh 'folke/lazydev.nvim' },
   { src = gh 'mason-org/mason.nvim' },
-  { src = gh 'mason-org/mason-lspconfig.nvim' },
   { src = gh 'WhoIsSethDaniel/mason-tool-installer.nvim' },
   { src = gh 'j-hui/fidget.nvim' },
 
@@ -459,18 +458,26 @@ local servers = {
 -- Mason (installs LSP servers and tools)
 require('mason').setup()
 require('mason-tool-installer').setup {
-  ensure_installed = vim.list_extend(vim.tbl_keys(servers), {
+  ensure_installed = {
+    -- LSP servers (Mason package names)
+    'lua-language-server',
+    'marksman',
+    'basedpyright',
+    'yaml-language-server',
+    'terraform-ls',
+    'helm-ls',
+    'dockerfile-language-server',
+    'docker-compose-language-service',
+    'bash-language-server',
+    'powershell-editor-services',
+    'vtsls',
+    -- Formatters / linters
     'stylua',
     'prettierd',
     'shfmt',
     'ruff',
     'sqlfluff',
-  }),
-}
-require('mason-lspconfig').setup {
-  ensure_installed = {},
-  automatic_installation = false,
-  automatic_enable = false,
+  },
 }
 
 -- Fidget (LSP progress indicator)
