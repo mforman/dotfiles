@@ -132,8 +132,8 @@ vim.pack.add {
 
   -- LSP support
   { src = gh 'folke/lazydev.nvim' },
-  { src = gh 'williamboman/mason.nvim' },
-  { src = gh 'williamboman/mason-lspconfig.nvim' },
+  { src = gh 'mason-org/mason.nvim' },
+  { src = gh 'mason-org/mason-lspconfig.nvim' },
   { src = gh 'WhoIsSethDaniel/mason-tool-installer.nvim' },
   { src = gh 'j-hui/fidget.nvim' },
 
@@ -159,7 +159,7 @@ vim.pack.add {
   { src = gh 'nvim-lualine/lualine.nvim' },
 
   -- Obsidian
-  { src = gh 'epwalsh/obsidian.nvim' },
+  { src = gh 'obsidian-nvim/obsidian.nvim' },
 
   -- Render markdown
   { src = gh 'MeanderingProgrammer/render-markdown.nvim' },
@@ -390,11 +390,6 @@ local servers = {
     filetypes = { 'python' },
     root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
   },
-  sqls = {
-    cmd = { 'sqls' },
-    filetypes = { 'sql', 'mysql', 'plsql' },
-    root_markers = { '.git' },
-  },
   yamlls = {
     cmd = { 'yaml-language-server', '--stdio' },
     filetypes = { 'yaml', 'yaml.docker-compose' },
@@ -469,11 +464,13 @@ require('mason-tool-installer').setup {
     'prettierd',
     'shfmt',
     'ruff',
+    'sqlfluff',
   }),
 }
 require('mason-lspconfig').setup {
   ensure_installed = {},
   automatic_installation = false,
+  automatic_enable = false,
 }
 
 -- Fidget (LSP progress indicator)
@@ -590,6 +587,7 @@ require('conform').setup {
     sh = { 'shfmt' },
     bash = { 'shfmt' },
     python = { 'ruff_format' },
+    sql = { 'sqlfluff' },
   },
 }
 
@@ -667,14 +665,11 @@ local function separator()
 end
 
 local function custom_branch()
-  local gitsigns = vim.b.gitsigns_head
-  local fugitive = vim.fn.exists '*FugitiveHead' == 1 and vim.fn.FugitiveHead() or ''
-  local branch = gitsigns or fugitive
+  local branch = vim.b.gitsigns_head
   if branch == nil or branch == '' then
     return ''
-  else
-    return ' ' .. branch
   end
+  return ' ' .. branch
 end
 
 local modes = { 'normal', 'insert', 'visual', 'replace', 'command', 'inactive', 'terminal' }
@@ -810,7 +805,7 @@ require('lualine').setup {
       separator(),
       {
         'diagnostics',
-        sources = { 'nvim_diagnostic', 'coc' },
+        sources = { 'nvim_diagnostic' },
         sections = { 'error', 'warn', 'info', 'hint' },
         diagnostics_color = {
           error = function()
@@ -881,10 +876,6 @@ require('render-markdown').setup {}
 
 -- Database
 vim.g.db_ui_use_nerd_fonts = 1
-
--- Optional: Enable the new UI2 (redesigned message and command-line interface)
--- Uncomment the line below to try it out:
-require('vim._core.ui2').enable {}
 
 -- Claude Code
 require('claudecode').setup()
