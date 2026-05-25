@@ -4,24 +4,34 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This is a Neovim configuration based on kickstart.nvim. It is a single-file config (`init.lua`) using the native `vim.pack` plugin manager (not lazy.nvim). Targets Neovim 0.12+ (uses `vim.pack.add`, `vim.lsp.config`, `vim.lsp.enable`, and built-in completion via `vim.lsp.completion.enable`).
+A modular Neovim configuration using the native `vim.pack` plugin manager (not lazy.nvim). Targets Neovim 0.12+ (uses `vim.pack.add`, `vim.lsp.config`, `vim.lsp.enable`, and built-in completion via `vim.lsp.completion.enable`).
 
 ## Architecture
 
-- **`init.lua`** — The entire config lives in one file: options, keymaps, autocommands, plugin declarations, and all plugin configuration. Sections are clearly marked with comment headers.
-- **`lsp/`** — Native LSP config files loaded by `vim.lsp.config` (currently just `lua_ls.lua`, but the main server configs are defined inline in `init.lua`'s `servers` table).
+- **`init.lua`** — Minimal entry point: `require 'core'` then `require 'packages'`.
+- **`lua/core/`** — Editor settings with no plugin dependencies.
+  - `init.lua` — requires the four submodules below.
+  - `options.lua` — leader key, `vim.g`/`vim.opt` settings, env vars (PSQLRC, python3_host_prog).
+  - `keymaps.lua` — basic keymaps (window navigation, clipboard, scroll centering).
+  - `autocmds.lua` — highlight-on-yank autocommand.
+  - `filetypes.lua` — custom filetype patterns (Helm, docker-compose).
+  - `util.lua` — `gh(x)` helper that expands short `user/repo` strings to full GitHub URLs.
+- **`lua/packages/`** — One file per feature group; the loader (`init.lua`) wires everything together.
+  - `init.lua` — auto-scans `lua/packages/*.lua`, collects `{ plugins, setup, priority? }` specs, calls `vim.pack.add` once with all plugins, then runs each `setup` in priority order.
+  - Feature files: `ai`, `colorscheme`, `database`, `deps`, `editor`, `formatting`, `git`, `lsp`, `markdown`, `telescope`, `treesitter`, `ui`.
 - **`after/ftplugin/`** — Filetype-specific overrides (e.g., `markdown.lua` enables spell check and wrap).
 
 ## Key Design Decisions
 
-- **Plugin management**: Uses `vim.pack.add()` (native Neovim 0.12 pack API), not lazy.nvim. Plugins are declared in a single `vim.pack.add({...})` call. After first install of telescope-fzf-native, you must manually run `make` in its directory.
-- **LSP**: All LSP servers are configured in the `servers` table in `init.lua` using `vim.lsp.config[name]` and lazily enabled via `FileType` autocmds. Mason handles installation. Uses built-in `vim.lsp.completion.enable()` instead of nvim-cmp.
-- **Formatting**: Conform.nvim with format-on-save. Lua uses stylua (2-space indent). JS/TS uses prettierd/prettier.
-- **Colorscheme**: Catppuccin Macchiato with transparent background.
-- **Statusline**: Heavily customized lualine with Catppuccin Frappe colors and transparent background.
-- **Python**: Uses pyenv virtualenv named `neovim` for `python3_host_prog`.
-- **Custom filetypes**: Helm chart templates and docker-compose files have custom filetype detection patterns.
-- **TypeScript/JavaScript**: Uses vtsls as the LSP server (configured in the `servers` table, installed via Mason).
+- **Plugin management**: Uses `vim.pack.add()` (native Neovim 0.12 pack API), not lazy.nvim. All plugin specs are collected into one `vim.pack.add(all)` call. After first install of telescope-fzf-native, run `make` in its pack directory.
+- **Package loader**: `lua/packages/init.lua` scans the directory at runtime. Adding a new plugin group = drop a new `packages/foo.lua` file returning `{ plugins = {...}, setup = fn }`. Use `priority` (integer, higher = earlier) to control setup order; `colorscheme` is `100`, `deps` is `90`, everything else defaults to `0`.
+- **LSP**: All LSP server configs live in the `servers` table in `lua/packages/lsp.lua`. Servers are registered via `vim.lsp.config[name]` and lazily enabled by `FileType` autocmds. Mason handles installation. Built-in `vim.lsp.completion.enable()` instead of nvim-cmp.
+- **Formatting**: Conform.nvim with format-on-save (`lua/packages/formatting.lua`). Lua uses stylua (2-space indent). JS/TS uses prettierd/prettier.
+- **Colorscheme**: Catppuccin Macchiato with transparent background (`lua/packages/colorscheme.lua`).
+- **Statusline**: Heavily customized lualine with hardcoded Catppuccin Frappe hex colors and transparent background (`lua/packages/ui.lua`).
+- **Python**: Uses pyenv virtualenv named `neovim` for `python3_host_prog` (set in `lua/core/options.lua`).
+- **Custom filetypes**: Helm and docker-compose detection in `lua/core/filetypes.lua`.
+- **TypeScript/JavaScript**: Uses vtsls LSP server (in `servers` table in `lsp.lua`).
 
 ## Formatting
 

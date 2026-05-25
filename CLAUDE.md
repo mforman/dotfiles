@@ -51,7 +51,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | `private_dot_config/git/config.tmpl` | `~/.config/git/config` | SSH signing, conditional include for work dir, difftastic difftool |
 | `private_dot_config/git/ignore` | `~/.config/git/ignore` | Global gitignore |
 | `private_dot_config/mise/config.toml` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |
-| `private_dot_config/nvim/` | `~/.config/nvim/` | Single-file `init.lua`, native `vim.pack` (Neovim 0.12+), built-in LSP/completion. Has its own `CLAUDE.md`. |
+| `private_dot_config/nvim/` | `~/.config/nvim/` | Modular `init.lua` → `lua/core/` (options, keymaps, autocmds) + `lua/packages/` (one file per feature), native `vim.pack` (Neovim 0.12+), built-in LSP/completion. Has its own `CLAUDE.md`. |
 | `private_dot_config/tmux/` | `~/.config/tmux/` | Prefix=Ctrl-A, vi-mode, Catppuccin, tpm plugins |
 | `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm terminal emulator; minimal config, one keybind (Shift+Enter); status bar is tmux |
 | `private_dot_config/docker/` | `~/.config/docker/` | Docker config; `DOCKER_CONFIG` points here |
