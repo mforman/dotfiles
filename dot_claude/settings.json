@@ -63,6 +63,5 @@
     "superpowers@claude-plugins-official": true
   },
   "effortLevel": "medium",
-  "editorMode": "vim",
   "skipAutoPermissionPrompt": true
 }
