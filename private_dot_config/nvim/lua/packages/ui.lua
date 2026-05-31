@@ -50,6 +50,8 @@ return {
         { '<leader>w', group = '[W]orkspace' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>e', group = '[E]val / REPL' },
+        { '<leader>x', group = 'E[x]ecute / Dispatch' },
       },
     }
 
