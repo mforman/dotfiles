@@ -63,5 +63,6 @@
     "superpowers@claude-plugins-official": true
   },
   "effortLevel": "medium",
+  "editorMode": "normal",
   "skipAutoPermissionPrompt": true
 }
