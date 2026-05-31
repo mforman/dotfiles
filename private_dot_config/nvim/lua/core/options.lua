@@ -39,6 +39,10 @@ if vim.fn.filereadable(psqlrc_nvim) then
   vim.env.PSQLRC = psqlrc_nvim
 end
 
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+
 local python_pyenv = vim.fn.expand '~/.pyenv/versions/neovim/bin/python3'
 if vim.fn.filereadable(python_pyenv) then
   vim.g.python3_host_prog = python_pyenv

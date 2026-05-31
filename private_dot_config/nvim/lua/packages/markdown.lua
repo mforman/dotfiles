@@ -7,6 +7,7 @@ return {
   },
   setup = function()
     require('obsidian').setup {
+      ui = { enable = false },
       workspaces = {
         {
           name = 'obsidian',
@@ -23,7 +24,7 @@ return {
       },
     }
 
-    require('render-markdown').setup {}
+    require('render-markdown').setup { latex = { enabled = false } }
   end,
 }
 
