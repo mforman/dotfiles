@@ -71,6 +71,18 @@ cls() {
   fi
 }
 
+tmux-fresh() {
+  if [[ -n "$TMUX" ]]; then
+    echo "Run from outside tmux — kill-server would terminate this session." >&2
+    return 1
+  fi
+  local dir="$XDG_DATA_HOME/tmux/resurrect"
+  tmux kill-server 2>/dev/null
+  find "$dir" -name 'tmux_resurrect_*.txt' -mtime +14 -delete 2>/dev/null
+  rm -f "$dir/last"
+  tmux
+}
+
 dotcheck() {
   local drift
   drift=$(chezmoi diff)
