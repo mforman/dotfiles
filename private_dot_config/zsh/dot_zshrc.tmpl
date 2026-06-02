@@ -132,6 +132,10 @@ add_to_path "$HOME/.local/bin"
 # Source aliases last
 [ -f "$ZDOTDIR/.zsh_aliases" ] && source "$ZDOTDIR/.zsh_aliases"
 
+{{ if not .isPersonal -}}
+[ -f "$ZDOTDIR/expana-db.sh" ] && source "$ZDOTDIR/expana-db.sh"
+{{ end -}}
+
 command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 # Check that the function `starship_zle-keymap-select()` is defined.
 # xref: https://github.com/starship/starship/issues/3418

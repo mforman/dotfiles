@@ -1,0 +1,25 @@
+#!/bin/sh
+# Managed by chezmoi. Fetches the age private key from 1Password and writes it
+# to ~/.config/chezmoi/key.txt so chezmoi can decrypt encrypted files. Runs
+# once per machine (run_once_before_); re-run by removing the key file.
+
+{{ if not .isPersonal -}}
+set -eu
+
+KEY_FILE="$HOME/.config/chezmoi/key.txt"
+
+if [ -f "$KEY_FILE" ]; then
+    exit 0
+fi
+
+if ! command -v op > /dev/null 2>&1; then
+    echo "chezmoi: 'op' (1Password CLI) is not in PATH — install 1Password and sign in first" >&2
+    exit 1
+fi
+
+mkdir -p "$HOME/.config/chezmoi"
+op read "op://Expana/chezmoi-age/private key" > "$KEY_FILE"
+chmod 600 "$KEY_FILE"
+{{- else -}}
+: # Personal machine — no age key needed.
+{{- end }}

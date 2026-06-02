@@ -26,6 +26,8 @@ chezmoi execute-template   # Test a template file
 - `exact_*` → directory contents are managed exactly (extra files removed on apply)
 - `*.tmpl` → Go template processed by chezmoi
 - `run_onchange_*` → script run when the file changes
+- `run_once_before_*` → script run once per machine, before file targets are applied
+- `encrypted_*` → file encrypted with age; decrypted on `chezmoi apply` using `~/.config/chezmoi/key.txt`
 - `empty_*` → creates an empty file (ensures directory structure)
 
 ### Templating
@@ -59,6 +61,8 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | `private_dot_config/readline/inputrc` | `~/.config/readline/inputrc` | Readline vi-mode; `INPUTRC` points here |
 | `private_dot_config/starship.toml` | `~/.config/starship.toml` | Starship prompt |
 | `Brewfile.tmpl` | `~/Brewfile` | Homebrew packages; applied by `run_onchange_brewfile-install.sh.tmpl` |
+| `private_dot_config/zsh/encrypted_executable_expana-db.sh.age` | `~/.config/zsh/expana-db.sh` | Work-only Azure Postgres helper (source to define `expana-db`); age-encrypted, key in 1Password (`op://Expana/chezmoi-age`) |
+| `run_once_before_decrypt-age-key.sh.tmpl` | _(script)_ | Fetches age key from 1Password on first apply; work machines only |
 
 ### Git Config Conditionals (`private_dot_config/git/config.tmpl`)
 - `includeIf "gitdir:~/<workDir>/"` pulls in `~/<workDir>/.gitconfig` for work repos, overriding `user.email` with `workEmail`.

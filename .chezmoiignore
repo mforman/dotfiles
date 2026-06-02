@@ -1,4 +1,9 @@
 README.md
+
+{{ if .isPersonal }}
+.config/zsh/expana-db.sh
+run_once_before_decrypt-age-key.sh
+{{ end }}
 .config/nvim/nvim-pack-lock.json
 
 {{ if ne .chezmoi.os "darwin" }}

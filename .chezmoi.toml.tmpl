@@ -10,6 +10,11 @@
 {{- end }}
 
 
+encryption = "age"
+[age]
+    identity  = "~/.config/chezmoi/key.txt"
+    recipient = "age1seq9gprfjcwgnw4lnvp6vvd6wtqr5m5seemzh8r28y4cznaheuysy4u0y7"
+
 [data]
     name = {{ $name | quote }}
     email = {{ $email | quote }}
