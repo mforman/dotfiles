@@ -7,6 +7,7 @@ COST=$(echo "$input" | jq -r '.cost.total_cost_usd // 0')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 DURATION_MS=$(echo "$input" | jq -r '.cost.total_duration_ms // 0')
 TRANSCRIPT=$(echo "$input" | jq -r '.transcript_path // ""')
+SESSION_ID=$(echo "$input" | jq -r '.session_id // ""')
 
 FIVE_PCT=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // 0' | cut -d. -f1)
 FIVE_RESET=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // 0')
@@ -25,6 +26,19 @@ SKILLS=""
 if [[ -n "$TRANSCRIPT" && -f "$TRANSCRIPT" ]]; then
   SKILLS=$(grep -oP '"skill"\s*:\s*"\K[^"]+' "$TRANSCRIPT" 2>/dev/null \
     | sed 's/.*://' | sort -u | tr '\n' ',' | sed 's/,$//')
+fi
+
+LOOPS=""
+if [[ -n "$SESSION_ID" ]]; then
+  _state_file="${XDG_STATE_HOME:-$HOME/.local/state}/claude/sessions/${SESSION_ID}.json"
+  if [[ -f "$_state_file" ]]; then
+    _now=$(date +%s)
+    LOOPS=$(jq -r --argjson now "$_now" '
+      [(.loops // [])[] |
+        select(.id != "wakeup" or ((.next_fire // 0) > ($now - 300)))] |
+      map(.interval) | join(",")
+    ' "$_state_file" 2>/dev/null || true)
+  fi
 fi
 
 fmt_delta() {
@@ -73,4 +87,5 @@ fi
 EXTRAS=()
 [[ -n "$PLUGINS" ]] && EXTRAS+=("🔌 $PLUGINS")
 [[ -n "$SKILLS"  ]] && EXTRAS+=("🛠 $SKILLS")
+[[ -n "$LOOPS"   ]] && EXTRAS+=("🔁 $LOOPS")
 [[ ${#EXTRAS[@]} -gt 0 ]] && join_pipe "${EXTRAS[@]}"

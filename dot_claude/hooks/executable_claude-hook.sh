@@ -42,6 +42,24 @@ _label() {
   _set_pane_status "$icon $text"
 }
 
+_cron_to_interval() {
+  local min hour dom
+  min=$(awk '{print $1}' <<< "$1")
+  hour=$(awk '{print $2}' <<< "$1")
+  dom=$(awk '{print $3}' <<< "$1")
+  if [[ "$min" =~ ^\*/([0-9]+)$ && "$hour" == "*" && "$dom" == "*" ]]; then
+    echo "${BASH_REMATCH[1]}m"
+  elif [[ "$hour" =~ ^\*/([0-9]+)$ && "$dom" == "*" ]]; then
+    echo "${BASH_REMATCH[1]}h"
+  elif [[ "$hour" == "*" && "$dom" == "*" ]]; then
+    echo "1h"
+  elif [[ "$dom" == "*" ]]; then
+    echo "daily"
+  else
+    echo "1x"
+  fi
+}
+
 case "$event" in
   SessionStart)
     jq -n \
@@ -73,6 +91,44 @@ case "$event" in
     _update_file '.status = "awaiting" | .last_activity = $now'
     msg=$(printf '%s' "$input" | jq -r '.message // "awaiting"')
     _label "?" "$msg"
+    ;;
+  PostToolUse)
+    tool=$(printf '%s' "$input" | jq -r '.tool_name // ""')
+    case "$tool" in
+      CronCreate)
+        cron_expr=$(printf '%s' "$input" | jq -r '.tool_input.cron // ""')
+        prompt_text=$(printf '%s' "$input" | jq -r '.tool_input.prompt // ""')
+        job_id=$(printf '%s' "$input" | jq -r '.tool_response | fromjson | .id // empty' 2>/dev/null \
+          || printf '%s' "$input" | jq -r '.tool_response // ""')
+        interval=$(_cron_to_interval "$cron_expr")
+        if [[ -n "$job_id" && -f "$state_file" ]]; then
+          jq --arg id "$job_id" --arg interval "$interval" --arg prompt "$prompt_text" --arg now "$now" \
+            '.loops = ((.loops // []) + [{id:$id, interval:$interval, prompt:$prompt, started_at:$now}])' \
+            "$state_file" > "${state_file}.tmp" && mv "${state_file}.tmp" "$state_file"
+        fi
+        ;;
+      CronDelete)
+        job_id=$(printf '%s' "$input" | jq -r '.tool_input.id // ""')
+        if [[ -n "$job_id" && -f "$state_file" ]]; then
+          jq --arg id "$job_id" \
+            '.loops = [(.loops // [])[] | select(.id != $id)]' \
+            "$state_file" > "${state_file}.tmp" && mv "${state_file}.tmp" "$state_file"
+        fi
+        ;;
+      ScheduleWakeup)
+        delay=$(printf '%s' "$input" | jq -r '.tool_input.delaySeconds // 0')
+        prompt_text=$(printf '%s' "$input" | jq -r '.tool_input.prompt // ""')
+        next_fire=$(( $(date +%s) + delay ))
+        mins=$(( (delay + 30) / 60 ))
+        [[ $mins -gt 0 ]] && interval="${mins}m" || interval="<1m"
+        if [[ -f "$state_file" ]]; then
+          jq --arg interval "$interval" --arg prompt "$prompt_text" \
+             --argjson next_fire "$next_fire" --arg now "$now" \
+            '.loops = ([(.loops // [])[] | select(.id != "wakeup")] + [{id:"wakeup", interval:$interval, prompt:$prompt, next_fire:$next_fire, started_at:$now}])' \
+            "$state_file" > "${state_file}.tmp" && mv "${state_file}.tmp" "$state_file"
+        fi
+        ;;
+    esac
     ;;
   SessionEnd)
     rm -f "$state_file"

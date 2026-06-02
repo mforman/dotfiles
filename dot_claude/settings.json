@@ -43,6 +43,16 @@
         ]
       }
     ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/claude-hook.sh PostToolUse"
+          }
+        ]
+      }
+    ],
     "SessionEnd": [
       {
         "hooks": [
