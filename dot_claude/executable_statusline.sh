@@ -24,8 +24,8 @@ PLUGINS=$(jq -rs '
 
 SKILLS=""
 if [[ -n "$TRANSCRIPT" && -f "$TRANSCRIPT" ]]; then
-  SKILLS=$(grep -oP '"skill"\s*:\s*"\K[^"]+' "$TRANSCRIPT" 2>/dev/null \
-    | sed 's/.*://' | sort -u | tr '\n' ',' | sed 's/,$//')
+  SKILLS=$(grep -Eo '"skill": *"[^"]+"' "$TRANSCRIPT" 2>/dev/null \
+    | cut -d'"' -f4 | sed 's/.*://' | sort -u | tr '\n' ',' | sed 's/,$//')
 fi
 
 LOOPS=""
