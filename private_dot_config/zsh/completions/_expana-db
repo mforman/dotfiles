@@ -1,0 +1,38 @@
+#compdef expana-db
+
+_expana-db() {
+  local -a subcommands
+  subcommands=(
+    'connect:Start a tunnel to dev or prod'
+    'use:Switch database over the current tunnel'
+    'disconnect:Kill the tunnel and unset PG* vars'
+    'status:Show tunnel state and active connection'
+    'psql:Run psql with current environment'
+    'help:Show usage'
+  )
+
+  case $CURRENT in
+    2)
+      _describe 'subcommand' subcommands
+      ;;
+    3)
+      case $words[2] in
+        connect) local -a envs=(dev prod); _describe 'environment' envs ;;
+        use)     local -a opts=(product application --writable); _describe 'option' opts ;;
+      esac
+      ;;
+    4)
+      case $words[2] in
+        connect) local -a opts=(product application --writable); _describe 'option' opts ;;
+        use)     local -a flags=(--writable); _describe 'flag' flags ;;
+      esac
+      ;;
+    5)
+      case $words[2] in
+        connect) local -a flags=(--writable); _describe 'flag' flags ;;
+      esac
+      ;;
+  esac
+}
+
+_expana-db "$@"
