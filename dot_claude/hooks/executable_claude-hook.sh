@@ -78,6 +78,16 @@ case "$event" in
       jq --arg now "$now" --arg p "$prompt" \
         '.status = "working" | .last_activity = $now | .last_prompt = $p' \
         "$state_file" > "${state_file}.tmp" && mv "${state_file}.tmp" "$state_file"
+    else
+      jq -n \
+        --arg sid  "$session_id" \
+        --arg cwd  "$_cwd" \
+        --arg proj "$project" \
+        --arg ts   "$tmux_session" \
+        --arg now  "$now" \
+        --arg p    "$prompt" \
+        '{session_id:$sid, cwd:$cwd, project:$proj, status:"working", tmux_session:$ts, started_at:$now, last_activity:$now, last_prompt:$p}' \
+        > "$state_file"
     fi
     _label "⚡" "$prompt"
     ;;
