@@ -93,6 +93,10 @@ case "$event" in
     _label "?" "$msg"
     ;;
   PostToolUse)
+    if [[ -f "$state_file" && $(jq -r '.status // ""' "$state_file") == "awaiting" ]]; then
+      _update_file '.status = "working" | .last_activity = $now'
+      _label "⚡" "$(jq -r '.last_prompt // ""' "$state_file")"
+    fi
     tool=$(printf '%s' "$input" | jq -r '.tool_name // ""')
     case "$tool" in
       CronCreate)
