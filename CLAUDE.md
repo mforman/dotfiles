@@ -39,7 +39,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 ### OS-Specific Handling
 `.chezmoiignore` gates by OS:
 - macOS only: `Brewfile`, `run_onchange_brewfile-install.sh.tmpl`, `private_dot_config/karabiner/`
-- Linux only: `run_onchange_install-packages.sh`, `.bash_profile`, `.bashrc`
+- Linux only: `run_onchange_install-packages.sh.tmpl`, `.bash_profile`, `.bashrc`
 - Windows: excluded from shells, neovim, tmux, most terminal configs
 
 ### Key Managed Configurations

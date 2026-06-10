@@ -94,7 +94,7 @@ chezmoi init --apply mforman
 First apply is the slow one. It also runs:
 
 - `run_onchange_brewfile-install.sh.tmpl` — `brew bundle` against `Brewfile.tmpl` (macOS)
-- `run_onchange_install-packages.sh` — apt install + mise install (Linux)
+- `run_onchange_install-packages.sh.tmpl` — apt install + mise install (Linux)
 - `run_onchange_install-work-gitconfig.sh.tmpl` — writes `~/<workDir>/.gitconfig` on work machines
 
 After apply, run `mise install` to pull down the pinned Node and Python versions.
@@ -182,7 +182,7 @@ OS gating lives in `.chezmoiignore`.
 ├── .chezmoiignore                         OS gating
 ├── .chezmoiremove                         paths to remove from $HOME after migration
 ├── run_onchange_brewfile-install.sh.tmpl
-├── run_onchange_install-packages.sh
+├── run_onchange_install-packages.sh.tmpl
 └── run_onchange_install-work-gitconfig.sh.tmpl
 ```
 
