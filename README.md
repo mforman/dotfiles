@@ -53,12 +53,13 @@ mkdir -p ~/.ssh && chmod 700 ~/.ssh
 chmod 600 ~/.ssh/<keyname>
 ssh -T git@github.com       # verify
 
-# 4. Install chezmoi and bootstrap
-sh -c "$(curl -fsLS get.chezmoi.io)"
-chezmoi init --apply mforman
+# 4. Install chezmoi to ~/.local/bin (the dotfiles put it on PATH) and bootstrap
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin" init --apply mforman
 ```
 
 chezmoi will prompt for `name`, `email`, `isPersonal`, `workEmail`, `workDir`, and `sshSignKey` on first run.
+
+The Linux package script installs `zsh` and makes it the login shell. Open a fresh shell (`exec zsh`) after the first apply — `~/.zshenv` sources `~/.shellenv`, which is what puts `~/.local/bin` (and therefore `chezmoi`) on the PATH.
 
 ### Wiping and starting over
 
@@ -83,12 +84,10 @@ rm -f ~/.config/chezmoi/key.txt   # also re-fetches age key on next apply
 ## 🧰 Bootstrap a new machine
 
 ```sh
-# 1. Grab chezmoi
-sh -c "$(curl -fsLS get.chezmoi.io)"
-
-# 2. Init from this repo — it'll prompt for name, email, and whether
+# 1. Grab chezmoi (installs to ~/.local/bin, which the dotfiles put on PATH)
+#    and init from this repo — it'll prompt for name, email, and whether
 #    this is a work machine. Answer and put the kettle on.
-chezmoi init --apply mforman
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin" init --apply mforman
 ```
 
 First apply is the slow one. It also runs:

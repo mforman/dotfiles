@@ -20,7 +20,13 @@ function install {
 }
 
 # Basics
+install zsh
 install fzf
+
+# Make zsh the login shell
+if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
+  sudo chsh -s "$(command -v zsh)" "$USER"
+fi
 
 curl -sS https://starship.rs/install.sh | sh
 curl https://mise.run | sh
