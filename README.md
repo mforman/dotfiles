@@ -21,6 +21,53 @@ Primary target is macOS. Linux and WSL work for the shells, git, tmux, and Neovi
 
 Everything wears Catppuccin Macchiato.
 
+## 🪟 WSL bootstrap
+
+### Part A — Windows, before installing WSL
+
+1. Install [1Password for Windows](https://1password.com/downloads/windows/) and sign in.
+2. Install [1Password CLI for Windows](https://developer.1password.com/docs/cli/get-started/#install-1password-cli). This puts `op.exe` on the Windows PATH, which WSL inherits via interop — it's what chezmoi uses to fetch the age key.
+3. Sign in to the CLI (run in PowerShell):
+   ```powershell
+   op account add
+   op signin
+   ```
+   Keep 1Password desktop open and unlocked during the chezmoi apply.
+
+### Part B — WSL, before chezmoi
+
+```sh
+# 1. Base deps
+sudo apt update && sudo apt install -y git curl
+
+# 2. Prevent Git from converting LF → CRLF on checkout
+git config --global core.autocrlf false
+
+# 3. SSH key for GitHub (skip if you'll use HTTPS)
+ssh-keygen -t ed25519 -C "your-email"
+cat ~/.ssh/id_ed25519.pub   # add to github.com → Settings → SSH keys
+ssh -T git@github.com       # verify
+
+# 4. Install chezmoi and bootstrap
+sh -c "$(curl -fsLS get.chezmoi.io)"
+chezmoi init --apply mforman
+```
+
+chezmoi will prompt for `name`, `email`, `isPersonal`, `workEmail`, `workDir`, and `sshSignKey` on first run.
+
+### Wiping and starting over
+
+```sh
+# Nuke the WSL distro entirely (run in PowerShell — fastest clean slate)
+wsl --unregister Ubuntu
+
+# Or just reset chezmoi state without reinstalling the distro
+chezmoi state delete-bucket --bucket=scriptState   # re-runs run_once/run_onchange scripts
+rm -f ~/.config/chezmoi/key.txt                    # re-fetches age key on next apply
+```
+
+---
+
 ## 🧰 Bootstrap a new machine
 
 ```sh
