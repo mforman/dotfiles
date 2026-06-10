@@ -43,9 +43,10 @@ sudo apt update && sudo apt install -y git curl
 # 2. Prevent Git from converting LF → CRLF on checkout
 git config --global core.autocrlf false
 
-# 3. SSH key for GitHub (skip if you'll use HTTPS)
-ssh-keygen -t ed25519 -C "your-email"
-cat ~/.ssh/id_ed25519.pub   # add to github.com → Settings → SSH keys
+# 3. SSH key for GitHub — retrieve from 1Password and place in ~/.ssh/
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+# write private key to ~/.ssh/<keyname>, then:
+chmod 600 ~/.ssh/<keyname>
 ssh -T git@github.com       # verify
 
 # 4. Install chezmoi and bootstrap
