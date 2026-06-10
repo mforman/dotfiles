@@ -66,9 +66,16 @@ chezmoi will prompt for `name`, `email`, `isPersonal`, `workEmail`, `workDir`, a
 # Nuke the WSL distro entirely (run in PowerShell — fastest clean slate)
 wsl --unregister Ubuntu
 
-# Or just reset chezmoi state without reinstalling the distro
-chezmoi state delete-bucket --bucket=scriptState   # re-runs run_once/run_onchange scripts
-rm -f ~/.config/chezmoi/key.txt                    # re-fetches age key on next apply
+# Fix CRLF without wiping — if the source was cloned before .gitattributes was added
+cd ~/.local/share/chezmoi
+git pull
+git rm --cached -r .
+git reset --hard
+chezmoi apply
+
+# Reset chezmoi run-script state (forces run_once/run_onchange scripts to re-run)
+chezmoi state delete-bucket --bucket=scriptState
+rm -f ~/.config/chezmoi/key.txt   # also re-fetches age key on next apply
 ```
 
 ---
