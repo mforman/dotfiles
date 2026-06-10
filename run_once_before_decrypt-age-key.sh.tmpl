@@ -12,13 +12,17 @@ if [ -f "$KEY_FILE" ]; then
     exit 0
 fi
 
-if ! command -v op > /dev/null 2>&1; then
+if command -v op > /dev/null 2>&1; then
+    OP=op
+elif command -v op.exe > /dev/null 2>&1; then
+    OP=op.exe
+else
     echo "chezmoi: 'op' (1Password CLI) is not in PATH — install 1Password and sign in first" >&2
     exit 1
 fi
 
 mkdir -p "$HOME/.config/chezmoi"
-op read "op://Expana/chezmoi-age/private key" > "$KEY_FILE"
+$OP read "op://Expana/chezmoi-age/private key" > "$KEY_FILE"
 chmod 600 "$KEY_FILE"
 {{- else -}}
 : # Personal machine — no age key needed.
