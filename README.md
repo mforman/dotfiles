@@ -34,6 +34,10 @@ Everything wears Catppuccin Macchiato.
    ```
    Keep 1Password desktop open and unlocked during the chezmoi apply.
 
+Now install WSL (`wsl --install` in PowerShell, then reboot), open an Ubuntu terminal, and continue:
+
+---
+
 ### Part B — WSL, before chezmoi
 
 ```sh
