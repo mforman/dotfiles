@@ -34,7 +34,7 @@ export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)     # turn off underline mode
 # PATH
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
-{{ if (.chezmoi.kernel.osrelease | default "" | lower | contains "microsoft") }}
+{{ if and (eq .chezmoi.os "linux") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}
 # WSL: open URLs in the Windows browser (wslview shim lives in ~/.local/bin)
 export BROWSER=wslview
 {{ end -}}
