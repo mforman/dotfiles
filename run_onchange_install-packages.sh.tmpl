@@ -22,6 +22,10 @@ function install {
 # Basics
 install zsh
 install fzf
+install zoxide
+install ripgrep
+install tmux
+install jq
 
 # Make zsh the login shell
 if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
@@ -31,6 +35,15 @@ fi
 curl -sS https://starship.rs/install.sh | sh
 curl https://mise.run | sh
 
+# Neovim (latest stable from GitHub releases)
+NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
+tmp=$(mktemp -d)
+curl -Lo "$tmp/nvim.tar.gz" "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
+sudo rm -rf /opt/nvim
+sudo tar -xf "$tmp/nvim.tar.gz" -C /opt
+sudo ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
+rm -rf "$tmp"
+
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 tmp=$(mktemp -d)
 curl -Lo "$tmp/lazygit.tar.gz" "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
@@ -39,4 +52,11 @@ sudo install "$tmp/lazygit" /usr/local/bin
 rm -rf "$tmp"
 
 curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+
+# Install mise-managed runtimes
+export PATH="$HOME/.local/bin:$PATH"
+mise install
+
+# tree-sitter CLI (requires node)
+mise exec -- npm install -g tree-sitter-cli
 {{ end -}}

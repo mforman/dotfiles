@@ -1,8 +1,8 @@
 [user]
 	email = {{ .email | quote }}
 	name = {{ .name | quote }}
-{{- if eq .chezmoi.os "darwin" }}
-	signingkey = {{ .chezmoi.homeDir }}/.ssh/id_ed25519.pub
+{{- if ne .chezmoi.os "windows" }}
+	signingkey = {{ .chezmoi.homeDir }}/.ssh/{{ .sshSignKey }}.pub
 {{- end }}
 {{- if .workDir }}
 [includeIf "gitdir:~/{{ .workDir }}/"]

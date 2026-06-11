@@ -25,12 +25,12 @@ winget.json
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
+run_once_before_decrypt-age-key.sh
 .bash*
 .shellenv
 .config/fish
 .config/nvim
 .config/tmux
-.config/wezterm/wezterm.lua
 .config/zsh
 .nvm
 .p10*
