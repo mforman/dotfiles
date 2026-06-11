@@ -1,7 +1,11 @@
 {
 	"auths": {},
+{{- if eq .chezmoi.os "darwin" }}
 	"currentContext": "colima",
 	"cliPluginsExtraDirs": [
 		"/opt/homebrew/lib/docker/cli-plugins"
 	]
+{{- else }}
+	"currentContext": "default"
+{{- end }}
 }
