@@ -6,7 +6,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
   config.default_domain = "WSL:Ubuntu"
   config.launch_menu = {
     { label = "New tab - WSL", domain = { DomainName = "WSL:Ubuntu" } },
-    { label = "New tab - PowerShell", domain = { DomainName = "local" }, args = { "pwsh" } },
+    { label = "New tab - PowerShell", domain = { DomainName = "local" }, args = { "powershell.exe" } },
   }
   config.font_size = 11
 else
@@ -35,5 +35,9 @@ config.send_composed_key_when_left_alt_is_pressed = false
 config.keys = {
   { key = "Enter", mods = "SHIFT", action = wezterm.action.SendString("\x1b\r") },
 }
+
+if wezterm.target_triple == "x86_64-pc-windows-msvc" then
+  table.insert(config.keys, { key = "CapsLock", mods = "", action = wezterm.action.SendKey { key = "Escape" } })
+end
 
 return config

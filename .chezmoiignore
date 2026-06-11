@@ -27,6 +27,7 @@ winget.json
 {{ if eq .chezmoi.os "windows" }}
 .azure
 .bash*
+.claude/settings.json
 .shellenv
 .config/fish
 .config/nvim
