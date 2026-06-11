@@ -1,3 +1,4 @@
+{{ if eq .chezmoi.os "windows" }}{{ else -}}
 #!/bin/sh
 # Managed by chezmoi. Installs ~/{{ .workDir }}/.gitconfig so git commits
 # made inside the work directory use the work email. Re-runs whenever
@@ -19,4 +20,5 @@ cat > "$WORK_GITCONFIG" <<'EOF'
 EOF
 {{- else -}}
 : # No work email/dir configured (personal machine); nothing to do.
+{{- end }}
 {{- end }}
