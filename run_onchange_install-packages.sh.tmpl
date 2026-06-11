@@ -53,6 +53,19 @@ tar -xf "$tmp/lazygit.tar.gz" -C "$tmp" lazygit
 sudo install "$tmp/lazygit" /usr/local/bin
 rm -rf "$tmp"
 
+# PowerShell (tarball — MS apt repo lacks it for this Ubuntu; snap broken under WSL)
+sudo apt install -y libicu78
+if ! which pwsh &> /dev/null; then
+  PWSH_VERSION=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+  tmp=$(mktemp -d)
+  curl -Lo "$tmp/pwsh.tar.gz" "https://github.com/PowerShell/PowerShell/releases/download/v${PWSH_VERSION}/powershell-${PWSH_VERSION}-linux-x64.tar.gz"
+  sudo mkdir -p /opt/microsoft/powershell/7
+  sudo tar -xf "$tmp/pwsh.tar.gz" -C /opt/microsoft/powershell/7
+  sudo chmod +x /opt/microsoft/powershell/7/pwsh
+  sudo ln -sf /opt/microsoft/powershell/7/pwsh /usr/local/bin/pwsh
+  rm -rf "$tmp"
+fi
+
 # Docker Engine (official apt repo)
 if ! which docker &> /dev/null; then
   echo "Installing: docker..."
