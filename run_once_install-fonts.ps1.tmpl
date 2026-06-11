@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "windows" -}}
-# Download and install JuliaMono system-wide (requires admin).
+# Download and install fonts system-wide (requires admin).
 # If not running as admin, re-launches itself elevated and waits.
 
 $ErrorActionPreference = "Stop"
@@ -13,27 +13,32 @@ if (-not $isAdmin) {
 $fontDir = "C:\Windows\Fonts"
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
 
-# Skip if already installed (check for .otf variant too)
-if ((Get-ChildItem $fontDir -Filter "JuliaMono*" | Measure-Object).Count -gt 0) {
-    Write-Host "JuliaMono already installed, skipping."
-    exit
+function Install-FontZip {
+    param($Name, $Url, $Filter)
+    if ((Get-ChildItem $fontDir -Filter $Filter | Measure-Object).Count -gt 0) {
+        Write-Host "$Name already installed, skipping."
+        return
+    }
+    Write-Host "Downloading $Name..."
+    $zip = "$env:TEMP\$Name.zip"
+    $extract = "$env:TEMP\$Name"
+    Invoke-WebRequest -Uri $Url -OutFile $zip
+    Expand-Archive -Path $zip -DestinationPath $extract -Force
+    Get-ChildItem $extract -Recurse -Include "*.ttf","*.otf" | ForEach-Object {
+        Copy-Item $_.FullName "$fontDir\$($_.Name)" -Force
+        $label = if ($_.Extension -eq ".otf") { " (OpenType)" } else { " (TrueType)" }
+        Set-ItemProperty -Path $regPath -Name ([System.IO.Path]::GetFileNameWithoutExtension($_.Name) + $label) -Value $_.Name
+        Write-Host "Installed $($_.Name)"
+    }
+    Remove-Item $zip, $extract -Recurse -Force
+    Write-Host "$Name installed successfully."
 }
 
-Write-Host "Downloading JuliaMono..."
-$zip = "$env:TEMP\JuliaMono.zip"
-$extract = "$env:TEMP\JuliaMono"
-Invoke-WebRequest -Uri "https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono.zip" -OutFile $zip
+Install-FontZip -Name "JuliaMono" `
+    -Url "https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono.zip" `
+    -Filter "JuliaMono*"
 
-Expand-Archive -Path $zip -DestinationPath $extract -Force
-
-Get-ChildItem "$extract" -Recurse -Include "*.ttf","*.otf" | ForEach-Object {
-    Copy-Item $_.FullName "$fontDir\$($_.Name)" -Force
-    $label = if ($_.Extension -eq ".otf") { " (OpenType)" } else { " (TrueType)" }
-    $fontName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name) + $label
-    Set-ItemProperty -Path $regPath -Name $fontName -Value $_.Name
-    Write-Host "Installed $($_.Name)"
-}
-
-Remove-Item $zip, $extract -Recurse -Force
-Write-Host "JuliaMono installed successfully."
+Install-FontZip -Name "HackNerdFont" `
+    -Url "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.zip" `
+    -Filter "HackNerdFont*"
 {{ end -}}
