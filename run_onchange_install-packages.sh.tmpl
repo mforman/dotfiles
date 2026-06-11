@@ -53,6 +53,13 @@ rm -rf "$tmp"
 
 curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
 
+# tmux plugins: tpm + catppuccin aren't tpm-managed, so clone them; tpm installs the rest
+TPM_DIR="$HOME/.config/tmux/plugins/tpm"
+[ -d "$TPM_DIR" ] || git clone --depth 1 https://github.com/tmux-plugins/tpm "$TPM_DIR"
+CATPPUCCIN_DIR="$HOME/.config/tmux/plugins/catppuccin/tmux"
+[ -d "$CATPPUCCIN_DIR" ] || git clone --depth 1 https://github.com/catppuccin/tmux "$CATPPUCCIN_DIR"
+TMUX_PLUGIN_MANAGER_PATH="$HOME/.config/tmux/plugins/" "$TPM_DIR/bin/install_plugins"
+
 # Install mise-managed runtimes
 export PATH="$HOME/.local/bin:$PATH"
 mise install
