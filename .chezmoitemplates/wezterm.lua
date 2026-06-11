@@ -15,7 +15,7 @@ end
 
 config.automatically_reload_config = true
 
-config.font = wezterm.font_with_fallback({ "Hack Nerd Font Mono", "JuliaMono" })
+config.font = wezterm.font_with_fallback({ "JuliaMono", "Hack Nerd Font" })
 config.color_scheme = "Catppuccin Macchiato"
 config.default_cursor_style = "SteadyBlock"
 
