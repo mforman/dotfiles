@@ -30,6 +30,17 @@ install postgresql-client psql # psql, pg_dump, pg_restore for Azure Postgres
 install unzip # mason extracts zip-packaged tools (terraform-ls, stylua, etc.)
 install gcc # nvim-treesitter (main) compiles parsers from source
 
+# WSL: apt has no wslu here, so provide a minimal wslview that opens URLs in
+# the Windows browser (used by $BROWSER, az login, extrakto)
+if grep -qi microsoft /proc/version 2>/dev/null && ! command -v wslview >/dev/null; then
+  mkdir -p "$HOME/.local/bin"
+  cat > "$HOME/.local/bin/wslview" <<'EOF'
+#!/bin/sh
+exec powershell.exe -NoProfile -Command "Start-Process '$1'"
+EOF
+  chmod +x "$HOME/.local/bin/wslview"
+fi
+
 # Make zsh the login shell
 if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
   sudo chsh -s "$(command -v zsh)" "$USER"
