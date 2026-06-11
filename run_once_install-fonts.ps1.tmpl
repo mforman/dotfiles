@@ -1,20 +1,20 @@
 {{ if eq .chezmoi.os "windows" -}}
 # Download and install JuliaMono system-wide (requires admin).
-# If not running as admin, re-launches itself elevated.
+# If not running as admin, re-launches itself elevated and waits.
 
 $ErrorActionPreference = "Stop"
 
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 if (-not $isAdmin) {
-    Start-Process powershell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
+    Start-Process powershell -Verb RunAs -Wait -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`""
     exit
 }
 
 $fontDir = "C:\Windows\Fonts"
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts"
 
-# Skip if already installed
-if (Test-Path "$fontDir\JuliaMono-Regular.ttf") {
+# Skip if already installed (check for .otf variant too)
+if ((Get-ChildItem $fontDir -Filter "JuliaMono*" | Measure-Object).Count -gt 0) {
     Write-Host "JuliaMono already installed, skipping."
     exit
 }
@@ -26,10 +26,10 @@ Invoke-WebRequest -Uri "https://github.com/cormullion/juliamono/releases/latest/
 
 Expand-Archive -Path $zip -DestinationPath $extract -Force
 
-Get-ChildItem "$extract\*.ttf" | ForEach-Object {
-    $dest = "$fontDir\$($_.Name)"
-    Copy-Item $_.FullName $dest -Force
-    $fontName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name) + " (TrueType)"
+Get-ChildItem "$extract" -Recurse -Include "*.ttf","*.otf" | ForEach-Object {
+    Copy-Item $_.FullName "$fontDir\$($_.Name)" -Force
+    $label = if ($_.Extension -eq ".otf") { " (OpenType)" } else { " (TrueType)" }
+    $fontName = [System.IO.Path]::GetFileNameWithoutExtension($_.Name) + $label
     Set-ItemProperty -Path $regPath -Name $fontName -Value $_.Name
     Write-Host "Installed $($_.Name)"
 }
