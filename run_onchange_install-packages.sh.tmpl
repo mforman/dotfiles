@@ -9,7 +9,7 @@ mas install 1553936137
 sudo apt update
 
 function install {
-  which $1 &> /dev/null
+  which ${2:-$1} &> /dev/null
 
   if [ $? -ne 0 ]; then
     echo "Installing: ${1}..."
@@ -26,6 +26,7 @@ install zoxide
 install ripgrep
 install tmux
 install jq
+install postgresql-client psql # psql, pg_dump, pg_restore for Azure Postgres
 install unzip # mason extracts zip-packaged tools (terraform-ls, stylua, etc.)
 install gcc # nvim-treesitter (main) compiles parsers from source
 
@@ -34,8 +35,8 @@ if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
   sudo chsh -s "$(command -v zsh)" "$USER"
 fi
 
-curl -sS https://starship.rs/install.sh | sh
-curl https://mise.run | sh
+which starship &> /dev/null || curl -sS https://starship.rs/install.sh | sh
+which mise &> /dev/null || curl https://mise.run | sh
 
 # Neovim (latest stable from GitHub releases)
 NVIM_VERSION=$(curl -s "https://api.github.com/repos/neovim/neovim/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
