@@ -9,12 +9,13 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     { label = "New tab - PowerShell", domain = { DomainName = "local" }, args = { "pwsh" } },
   }
   config.font_size = 12
+else
+  config.font_size = 15
 end
 
 config.automatically_reload_config = true
 
 config.font = wezterm.font_with_fallback({ "JuliaMono", "Hack Nerd Font" })
-config.font_size = 15
 config.color_scheme = "Catppuccin Macchiato"
 config.default_cursor_style = "SteadyBlock"
 
