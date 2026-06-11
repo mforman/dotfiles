@@ -26,6 +26,7 @@ install zoxide
 install ripgrep
 install tmux
 install jq
+install gcc # nvim-treesitter (main) compiles parsers from source
 
 # Make zsh the login shell
 if [ "$(getent passwd "$USER" | cut -d: -f7)" != "$(command -v zsh)" ]; then
