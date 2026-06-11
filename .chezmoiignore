@@ -25,6 +25,7 @@ winget.json
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
+.azure
 .bash*
 .shellenv
 .config/fish
