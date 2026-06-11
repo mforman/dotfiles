@@ -25,7 +25,6 @@ winget.json
 {{ end }}
 
 {{ if eq .chezmoi.os "windows" }}
-run_once_before_decrypt-age-key.sh
 .bash*
 .shellenv
 .config/fish

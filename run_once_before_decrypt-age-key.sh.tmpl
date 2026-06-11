@@ -1,3 +1,4 @@
+{{ if ne .chezmoi.os "windows" -}}
 #!/bin/sh
 # Managed by chezmoi. Fetches the age private key from 1Password and writes it
 # to ~/.config/chezmoi/key.txt so chezmoi can decrypt encrypted files. Runs
@@ -26,4 +27,5 @@ $OP read "op://Expana/chezmoi-age/private key" > "$KEY_FILE"
 chmod 600 "$KEY_FILE"
 {{- else -}}
 : # Personal machine — no age key needed.
+{{- end }}
 {{- end }}
