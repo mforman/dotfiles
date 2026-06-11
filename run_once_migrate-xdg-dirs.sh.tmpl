@@ -1,3 +1,4 @@
+{{ if ne .chezmoi.os "windows" -}}
 #!/bin/sh
 # One-time migration: move tool dirs to XDG locations after env-var redirects were added.
 
@@ -27,3 +28,4 @@ rm -rf "$HOME/.npm" "$HOME/.matplotlib"
 # Stale dirs and files
 rm -rf "$HOME/dotfiles" "$HOME/dotnet"
 rm -f "$HOME/wezterm.sh" "$HOME/.bash_history"
+{{- end }}
