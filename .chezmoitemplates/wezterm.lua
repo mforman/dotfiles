@@ -8,6 +8,7 @@ if wezterm.target_triple == "x86_64-pc-windows-msvc" then
     { label = "New tab - WSL", domain = { DomainName = "WSL:Ubuntu" } },
     { label = "New tab - PowerShell", domain = { DomainName = "local" }, args = { "pwsh" } },
   }
+  config.font_size = 12
 end
 
 config.automatically_reload_config = true
