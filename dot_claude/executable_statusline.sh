@@ -58,10 +58,12 @@ if [ "$PCT" -ge 90 ]; then BAR_COLOR="$RED"
 elif [ "$PCT" -ge 70 ]; then BAR_COLOR="$YELLOW"
 else BAR_COLOR="$GREEN"; fi
 
+BLOCK=$'\xe2\x96\x88'; SHADE=$'\xe2\x96\x91'
 FILLED=$((PCT / 10)); EMPTY=$((10 - FILLED))
-BAR=""
-for _ in $(seq 1 "$FILLED"); do BAR="$BAR█"; done
-for _ in $(seq 1 "$EMPTY"); do BAR="$BAR░"; done
+BAR=""; i=0
+while (( i < FILLED )); do BAR="$BAR$BLOCK"; ((i++)); done
+i=0
+while (( i < EMPTY )); do BAR="$BAR$SHADE"; ((i++)); done
 
 MINS=$((DURATION_MS / 60000)); SECS=$(((DURATION_MS % 60000) / 1000))
 
