@@ -10,7 +10,7 @@ macOS and Linux/WSL are both first-class targets — a single `chezmoi apply` bo
 | --------------- | --------------------------------------------------------------------------------------------------- |
 | Shell           | zsh (vi-mode, autosuggestions, fzf, zoxide); bash on Linux only                                    |
 | Prompt          | [starship](https://starship.rs/)                                                                    |
-| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux †                                   |
+| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux (macOS + Windows host for WSL)      |
 | Multiplexer     | tmux — prefix `C-a`, vi mode, tpm, session persistence                                              |
 | Editor          | Neovim — single-file `init.lua`, native `vim.pack`, built-in LSP/completion (needs Neovim 0.12+)    |
 | VCS             | git with SSH signing and a work/personal email split via `includeIf`                                |
@@ -36,7 +36,7 @@ Everything wears Catppuccin Macchiato.
    ```
    Keep 1Password desktop open and unlocked during the chezmoi apply.
 
-Now install WSL (`wsl --install` in PowerShell, then reboot), open an Ubuntu terminal, and continue:
+Install [WezTerm for Windows](https://wezfurlong.org/wezterm/installation.html) — it's the terminal used on this setup. Then install WSL (`wsl --install` in PowerShell, reboot), open WezTerm (it'll land in WSL), and continue:
 
 ---
 
