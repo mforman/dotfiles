@@ -31,7 +31,14 @@ chezmoi execute-template   # Test a template file
 - `empty_*` → creates an empty file (ensures directory structure)
 
 ### Templating
-`.chezmoi.toml.tmpl` prompts for data variables on first run: `name`, `email`, `isPersonal`, `workEmail`, `workDir`, `sshSignKey`. These are available as `{{ .name }}`, `{{ .sshSignKey }}` etc. in all `.tmpl` files. Shared templates live in `.chezmoitemplates/`.
+`.chezmoi.toml.tmpl` defines data variables available in all `.tmpl` files:
+
+**Prompted** (stored in `~/.config/chezmoi/chezmoi.toml` after `chezmoi init`): `name`, `email`, `isPersonal`, `workEmail`, `workDir`, `sshSignKey`.
+
+**Computed** (derived from machine state, not prompted):
+- `isWSL` — `true` when running under WSL (Linux kernel with "microsoft" in osrelease). Use `{{ if .isWSL }}` in templates; do **not** re-derive inline with the `and`/`contains`/`lower` expression — that pattern is what `isWSL` replaces. Note: Go templates do not short-circuit `and`, so `.chezmoi.kernel.osrelease` must only be accessed inside a `{{ if eq .chezmoi.os "linux" }}` guard (which is how `isWSL` is computed in `.chezmoi.toml.tmpl`).
+
+Shared templates live in `.chezmoitemplates/`.
 
 ### XDG Base Directory
 All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`, `XDG_CACHE_HOME`) and `ZDOTDIR` for every zsh invocation, then sources `~/.shellenv` for everything else (PATH + XDG redirects like `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, etc.). `~/.shellenv` is exports-only and safe in non-interactive contexts; bash on Linux sources it from `~/.bashrc` and `~/.bash_profile`. Use bare `$XDG_CONFIG_HOME` etc. — never the `${XDG_CONFIG_HOME:-$HOME/.config}` fallback pattern inline.
@@ -47,7 +54,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | Source path | Destination | Notes |
 |---|---|---|
 | `dot_zshenv` | `~/.zshenv` | Sets XDG vars and `ZDOTDIR`, then sources `~/.shellenv`; read by every zsh invocation |
-| `dot_shellenv.tmpl` | `~/.shellenv` | Exports-only env file (PATH + XDG redirects: `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, `NPM_CONFIG_CACHE`, etc.). Safe in non-interactive shells. Sourced by `~/.zshenv` (zsh) and `~/.bashrc`/`~/.bash_profile` (bash on Linux) |
+| `dot_shellenv.tmpl` | `~/.shellenv` | Exports-only env file (PATH + XDG redirects: `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, `NPM_CONFIG_CACHE`, etc.). Safe in non-interactive shells. Sourced by `~/.zshenv` (zsh) and `~/.bashrc`/`~/.bash_profile` (bash on Linux). **No `tput`, subshells, or anything requiring a TTY** — those belong in `.zshrc`. |
 | `private_dot_config/zsh/dot_zshrc.tmpl` | `~/.config/zsh/.zshrc` | Primary shell; vi-mode, fzf, zoxide, mise activation; inline functions (`cls`, `dotcheck`, `cm_add_vim`, `cm_add_nvim`) |
 | `private_dot_config/zsh/dot_zsh_aliases` | `~/.config/zsh/.zsh_aliases` | Global aliases (`alias -g`) — intentional; keeps history portable |
 | `private_dot_config/git/config.tmpl` | `~/.config/git/config` | SSH signing, conditional include for work dir, difftastic difftool |

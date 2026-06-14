@@ -10,6 +10,11 @@
 {{- end }}
 
 
+{{- $isWSL := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   $isWSL = contains "microsoft" (lower .chezmoi.kernel.osrelease) -}}
+{{- end -}}
+
 encryption = "age"
 [age]
     identity  = "~/.config/chezmoi/key.txt"
@@ -22,4 +27,5 @@ encryption = "age"
     workDir = {{ $workDir | quote }}
     isPersonal = {{ $isPersonal }}
     sshSignKey = {{ $sshSignKey | quote }}
+    isWSL = {{ $isWSL }}
 

@@ -128,6 +128,14 @@ Rule of thumb: if you tweaked something live and want to keep it, `chezmoi re-ad
 
 Templates reach them with `{{ .name }}`, `{{ .email }}`, and friends. Shared partials live in `.chezmoitemplates/`.
 
+Some variables are **computed** from machine state rather than prompted:
+
+| Variable | How it's set                                                              |
+| -------- | ------------------------------------------------------------------------- |
+| `isWSL`  | `true` when the Linux kernel reports a Microsoft osrelease (WSL detection) |
+
+Use `{{ if .isWSL }}` in templates instead of re-deriving inline.
+
 ## 🏠 For the home and the office
 
 A quiet source of embarrassment is pushing a commit with the wrong email attached. This repo avoids that:
@@ -156,7 +164,7 @@ OS gating lives in `.chezmoiignore`.
 ├── CLAUDE.md                              Notes for Claude Code sessions
 ├── README.md                              You are here
 ├── dot_zshenv                             sets XDG_* vars and ZDOTDIR for all zsh invocations
-├── dot_commonprofile.tmpl                 shared aliases + env for zsh and bash
+├── dot_shellenv.tmpl                      exports-only env (PATH, XDG redirects) — safe in non-interactive shells
 ├── private_dot_config/
 │   ├── zsh/                               zsh config (ZDOTDIR = ~/.config/zsh)
 │   │   ├── dot_zshrc.tmpl

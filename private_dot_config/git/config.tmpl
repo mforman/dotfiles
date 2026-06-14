@@ -67,7 +67,7 @@
 
 [gpg]
 	format = ssh
-{{- if and (eq .chezmoi.os "linux") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}
+{{- if .isWSL }}
 [credential]
 	helper = "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe"
 {{- end }}

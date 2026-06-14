@@ -66,7 +66,7 @@ sudo install "$tmp/lazygit" /usr/local/bin
 rm -rf "$tmp"
 
 # PowerShell (tarball — MS apt repo lacks it for this Ubuntu; snap broken under WSL)
-sudo apt install -y libicu78
+sudo apt install -y libicu78  # pinned for Ubuntu 26.04; bump for other releases
 if ! which pwsh &> /dev/null; then
   PWSH_VERSION=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
   tmp=$(mktemp -d)

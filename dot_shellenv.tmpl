@@ -21,31 +21,23 @@ export COLORTERM=truecolor
 
 # If $LESS is unset, Git sets it to FRX. I don't want F or X.
 export LESS='R'
-
-# less colour
-export LESS_TERMCAP_so=$(tput bold; tput setaf 6)  # enter standout mode
-export LESS_TERMCAP_se=$(tput rmso; tput sgr0)     # leave standout mode
-export LESS_TERMCAP_mb=$(tput blink; tput setaf 1) # enter blinking mode
-export LESS_TERMCAP_md=$(tput bold; tput setaf 3)  # enter double-bright mode
-export LESS_TERMCAP_me=$(tput sgr0)                # turn off all appearance modes
-export LESS_TERMCAP_us=$(tput sitm; tput setaf 2)  # turn on underline mode
-export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)     # turn off underline mode
+# LESS_TERMCAP_* (tput) lives in .zshrc — tput requires a TTY and belongs in interactive config.
 
 # PATH
 export PATH=$PATH:/usr/local/sbin
 export PATH=$PATH:$HOME/.local/bin
-{{ if and (eq .chezmoi.os "linux") (contains "microsoft" (lower .chezmoi.kernel.osrelease)) }}
+{{ if .isWSL }}
 # WSL: open URLs in the Windows browser (wslview shim lives in ~/.local/bin)
 export BROWSER=wslview
 {{ end -}}
 
-if command -v go &> /dev/null; then
+if [[ -d /usr/local/go/bin ]]; then
   export PATH=$PATH:/usr/local/go/bin
   export GOPATH=$HOME/src/go
   export GOBIN=$GOPATH/bin
   export PATH=$PATH:$GOBIN
 fi
-if command -v dotnet &> /dev/null || [[ -d /usr/local/share/dotnet ]]; then
+if [[ -d /usr/local/share/dotnet ]]; then
   [[ -d $HOME/dotnet ]] && export PATH="$PATH:$HOME/dotnet"
   export DOTNET_ROOT=/usr/local/share/dotnet
   [[ -d $HOME/.dotnet/tools ]] && export PATH="$HOME/.dotnet/tools:$PATH"
@@ -59,7 +51,7 @@ export PSQLRC="$XDG_CONFIG_HOME/psql/psqlrc"
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
 export TS_NODE_HISTORY="$XDG_STATE_HOME/ts_node_repl_history"
-export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"  # honored by Python 3.13+ only; no-op below
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
 export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 [[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
@@ -69,5 +61,5 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME/jupyter"
 export AZURE_CONFIG_DIR="$XDG_DATA_HOME/azure"
 export PSQL_HISTORY="$XDG_STATE_HOME/psql_history"
-export TERMINFO="$XDG_DATA_HOME/terminfo"
+export TERMINFO="$XDG_DATA_HOME/terminfo"  # can shadow system db if dir is empty; TERMINFO_DIRS is the safety net
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"

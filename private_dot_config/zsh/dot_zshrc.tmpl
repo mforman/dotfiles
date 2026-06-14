@@ -7,7 +7,6 @@ HISTSIZE=5000
 SAVEHIST=$HISTSIZE
 mkdir -p "$XDG_STATE_HOME/zsh"
 HISTFILE="$XDG_STATE_HOME/zsh/history"
-setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
@@ -25,6 +24,15 @@ compinit -d "$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 if command -v brew &> /dev/null; then
   BREW_PREFIX="$(brew --prefix)"
 fi
+
+# less colours (tput requires a TTY; belongs here, not in .shellenv)
+export LESS_TERMCAP_so=$(tput bold; tput setaf 6)
+export LESS_TERMCAP_se=$(tput rmso; tput sgr0)
+export LESS_TERMCAP_mb=$(tput blink; tput setaf 1)
+export LESS_TERMCAP_md=$(tput bold; tput setaf 3)
+export LESS_TERMCAP_me=$(tput sgr0)
+export LESS_TERMCAP_us=$(tput sitm; tput setaf 2)
+export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)
 
 # Autosuggest
 if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
@@ -67,7 +75,7 @@ add-zsh-hook precmd _load_ssh_agent
 
 
 cls() {
-  if [[ "$TERM" == "tmux-256color" && -n "TMUX" ]]; then
+  if [[ "$TERM" == "tmux-256color" && -n "$TMUX" ]]; then
     clear && tmux clear-history
   else
     printf '\33c\e[3J'
@@ -118,19 +126,7 @@ cm_add_nvim() {
 # Enable direnv
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
-# zsh parameter completion for the dotnet CLI
-
-# Don't pollute PATH with duplicates
-add_to_path() {
-    if [[ ":$PATH:" != *":$1:"* ]]; then
-        export PATH="$1:$PATH"
-    fi
-}
-
 command -v mise &> /dev/null && eval "$(mise activate zsh)"
-
-# pipx adds this
-add_to_path "$HOME/.local/bin"
 
 # Source aliases last
 [ -f "$ZDOTDIR/.zsh_aliases" ] && source "$ZDOTDIR/.zsh_aliases"
