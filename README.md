@@ -1,8 +1,8 @@
 # dotfiles
 
-The files that turn a fresh Mac into a terminal I actually want to look at. Managed with [chezmoi](https://www.chezmoi.io/).
+The files that turn a fresh machine into a terminal I actually want to look at. Managed with [chezmoi](https://www.chezmoi.io/).
 
-Primary target is macOS. Linux and WSL work for the shells, git, tmux, and Neovim bits. Windows gets the door politely closed on most configs.
+macOS and Linux/WSL are both first-class targets — a single `chezmoi apply` bootstraps the full environment on either. Windows gets the door politely closed on most configs.
 
 ## 🗺 The tour
 
@@ -10,14 +10,16 @@ Primary target is macOS. Linux and WSL work for the shells, git, tmux, and Neovi
 | --------------- | --------------------------------------------------------------------------------------------------- |
 | Shell           | zsh (vi-mode, autosuggestions, fzf, zoxide); bash on Linux only                                    |
 | Prompt          | [starship](https://starship.rs/)                                                                    |
-| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux                                     |
+| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux †                                   |
 | Multiplexer     | tmux — prefix `C-a`, vi mode, tpm, session persistence                                              |
 | Editor          | Neovim — single-file `init.lua`, native `vim.pack`, built-in LSP/completion (needs Neovim 0.12+)    |
 | VCS             | git with SSH signing and a work/personal email split via `includeIf`                                |
 | Runtimes        | [mise](https://mise.jdx.dev/) — manages Node and Python (replaces nvm + pyenv)                     |
-| Packages        | Homebrew on macOS, apt on Linux                                                                     |
-| Keyboard (mac)  | karabiner-elements                                                                                  |
-| Odds and ends   | direnv, fzf, zoxide, libpq, lazygit, lazydocker                                                     |
+| Packages        | Homebrew on macOS †, apt on Linux                                                                   |
+| Keyboard        | karabiner-elements †                                                                                |
+| Odds and ends   | direnv, fzf, zoxide, ripgrep, libpq, lazygit, lazydocker, PowerShell (Linux)                       |
+
+† macOS only
 
 Everything wears Catppuccin Macchiato.
 
@@ -59,7 +61,9 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin" init --apply mform
 
 chezmoi will prompt for `name`, `email`, `isPersonal`, `workEmail`, `workDir`, and `sshSignKey` on first run.
 
-The Linux package script installs `zsh` and makes it the login shell. Open a fresh shell (`exec zsh`) after the first apply — `~/.zshenv` sources `~/.shellenv`, which is what puts `~/.local/bin` (and therefore `chezmoi`) on the PATH.
+The Linux package script bootstraps the full environment: zsh (set as login shell), starship, mise + pinned Node/Python runtimes, Neovim, lazygit, lazydocker, Docker Engine, postgresql-client, ripgrep, tmux plugins, and PowerShell. WSL additionally gets a `wslview` shim (opens URLs in the Windows browser) and wires up the Windows Git Credential Manager.
+
+Open a fresh shell (`exec zsh`) after the first apply — `~/.zshenv` sources `~/.shellenv`, which puts `~/.local/bin` (and therefore `chezmoi`) on the PATH.
 
 ### Wiping and starting over
 
@@ -107,7 +111,6 @@ chezmoi edit <file>   # Edit the managed source (not the live copy)
 chezmoi re-add        # Pull the current $HOME state back into the repo
 chezmoi edit-config   # Change the prompt answers in ~/.config/chezmoi/chezmoi.toml
 
-# Shell helper from dot_commonprofile.tmpl:
 dotcheck              # chezmoi diff + list unmanaged ~/.config dirs
 ```
 
