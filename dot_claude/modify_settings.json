@@ -35,7 +35,8 @@ managed=$(cat <<'JSON'
     "padding": 2
   },
   "enabledPlugins": {
-    "superpowers@claude-plugins-official": true
+    "superpowers@claude-plugins-official": true,
+    "expana-docs@claude-tooling": true
   }
 }
 JSON

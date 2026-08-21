@@ -1,1 +1,4 @@
 **/.claude/settings.local.json
+# machine-local worktree checkouts (git worktree add under .claude/); can reach
+# several GB per repo and must never be committed
+**/.claude/worktrees/
