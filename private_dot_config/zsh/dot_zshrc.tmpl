@@ -123,6 +123,15 @@ cm_add_nvim() {
   cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
 }
 
+nvm() {
+  case "$1" in
+    use|install) mise "$1" "node@${2:-}" ;;
+    ls|list) mise ls node ;;
+    current) mise current node ;;
+    *) echo "nvm shim (mise): use|install|ls|current" >&2; return 1 ;;
+  esac
+}
+
 # Enable direnv
 command -v direnv &> /dev/null && eval "$(direnv hook zsh)"
 
