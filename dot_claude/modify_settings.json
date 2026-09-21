@@ -6,8 +6,9 @@
 
 managed=$(cat <<'JSON'
 {
+  "model": "claude-opus-4-8",
   "permissions": {
-    "defaultMode": "plan"
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -36,7 +37,9 @@ managed=$(cat <<'JSON'
   },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
-    "expana-docs@claude-tooling": true
+    "expana-docs@claude-tooling": false,
+    "andrej-karpathy-skills@karpathy-skills": false,
+    "ponytail@ponytail": true
   }
 }
 JSON
