@@ -12,7 +12,8 @@ managed=$(cat <<'JSON'
   },
   "hooks": {
     "SessionStart": [
-      { "hooks": [ { "type": "command", "command": "~/.claude/hooks/claude-hook.sh SessionStart" } ] }
+      { "hooks": [ { "type": "command", "command": "~/.claude/hooks/claude-hook.sh SessionStart" } ] },
+      { "matcher": "^(startup|resume|clear|compact|fork)$", "hooks": [ { "type": "command", "command": "bash ~/.claude/hooks/herdr-agent-state.sh session", "timeout": 10 } ] }
     ],
     "UserPromptSubmit": [
       { "hooks": [ { "type": "command", "command": "~/.claude/hooks/claude-hook.sh UserPromptSubmit" } ] }

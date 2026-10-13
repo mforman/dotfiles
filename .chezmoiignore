@@ -5,6 +5,8 @@ README.md
 run_once_before_decrypt-age-key.sh
 {{ end }}
 .config/nvim/nvim-pack-lock.json
+.config/herdr/*
+!.config/herdr/config.toml
 
 {{ if ne .chezmoi.os "darwin" }}
 .config/karabiner
