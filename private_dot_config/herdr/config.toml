@@ -45,3 +45,7 @@ key = "prefix+shift+m"
 type = "plugin_action"
 command = "worktrunk.merge"
 description = "Worktree: merge into the target branch"
+
+[theme]
+name = "catppuccin"
+auto_switch = false

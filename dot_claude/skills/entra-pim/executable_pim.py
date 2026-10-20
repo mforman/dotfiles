@@ -83,7 +83,8 @@ def get_token():
     try:
         # NOTE: with SSO already established the broker returns without showing a dialog.
         result = app.acquire_token_interactive(
-            SCOPES, parent_window_handle=app.CONSOLE_WINDOW_HANDLE, prompt=None
+            SCOPES, parent_window_handle=app.CONSOLE_WINDOW_HANDLE, prompt=None,
+            login_hint=os.environ.get("ENTRA_PIM_ACCOUNT"),
         )
     except Exception as e:
         print(f"Sign-in through the platform broker failed: {e}", file=sys.stderr)

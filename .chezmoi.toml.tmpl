@@ -4,9 +4,11 @@
 {{- $sshSignKey := promptStringOnce . "sshSignKey" "SSH signing/auth key filename (in ~/.ssh/)" -}}
 {{- $workEmail := "" -}}
 {{- $workDir := "" -}}
+{{- $adminEmail := "" -}}
 {{- if not $isPersonal }}
 {{-   $workEmail = promptStringOnce . "workEmail" "Work email address" }}
 {{-   $workDir = promptStringOnce . "workDir" "Work code directory (relative to $HOME, e.g. \"work\")" }}
+{{-   $adminEmail = promptStringOnce . "adminEmail" "Cloud admin account email" }}
 {{- end }}
 
 
@@ -25,6 +27,7 @@ encryption = "age"
     email = {{ $email | quote }}
     workEmail = {{ $workEmail | quote }}
     workDir = {{ $workDir | quote }}
+    adminEmail = {{ $adminEmail | quote }}
     isPersonal = {{ $isPersonal }}
     sshSignKey = {{ $sshSignKey | quote }}
     isWSL = {{ $isWSL }}

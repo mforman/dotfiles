@@ -33,7 +33,7 @@ chezmoi execute-template   # Test a template file
 ### Templating
 `.chezmoi.toml.tmpl` defines data variables available in all `.tmpl` files:
 
-**Prompted** (stored in `~/.config/chezmoi/chezmoi.toml` after `chezmoi init`): `name`, `email`, `isPersonal`, `workEmail`, `workDir`, `sshSignKey`.
+**Prompted** (stored in `~/.config/chezmoi/chezmoi.toml` after `chezmoi init`): `name`, `email`, `isPersonal`, `workEmail`, `workDir`, `adminEmail`, `sshSignKey`.
 
 **Computed** (derived from machine state, not prompted):
 - `isWSL` — `true` when running under WSL (Linux kernel with "microsoft" in osrelease). Use `{{ if .isWSL }}` in templates; do **not** re-derive inline with the `and`/`contains`/`lower` expression — that pattern is what `isWSL` replaces. Note: Go templates do not short-circuit `and`, so `.chezmoi.kernel.osrelease` must only be accessed inside a `{{ if eq .chezmoi.os "linux" }}` guard (which is how `isWSL` is computed in `.chezmoi.toml.tmpl`).

@@ -52,6 +52,11 @@ expana-app uses. The tenant's token protection policy only accepts broker-bound 
 there is no browser or device-code fallback. On an enrolled Mac already signed in to Company
 Portal, sign-in is silent.
 
+`ENTRA_PIM_ACCOUNT`, if set, is passed to the broker as `login_hint` so PIM acts as that account
+instead of the Company Portal default. The `az-adm` shell function sets it (plus
+`AZURE_CONFIG_DIR` and `KUBECONFIG`) so an admin shell uses the admin identity end to end.
+`ensure` runs a plain `az login`, so pick the admin account in the browser on first use.
+
 The script stores nothing; the broker keeps its own token store. On first run it deletes the
 old `$XDG_STATE_HOME/entra-pim/` refresh-token cache from the previous browser flow.
 

@@ -123,6 +123,12 @@ cm_add_nvim() {
   cp ~/.config/nvim/UltiSnips/tex.snippets ~/.local/share/chezmoi/.chezmoitemplates/vim/UltiSnips
 }
 
+az-adm() {
+  export AZURE_CONFIG_DIR="$XDG_DATA_HOME/azure-admin"
+  export KUBECONFIG="$XDG_CONFIG_HOME/kube/admin.yaml"
+  export ENTRA_PIM_ACCOUNT={{ .adminEmail | quote }}
+}
+
 nvm() {
   case "$1" in
     use|install) mise "$1" "node@${2:-}" ;;
@@ -155,3 +161,13 @@ type starship_zle-keymap-select >/dev/null || \
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
 fi
+
+# pnpm
+export PNPM_HOME='/Users/michael.forman/.local/share/pnpm'
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
