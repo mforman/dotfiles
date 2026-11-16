@@ -131,7 +131,9 @@ az-adm() {
 
 nvm() {
   case "$1" in
-    use|install) mise "$1" "node@${2:-}" ;;
+    # bare use/install defers to .nvmrc; versioned use is session-only like real nvm (no mise.toml)
+    use) if [[ -n $2 ]]; then mise install "node@$2" && mise shell "node@$2"; else mise install node && mise current node; fi ;;
+    install) mise install "node${2:+@$2}" ;;
     ls|list) mise ls node ;;
     current) mise current node ;;
     *) echo "nvm shim (mise): use|install|ls|current" >&2; return 1 ;;
