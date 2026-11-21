@@ -1,0 +1,4 @@
+# Enable the iGPU by default if present
+options apple-gmux force_igd=y
+# Legacy SMC driver hangs probing the T2 SMC (macsmc handles it), blocking suspend
+blacklist applesmc
