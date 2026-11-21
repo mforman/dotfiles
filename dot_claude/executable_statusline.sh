@@ -93,3 +93,4 @@ EXTRAS=()
 [[ -n "$SKILLS"  ]] && EXTRAS+=("🛠 $SKILLS")
 [[ -n "$LOOPS"   ]] && EXTRAS+=("🔁 $LOOPS")
 [[ ${#EXTRAS[@]} -gt 0 ]] && join_pipe "${EXTRAS[@]}"
+exit 0
