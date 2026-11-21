@@ -44,7 +44,7 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 
 local python_pyenv = vim.fn.expand '~/.pyenv/versions/neovim/bin/python3'
-if vim.fn.filereadable(python_pyenv) then
+if vim.fn.filereadable(python_pyenv) == 1 then
   vim.g.python3_host_prog = python_pyenv
 end
 
