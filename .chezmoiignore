@@ -17,6 +17,7 @@ brewfile-install.sh
 {{ if ne .chezmoi.os "linux" }}
 install-packages.sh
 run_onchange_install-packages.sh
+install-fonts.sh
 .bash_profile
 .bashrc
 .config/systemd

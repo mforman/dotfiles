@@ -1,0 +1,27 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+set -e
+
+FONT_DIR="$HOME/.local/share/fonts"
+mkdir -p "$FONT_DIR"
+
+function install_font {
+  local family=$1 dir=$2 url=$3
+  if fc-list | grep -q "$family"; then
+    echo "Already installed: $family"
+    return
+  fi
+  echo "Installing: $family..."
+  local tmp=$(mktemp -d)
+  curl -fsSL -o "$tmp/font.tar" "$url"
+  tar -xf "$tmp/font.tar" -C "$tmp"
+  mkdir -p "$FONT_DIR/$dir"
+  find "$tmp" -name '*.ttf' -exec cp {} "$FONT_DIR/$dir/" \;
+  rm -rf "$tmp"
+}
+
+install_font "JuliaMono" JuliaMono https://github.com/cormullion/juliamono/releases/latest/download/JuliaMono-ttf.tar.gz
+install_font "Hack Nerd Font" HackNerdFont https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Hack.tar.xz
+
+fc-cache -f "$FONT_DIR"
+{{ end -}}
