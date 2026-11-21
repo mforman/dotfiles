@@ -47,7 +47,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 `.chezmoiignore` gates by OS:
 - macOS only: `Brewfile`, `run_onchange_brewfile-install.sh.tmpl`, `private_dot_config/karabiner/`
 - Linux only: `run_onchange_install-packages.sh.tmpl`, `.bash_profile`, `.bashrc`
-- Windows: excluded from shells, neovim, tmux, most terminal configs
+- Windows: excluded from shells, neovim, most terminal configs
 
 ### Key Managed Configurations
 
@@ -61,8 +61,8 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | `private_dot_config/git/ignore` | `~/.config/git/ignore` | Global gitignore |
 | `private_dot_config/mise/config.toml` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |
 | `private_dot_config/nvim/` | `~/.config/nvim/` | Modular `init.lua` → `lua/core/` (options, keymaps, autocmds) + `lua/packages/` (one file per feature), native `vim.pack` (Neovim 0.12+), built-in LSP/completion. Has its own `CLAUDE.md`. |
-| `private_dot_config/tmux/` | `~/.config/tmux/` | Prefix=Ctrl-A, vi-mode, Catppuccin, tpm plugins |
-| `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm terminal emulator; minimal config, one keybind (Shift+Enter); status bar is tmux |
+| `private_dot_config/herdr/config.toml` | `~/.config/herdr/config.toml` | herdr multiplexer (installed via mise); rest of `~/.config/herdr/` is ignored |
+| `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm terminal emulator; minimal config, one keybind (Shift+Enter) |
 | `private_dot_config/docker/` | `~/.config/docker/` | Docker config; `DOCKER_CONFIG` points here |
 | `private_dot_config/psql/psqlrc` | `~/.config/psql/psqlrc` | PostgreSQL prompt; `PSQLRC` points here |
 | `private_dot_config/readline/inputrc` | `~/.config/readline/inputrc` | Readline vi-mode; `INPUTRC` points here |

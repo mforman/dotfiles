@@ -5,7 +5,7 @@ font-family = Hack Nerd Font
 
 confirm-close-surface = false
 
-# herdr owns tabs and splits; free these keys for herdr, tmux, and nvim
+# herdr owns tabs and splits; free these keys for herdr and nvim
 keybind = ctrl+tab=unbind
 keybind = ctrl+shift+tab=unbind
 keybind = ctrl+page_up=unbind

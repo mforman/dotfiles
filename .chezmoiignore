@@ -36,11 +36,9 @@ winget.json
 .shellenv
 .config/fish
 .config/nvim
-.config/tmux
 .config/zsh
 .nvm
 .p10*
 .powerlevel*
-.tmux*
 .zsh*
 {{ end }}

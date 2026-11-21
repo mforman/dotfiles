@@ -18,5 +18,5 @@
 - Run `chezmoi diff` before `chezmoi apply` when working in this repo.
 
 ## Environment
-- macOS, zsh, neovim, wezterm + tmux.
+- macOS, zsh, neovim, wezterm + herdr.
 - Dotfiles managed with chezmoi (`~/.local/share/chezmoi`).

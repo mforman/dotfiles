@@ -10,8 +10,8 @@ macOS and Linux/WSL are both first-class targets — a single `chezmoi apply` bo
 | --------------- | --------------------------------------------------------------------------------------------------- |
 | Shell           | zsh (vi-mode, autosuggestions, fzf, zoxide); bash on Linux only                                    |
 | Prompt          | [starship](https://starship.rs/)                                                                    |
-| Terminal        | [wezterm](https://wezfurlong.org/wezterm/); status bar via tmux (macOS + Windows host for WSL)      |
-| Multiplexer     | tmux — prefix `C-a`, vi mode, tpm, session persistence                                              |
+| Terminal        | [wezterm](https://wezfurlong.org/wezterm/) (macOS + Windows host for WSL)                          |
+| Multiplexer     | [herdr](https://github.com/herdrdev/herdr) — installed via mise, Claude Code agent-state hook   |
 | Editor          | Neovim — single-file `init.lua`, native `vim.pack`, built-in LSP/completion (needs Neovim 0.12+)    |
 | VCS             | git with SSH signing and a work/personal email split via `includeIf`                                |
 | Runtimes        | [mise](https://mise.jdx.dev/) — manages Node and Python (replaces nvm + pyenv)                     |
@@ -61,7 +61,7 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin" init --apply mform
 
 chezmoi will prompt for `name`, `email`, `isPersonal`, `workEmail`, `workDir`, and `sshSignKey` on first run.
 
-The Linux package script bootstraps the full environment: zsh (set as login shell), starship, mise + pinned Node/Python runtimes, Neovim, lazygit, lazydocker, Docker Engine, postgresql-client, ripgrep, tmux plugins, and PowerShell. WSL additionally gets a `wslview` shim (opens URLs in the Windows browser) and wires up the Windows Git Credential Manager.
+The Linux package script bootstraps the full environment: zsh (set as login shell), starship, mise + pinned Node/Python runtimes, Neovim, lazygit, lazydocker, Docker Engine, postgresql-client, ripgrep, and PowerShell. WSL additionally gets a `wslview` shim (opens URLs in the Windows browser) and wires up the Windows Git Credential Manager.
 
 Open a fresh shell (`exec zsh`) after the first apply — `~/.zshenv` sources `~/.shellenv`, which puts `~/.local/bin` (and therefore `chezmoi`) on the PATH.
 
@@ -179,7 +179,7 @@ OS gating lives in `.chezmoiignore`.
 │   ├── mise/                              runtime version pins (node, python)
 │   │   └── config.toml
 │   ├── nvim/                              Neovim (has its own CLAUDE.md)
-│   ├── tmux/
+│   ├── herdr/                             herdr config (only config.toml is managed)
 │   ├── wezterm/
 │   ├── docker/                            DOCKER_CONFIG points here
 │   ├── psql/                              PSQLRC points here

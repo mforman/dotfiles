@@ -7,3 +7,6 @@
 .docker/config.json
 .zshrc
 .zsh_aliases
+.config/tmux
+.claude/claude-status.sh
+.claude/hooks/claude-hook.sh
