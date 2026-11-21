@@ -1,0 +1,21 @@
+#!/bin/sh
+WIFI=/sys/bus/pci/devices/0000:05:00.0
+WIFI_PORT=/sys/bus/pci/devices/0000:00:1c.0
+
+case "$1" in
+  pre)
+    systemctl kill -s SIGSTOP tiny-dfr
+    echo 0 > /sys/class/backlight/appletb_backlight/brightness
+    modprobe -r brcmfmac_wcc brcmfmac
+    modprobe -r thunderbolt
+    [ -e "$WIFI" ] && echo 1 > "$WIFI/remove"
+    ;;
+  post)
+    modprobe thunderbolt
+    sleep 1
+    echo 1 > "$WIFI_PORT/rescan"
+    modprobe brcmfmac
+    systemctl kill -s SIGCONT tiny-dfr
+    systemctl restart --no-block tiny-dfr
+    ;;
+esac
