@@ -12,6 +12,9 @@ sudo mkdir -p /etc/keyd
 sudo tee /etc/keyd/default.conf > /dev/null <<'EOF'
 {{ template "keyd.conf" . }}
 EOF
+sudo tee /etc/keyd/apple.conf > /dev/null <<'EOF'
+{{ template "keyd-apple.conf" . }}
+EOF
 
 sudo systemctl enable --now keyd
 sudo keyd reload
