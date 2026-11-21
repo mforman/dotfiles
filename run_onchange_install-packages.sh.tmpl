@@ -5,15 +5,17 @@
 mas install 1553936137
 
 {{ else if eq .chezmoi.os "linux" -}}
+{{ $fedora := eq .chezmoi.osRelease.id "fedora" -}}
+{{ $pm := ternary "dnf" "apt" $fedora -}}
 #!/bin/bash
-sudo apt update
+{{ if not $fedora }}sudo apt update{{ end }}
 
 function install {
   which ${2:-$1} &> /dev/null
 
   if [ $? -ne 0 ]; then
     echo "Installing: ${1}..."
-    sudo apt install -y $1
+    sudo {{ $pm }} install -y $1
   else
     echo "Already installed: ${1}"
   fi
@@ -23,10 +25,10 @@ function install {
 install zsh
 install fzf
 install zoxide
-install ripgrep
+install ripgrep rg
 install tmux
 install jq
-install postgresql-client psql # psql, pg_dump, pg_restore for Azure Postgres
+install {{ ternary "postgresql" "postgresql-client" $fedora }} psql # psql, pg_dump, pg_restore for Azure Postgres
 install unzip # mason extracts zip-packaged tools (terraform-ls, stylua, etc.)
 install gcc # nvim-treesitter (main) compiles parsers from source
 
@@ -66,7 +68,11 @@ sudo install "$tmp/lazygit" /usr/local/bin
 rm -rf "$tmp"
 
 # PowerShell (tarball — MS apt repo lacks it for this Ubuntu; snap broken under WSL)
+{{ if $fedora -}}
+sudo dnf install -y libicu
+{{- else -}}
 sudo apt install -y libicu78  # pinned for Ubuntu 26.04; bump for other releases
+{{- end }}
 if ! which pwsh &> /dev/null; then
   PWSH_VERSION=$(curl -s "https://api.github.com/repos/PowerShell/PowerShell/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
   tmp=$(mktemp -d)
@@ -78,6 +84,15 @@ if ! which pwsh &> /dev/null; then
   rm -rf "$tmp"
 fi
 
+{{ if $fedora -}}
+# Docker Engine (official dnf repo)
+if ! which docker &> /dev/null; then
+  echo "Installing: docker..."
+  sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
+  sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+  sudo systemctl enable --now docker
+fi
+{{- else -}}
 # Docker Engine (official apt repo)
 if ! which docker &> /dev/null; then
   echo "Installing: docker..."
@@ -89,6 +104,7 @@ if ! which docker &> /dev/null; then
   sudo apt update
   sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
+{{- end }}
 
 # Allow non-root docker (takes effect on next login)
 if ! id -nG "$USER" | grep -qw docker; then
