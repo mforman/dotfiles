@@ -1,0 +1,19 @@
+{{ if and (eq .chezmoi.os "linux") (not .isWSL) -}}
+{{ if eq .chezmoi.osRelease.id "fedora" -}}
+#!/bin/bash
+set -e
+
+if ! command -v keyd &> /dev/null; then
+  sudo dnf copr enable -y alternateved/keyd
+  sudo dnf install -y keyd
+fi
+
+sudo mkdir -p /etc/keyd
+sudo tee /etc/keyd/default.conf > /dev/null <<'EOF'
+{{ template "keyd.conf" . }}
+EOF
+
+sudo systemctl enable --now keyd
+sudo keyd reload
+{{ end -}}
+{{ end -}}
