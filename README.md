@@ -16,7 +16,7 @@ macOS and Linux/WSL are both first-class targets — a single `chezmoi apply` bo
 | VCS             | git with SSH signing and a work/personal email split via `includeIf`                                |
 | Runtimes        | [mise](https://mise.jdx.dev/) — manages Node and Python (replaces nvm + pyenv)                     |
 | Packages        | Homebrew on macOS †, apt on Linux                                                                   |
-| Keyboard        | karabiner-elements †                                                                                |
+| Keyboard        | karabiner-elements † · [keyd](https://github.com/rvaiya/keyd) on Fedora (Cmd↔Ctrl swap, Caps = DreymaR Extend) |
 | Odds and ends   | direnv, fzf, zoxide, ripgrep, libpq, lazygit, lazydocker, PowerShell (Linux)                       |
 
 † macOS only
@@ -99,6 +99,7 @@ First apply is the slow one. It also runs:
 - `run_onchange_brewfile-install.sh.tmpl` — `brew bundle` against `Brewfile.tmpl` (macOS)
 - `run_onchange_install-packages.sh.tmpl` — apt install + mise install (Linux)
 - `run_onchange_install-work-gitconfig.sh.tmpl` — writes `~/<workDir>/.gitconfig` on work machines
+- `run_onchange_install-keyd.sh.tmpl` — installs keyd and writes `/etc/keyd/default.conf` from `.chezmoitemplates/keyd.conf` (Fedora, not WSL). If a remap locks you out, Backspace+Escape+Enter kills keyd.
 
 After apply, run `mise install` to pull down the pinned Node and Python versions.
 
@@ -187,12 +188,13 @@ OS gating lives in `.chezmoiignore`.
 │   ├── private_karabiner/                 karabiner-elements (macOS)
 │   └── starship.toml
 ├── private_Library/                       macOS-only app support files
-├── .chezmoitemplates/                     shared template partials
+├── .chezmoitemplates/                     shared template partials (incl. keyd.conf)
 ├── .chezmoi.toml.tmpl                     init prompts
 ├── .chezmoiignore                         OS gating
 ├── .chezmoiremove                         paths to remove from $HOME after migration
 ├── run_onchange_brewfile-install.sh.tmpl
 ├── run_onchange_install-packages.sh.tmpl
+├── run_onchange_install-keyd.sh.tmpl      keyd remaps (Fedora)
 └── run_onchange_install-work-gitconfig.sh.tmpl
 ```
 
