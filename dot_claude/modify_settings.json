@@ -6,7 +6,6 @@
 
 managed=$(cat <<'JSON'
 {
-  "model": "claude-opus-4-8",
   "permissions": {
     "defaultMode": "auto"
   },
@@ -35,12 +34,6 @@ managed=$(cat <<'JSON'
     "type": "command",
     "command": "~/.claude/statusline.sh",
     "padding": 2
-  },
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "expana-docs@claude-tooling": false,
-    "andrej-karpathy-skills@karpathy-skills": false,
-    "ponytail@ponytail": true
   }
 }
 JSON
