@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "linux" -}}
+[".local/share/zsh/plugins/zsh-vi-mode"]
+    type = "git-repo"
+    url = "https://github.com/jeffreytse/zsh-vi-mode.git"
+    refreshPeriod = "168h"
+    clone.args = ["--depth", "1"]
+    pull.args = ["--ff-only"]
+{{ end -}}

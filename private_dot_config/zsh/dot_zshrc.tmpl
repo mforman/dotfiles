@@ -35,10 +35,13 @@ export LESS_TERMCAP_us=$(tput sitm; tput setaf 2)
 export LESS_TERMCAP_ue=$(tput ritm; tput sgr0)
 
 # Autosuggest
-if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
-  source "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  ZSH_AUTOSUGGEST_USE_ASYNC=1
-fi
+for f in "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh; do
+  if [[ -f "$f" ]]; then
+    source "$f"
+    ZSH_AUTOSUGGEST_USE_ASYNC=1
+    break
+  fi
+done
 
 # Alias expansion function
 globalias() {
@@ -59,9 +62,10 @@ zvm_after_init() {
 }
 
 # vi mode
-if [[ -n "$BREW_PREFIX" && -f "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]]; then
-  source "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh"
-fi
+for f in "$BREW_PREFIX/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh" "$XDG_DATA_HOME/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ""; do
+  [[ -z "$f" ]] && zvm_after_init
+  [[ -f "$f" ]] && { source "$f"; break }
+done
 
 # Lazy load SSH agent
 function _load_ssh_agent() {

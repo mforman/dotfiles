@@ -33,6 +33,7 @@ install jq
 install {{ ternary "postgresql" "postgresql-client" $fedora }} psql # psql, pg_dump, pg_restore for Azure Postgres
 install unzip # mason extracts zip-packaged tools (terraform-ls, stylua, etc.)
 install gcc # nvim-treesitter (main) compiles parsers from source
+[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] || sudo {{ $pm }} install -y zsh-autosuggestions
 
 # WSL: apt has no wslu here, so provide a minimal wslview that opens URLs in
 # the Windows browser (used by $BROWSER, az login, extrakto)
