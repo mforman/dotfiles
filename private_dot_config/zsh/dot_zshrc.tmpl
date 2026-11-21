@@ -156,6 +156,13 @@ command -v mise &> /dev/null && eval "$(mise activate zsh)"
 [ -f "$ZDOTDIR/expana-db.sh" ] && source "$ZDOTDIR/expana-db.sh"
 {{ end -}}
 
+{{ if eq .chezmoi.os "linux" -}}
+{{ if contains ".t2." .chezmoi.kernel.osrelease -}}
+# T2 Wi-Fi card can vanish after resume; rescan its port and reload the driver
+alias wifi-reset="sudo sh -c 'echo 1 > /sys/bus/pci/devices/0000:00:1c.0/rescan' && sudo modprobe -r brcmfmac_wcc brcmfmac && sudo modprobe brcmfmac"
+{{ end -}}
+{{ end }}
+
 command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 # Check that the function `starship_zle-keymap-select()` is defined.
 # xref: https://github.com/starship/starship/issues/3418
