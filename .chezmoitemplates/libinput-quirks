@@ -1,0 +1,11 @@
+[keyd virtual keyboard]
+MatchUdevType=keyboard
+MatchName=keyd virtual keyboard
+AttrKeyboardIntegration=internal
+
+[Apple T2 internal keyboard]
+MatchUdevType=keyboard
+MatchBus=usb
+MatchVendor=0x05AC
+MatchProduct=0x0340
+AttrKeyboardIntegration=internal
