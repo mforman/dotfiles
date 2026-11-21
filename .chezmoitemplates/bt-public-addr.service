@@ -1,0 +1,12 @@
+[Unit]
+Description=Give Linux its own Bluetooth address so macOS and Linux bond separately
+BindsTo=sys-subsystem-bluetooth-devices-hci0.device
+After=sys-subsystem-bluetooth-devices-hci0.device
+Before=bluetooth.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/btmgmt -i hci0 public-addr FA:FF:C2:59:78:E8
+
+[Install]
+WantedBy=bluetooth.service

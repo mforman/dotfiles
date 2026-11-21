@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "linux" -}}
+{{ if contains ".t2." .chezmoi.kernel.osrelease -}}
+#!/bin/bash
+set -e
+
+sudo tee /etc/systemd/system/bt-public-addr.service > /dev/null <<'UNIT'
+{{ template "bt-public-addr.service" . }}
+UNIT
+sudo systemctl daemon-reload
+sudo systemctl enable bt-public-addr.service
+{{ end -}}
+{{ end -}}
