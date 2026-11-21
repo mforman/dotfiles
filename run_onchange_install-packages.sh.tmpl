@@ -30,6 +30,7 @@ install fd-find fd
 install difftastic difft
 install tmux
 install jq
+install rclone # OneDrive mount (systemd user unit rclone-onedrive)
 install {{ ternary "postgresql" "postgresql-client" $fedora }} psql # psql, pg_dump, pg_restore for Azure Postgres
 install unzip # mason extracts zip-packaged tools (terraform-ls, stylua, etc.)
 install gcc # nvim-treesitter (main) compiles parsers from source

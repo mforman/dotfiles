@@ -19,6 +19,7 @@ install-packages.sh
 run_onchange_install-packages.sh
 .bash_profile
 .bashrc
+.config/systemd
 {{ end }}
 
 {{ if ne .chezmoi.os "windows" }}

@@ -1,0 +1,13 @@
+[Unit]
+Description=rclone mount of OneDrive at ~/OneDrive
+
+[Service]
+Type=notify
+ExecStartPre=/usr/bin/mkdir -p %h/OneDrive
+ExecStart=/usr/bin/rclone mount onedrive: %h/OneDrive --vfs-cache-mode full --vfs-cache-max-size 5G --vfs-cache-max-age 72h
+ExecStop=/usr/bin/fusermount3 -uz %h/OneDrive
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
