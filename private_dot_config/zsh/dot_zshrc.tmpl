@@ -158,8 +158,8 @@ command -v mise &> /dev/null && eval "$(mise activate zsh)"
 
 {{ if eq .chezmoi.os "linux" -}}
 {{ if contains ".t2." .chezmoi.kernel.osrelease -}}
-# T2 Wi-Fi card can vanish after resume; rescan its port and reload the driver
-alias wifi-reset="sudo sh -c 'echo 1 > /sys/bus/pci/devices/0000:00:1c.0/rescan' && sudo modprobe -r brcmfmac_wcc brcmfmac && sudo modprobe brcmfmac"
+# T2 Wi-Fi card can vanish after resume; drop it and rerun the sleep hook's recovery
+alias wifi-reset="sudo sh -c 'modprobe -r brcmfmac_wcc brcmfmac; [ -e /sys/bus/pci/devices/0000:05:00.0 ] && echo 1 > /sys/bus/pci/devices/0000:05:00.0/remove; /usr/lib/systemd/system-sleep/t2-suspend post'"
 {{ end -}}
 {{ end }}
 
