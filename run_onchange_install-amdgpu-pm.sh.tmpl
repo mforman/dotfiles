@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "linux" -}}
+{{ if contains ".t2." .chezmoi.kernel.osrelease -}}
+#!/bin/bash
+set -e
+
+# amdgpu reports "Runtime PM not available" on this Mac, so the runpm rule did nothing
+sudo rm -f /etc/udev/rules.d/80-amdgpu-runpm.rules
+
+sudo tee /etc/udev/rules.d/30-amdgpu-pm.rules > /dev/null <<'RULES'
+{{ template "amdgpu-pm.rules" . }}
+RULES
+sudo udevadm control --reload
+sudo udevadm trigger --subsystem-match=drm
+{{ end -}}
+{{ end -}}
