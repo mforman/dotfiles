@@ -1,0 +1,5 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# nvim-ghostty.desktop hash: {{ include "dot_local/share/applications/nvim-ghostty.desktop" | sha256sum }}
+xdg-mime default nvim-ghostty.desktop text/plain
+{{ end -}}

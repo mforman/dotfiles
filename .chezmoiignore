@@ -20,6 +20,7 @@ run_onchange_install-packages.sh
 .bash_profile
 .bashrc
 .config/systemd
+.local/share/applications/nvim-ghostty.desktop
 {{ end }}
 
 {{ if ne .chezmoi.os "windows" }}

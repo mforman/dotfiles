@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Neovim (Ghostty)
+Exec=ghostty -e nvim %F
+Terminal=false
+MimeType=text/plain;
+Icon=nvim
