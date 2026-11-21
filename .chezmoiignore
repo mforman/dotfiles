@@ -22,6 +22,7 @@ install-fonts.sh
 .bashrc
 .config/systemd
 .local/share/applications/nvim-ghostty.desktop
+.local/share/kwin
 {{ end }}
 
 {{ if ne .chezmoi.os "windows" }}

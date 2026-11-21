@@ -1,0 +1,16 @@
+{{ if and (eq .chezmoi.os "linux") (not .isWSL) -}}
+#!/bin/bash
+# main.js hash: {{ include "dot_local/share/kwin/scripts/macwin/contents/code/main.js" | sha256sum }}
+set -e
+
+command -v kwriteconfig6 &> /dev/null || exit 0
+
+kwriteconfig6 --file kwinrc --group Plugins --key macwinEnabled true
+
+if gdbus introspect --session --dest org.kde.KWin --object-path /Scripting &> /dev/null; then
+  gdbus call --session --dest org.kde.KWin --object-path /Scripting \
+    --method org.kde.kwin.Scripting.unloadScript macwin > /dev/null
+  gdbus call --session --dest org.kde.KWin --object-path /KWin \
+    --method org.kde.KWin.reconfigure > /dev/null
+fi
+{{ end -}}
