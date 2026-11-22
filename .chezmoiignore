@@ -21,7 +21,7 @@ install-fonts.sh
 .bash_profile
 .bashrc
 .config/systemd
-.local/share/applications/nvim-ghostty.desktop
+.local/share/applications
 .local/share/kwin
 {{ end }}
 
