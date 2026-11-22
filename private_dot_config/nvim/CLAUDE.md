@@ -18,7 +18,7 @@ A modular Neovim configuration using the native `vim.pack` plugin manager (not l
   - `util.lua` — `gh(x)` helper that expands short `user/repo` strings to full GitHub URLs.
 - **`lua/packages/`** — One file per feature group; the loader (`init.lua`) wires everything together.
   - `init.lua` — auto-scans `lua/packages/*.lua`, collects `{ plugins, setup, priority? }` specs, calls `vim.pack.add` once with all plugins, then runs each `setup` in priority order.
-  - Feature files: `ai`, `colorscheme`, `database`, `deps`, `editor`, `formatting`, `git`, `lsp`, `markdown`, `telescope`, `treesitter`, `ui`.
+  - Feature files: `ai`, `clojure`, `colorscheme`, `database`, `deps`, `editor`, `formatting`, `git`, `lsp`, `markdown`, `telescope`, `treesitter`, `ui`.
 - **`after/ftplugin/`** — Filetype-specific overrides (e.g., `markdown.lua` enables spell check and wrap).
 
 ## Key Design Decisions

@@ -80,6 +80,11 @@ local servers = {
     filetypes = { 'ps1', 'psm1', 'psd1' },
     root_markers = { '.git' },
   },
+  clojure_lsp = {
+    cmd = { 'clojure-lsp' },
+    filetypes = { 'clojure', 'edn' },
+    root_markers = { 'deps.edn', 'project.clj', 'bb.edn', '.git' },
+  },
   vtsls = {
     cmd = { 'vtsls', '--stdio' },
     filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
@@ -136,6 +141,7 @@ return {
         'bash-language-server',
         'powershell-editor-services',
         'vtsls',
+        'clojure-lsp',
         'stylua',
         'prettierd',
         'shfmt',
