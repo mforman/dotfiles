@@ -3,9 +3,12 @@
 
 # Brewfile hash: {{ include "Brewfile.tmpl" | sha256sum }}
 
+# Intel macOS 26 has no bottles, so upgrading compiles from source
 echo "Running brew update..."
 brew update
+{{- if eq .chezmoi.arch "arm64" }}
 brew upgrade
+{{- end }}
 
 # Fix broken cask state: files present but receipt missing
 if ! brew list --cask font-hack-nerd-font &>/dev/null 2>&1; then
