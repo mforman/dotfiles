@@ -2,6 +2,8 @@
 WIFI=/sys/bus/pci/devices/0000:05:00.0
 WIFI_PORT=/sys/bus/pci/devices/0000:00:1c.0
 
+log() { logger -t t2-suspend "$*"; }
+
 # the card can take a few seconds to reappear after S3; one rescan sometimes misses it
 wait_for_wifi() {
   for i in 1 2 3 4 5 6 7 8 9 10; do
@@ -27,12 +29,19 @@ case "$1" in
     echo on > "$WIFI_PORT/power/control"
     sleep 1
     # after a long S3 the link can stay down and rescans never find the card;
-    # removing and re-enumerating the root port (only the Wi-Fi card sits behind it) retrains it
-    if ! wait_for_wifi; then
-      echo 1 > "$WIFI_PORT/remove"
-      sleep 1
-      echo 1 > /sys/bus/pci/rescan
-      wait_for_wifi
+    # re-enumerating the root port alone doesn't retrain it, so reset the link first
+    if wait_for_wifi; then
+      log "card back after rescan"
+    elif log "secondary bus reset"; echo 1 > "$WIFI_PORT/reset_subordinate"; sleep 1; wait_for_wifi; then
+      log "card back after bus reset"
+    elif log "toggling link disable"; setpci -s 00:1c.0 CAP_EXP+10.w=0x10:0x10; sleep 1
+         setpci -s 00:1c.0 CAP_EXP+10.w=0x00:0x10; sleep 1; wait_for_wifi; then
+      log "card back after link toggle"
+    elif log "re-enumerating root port"; echo 1 > "$WIFI_PORT/remove"; sleep 1
+         echo 1 > /sys/bus/pci/rescan; wait_for_wifi; then
+      log "card back after root port re-enumeration"
+    else
+      log "card still missing"
     fi
     echo auto > "$WIFI_PORT/power/control"
     modprobe brcmfmac
