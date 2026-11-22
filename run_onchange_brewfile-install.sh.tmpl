@@ -17,6 +17,6 @@ fi
 
 grep -oE '^tap "[^"]+"' ~/Brewfile | cut -d'"' -f2 | xargs -n1 brew trust
 
-brew bundle
+brew bundle{{ if ne .chezmoi.arch "arm64" }} --no-upgrade{{ end }}
 brew cleanup
 {{ end }}
