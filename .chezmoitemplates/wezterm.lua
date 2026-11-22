@@ -14,6 +14,7 @@ else
 end
 
 config.automatically_reload_config = true
+config.front_end = "WebGpu"
 
 config.font = wezterm.font_with_fallback({ "JuliaMono", "Hack Nerd Font" })
 config.color_scheme = "Catppuccin Macchiato"
