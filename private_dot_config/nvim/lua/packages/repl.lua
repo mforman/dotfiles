@@ -5,10 +5,10 @@ return {
     { src = gh 'Olical/conjure' },
   },
   setup = function()
-    -- leave K and gd to clojure-lsp
+    -- leave K and gd to the LSP
     vim.g['conjure#mapping#doc_word'] = false
     vim.g['conjure#mapping#def_word'] = false
-    vim.g['conjure#filetypes'] = { 'clojure' }
+    vim.g['conjure#filetypes'] = { 'clojure', 'python' }
   end,
 }
 
