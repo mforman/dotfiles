@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# mise config hash: {{ include "private_dot_config/mise/config.toml" | sha256sum }}
+# mise config hash: {{ include "private_dot_config/mise/config.toml.tmpl" | sha256sum }}
 
 export PATH="$HOME/.local/bin:$PATH"
 command -v mise >/dev/null || curl -fsSL https://mise.run | sh

@@ -1,8 +1,12 @@
 [tools]
 node = "26.1.0"
 python = "3.13.2"
+pnpm = "latest"
 herdr = "latest"
 worktrunk = "latest"
+{{- if not .isPersonal }}
+"npm:mongosh" = "latest"
+{{- end }}
 
 [settings]
 idiomatic_version_file_enable_tools = ["node", "python"]

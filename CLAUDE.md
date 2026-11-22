@@ -43,6 +43,11 @@ Shared templates live in `.chezmoitemplates/`.
 ### XDG Base Directory
 All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`XDG_CONFIG_HOME`, `XDG_DATA_HOME`, `XDG_STATE_HOME`, `XDG_CACHE_HOME`) and `ZDOTDIR` for every zsh invocation, then sources `~/.shellenv` for everything else (PATH + XDG redirects like `AZURE_CONFIG_DIR`, `DOCKER_CONFIG`, `CARGO_HOME`, etc.). `~/.shellenv` is exports-only and safe in non-interactive contexts; bash on Linux sources it from `~/.bashrc` and `~/.bash_profile`. Use bare `$XDG_CONFIG_HOME` etc. — never the `${XDG_CONFIG_HOME:-$HOME/.config}` fallback pattern inline.
 
+### Package Managers: mise vs brew
+- **mise** (`private_dot_config/mise/config.toml.tmpl`): language runtimes and their package managers (node, python, pnpm), plus CLIs that are missing or lag in brew/apt (herdr, worktrunk). mise itself comes from the official installer, never brew.
+- **brew** (`Brewfile.tmpl`): everything else on macOS — casks, fonts, and system/C-library tools. Avoid formulae that pull in brew's node/python; install npm/pip CLIs via mise (`npm:<pkg>`, `pipx:<pkg>`) instead.
+- **Mason** (nvim): LSPs and formatters used only by nvim (e.g. stylua, prettierd) — don't duplicate them in the Brewfile.
+
 ### OS-Specific Handling
 `.chezmoiignore` gates by OS:
 - macOS only: `Brewfile`, `run_onchange_brewfile-install.sh.tmpl`, `private_dot_config/karabiner/`
@@ -59,7 +64,7 @@ All configs follow the XDG Base Directory spec. `~/.zshenv` sets the XDG vars (`
 | `private_dot_config/zsh/dot_zsh_aliases` | `~/.config/zsh/.zsh_aliases` | Global aliases (`alias -g`) — intentional; keeps history portable |
 | `private_dot_config/git/config.tmpl` | `~/.config/git/config` | SSH signing, conditional include for work dir, difftastic difftool |
 | `private_dot_config/git/ignore` | `~/.config/git/ignore` | Global gitignore |
-| `private_dot_config/mise/config.toml` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |
+| `private_dot_config/mise/config.toml.tmpl` | `~/.config/mise/config.toml` | Global runtime pins (node, python) |
 | `private_dot_config/nvim/` | `~/.config/nvim/` | Modular `init.lua` → `lua/core/` (options, keymaps, autocmds) + `lua/packages/` (one file per feature), native `vim.pack` (Neovim 0.12+), built-in LSP/completion. Has its own `CLAUDE.md`. |
 | `private_dot_config/herdr/config.toml` | `~/.config/herdr/config.toml` | herdr multiplexer (installed via mise); rest of `~/.config/herdr/` is ignored |
 | `private_dot_config/wezterm/` | `~/.config/wezterm/` | Wezterm terminal emulator; minimal config, one keybind (Shift+Enter) |
