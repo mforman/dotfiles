@@ -20,3 +20,4 @@
 ## Environment
 - macOS, zsh, neovim, wezterm + herdr.
 - Dotfiles managed with chezmoi (`~/.local/share/chezmoi`).
+- Expana work: start sessions from `~/expana` (local-only home repo). Its `CLAUDE.md` catalogs every repo, `.claude/skills/` holds the Expana skills (`entra-pim`, `databricks-uc`), and Expana memories live in that project's store. If a session starts inside a single Expana repo, read `~/expana/CLAUDE.md` and `~/.claude/projects/-Users-michael-forman-expana/memory/MEMORY.md` before cross-repo or Azure work.
