@@ -2,7 +2,7 @@
 WIFI=/sys/bus/pci/devices/0000:05:00.0
 WIFI_PORT=/sys/bus/pci/devices/0000:00:1c.0
 
-log() { logger -t t2-suspend "$*"; }
+log() { logger -t t2-suspend "$*"; [ -t 2 ] && echo "t2-suspend: $*" >&2; }
 
 # the card can take a few seconds to reappear after S3; one rescan sometimes misses it
 wait_for_wifi() {
